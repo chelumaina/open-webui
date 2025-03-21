@@ -75,18 +75,21 @@ else:
 
 
 async def periodic_usage_pool_cleanup():
+    
     if not aquire_func():
         log.debug("Usage pool cleanup lock already exists. Not running it.")
         return
     log.debug("Running periodic_usage_pool_cleanup")
     try:
         while True:
+            # print("Running periodic_usage_pool_cleanup")
             if not renew_func():
                 log.error(f"Unable to renew cleanup lock. Exiting usage pool cleanup.")
                 raise Exception("Unable to renew usage pool cleanup lock.")
 
             now = int(time.time())
             send_usage = False
+            # print(f"Running periodic_usage_pool_cleanup  {USAGE_POOL.items()}")
             for model_id, connections in list(USAGE_POOL.items()):
                 # Creating a list of sids to remove if they have timed out
                 expired_sids = [
@@ -94,6 +97,7 @@ async def periodic_usage_pool_cleanup():
                     for sid, details in connections.items()
                     if now - details["updated_at"] > TIMEOUT_DURATION
                 ]
+                print(f"Running  {expired_sids}")
 
                 for sid in expired_sids:
                     del connections[sid]
@@ -109,9 +113,11 @@ async def periodic_usage_pool_cleanup():
             if send_usage:
                 # Emit updated usage information after cleaning
                 await sio.emit("usage", {"models": get_models_in_use()})
+            print(f"Running get_models_in_use()  {get_models_in_use()}")
 
             await asyncio.sleep(TIMEOUT_DURATION)
     finally:
+        print(f"Running finally  {get_models_in_use()}")
         release_func()
 
 

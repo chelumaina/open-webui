@@ -399,13 +399,15 @@ https://github.com/open-webui/open-webui
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     start_logger()
+    print(f"RESET_CONFIG_ON_START {RESET_CONFIG_ON_START}")
     if RESET_CONFIG_ON_START:
         reset_config()
+    print(f"LICENSE_KEY {LICENSE_KEY}")
 
     if LICENSE_KEY:
         get_license_data(app, LICENSE_KEY)
 
-    asyncio.create_task(periodic_usage_pool_cleanup())
+    # asyncio.create_task(periodic_usage_pool_cleanup())
     yield
 
 

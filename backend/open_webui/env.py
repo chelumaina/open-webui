@@ -274,6 +274,8 @@ DATABASE_URL = os.environ.get("DATABASE_URL", f"sqlite:///{DATA_DIR}/webui.db")
 # Replace the postgres:// with postgresql://
 if "postgres://" in DATABASE_URL:
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://")
+print(f"DATABASE_URL {DATABASE_URL}")
+
 
 DATABASE_SCHEMA = os.environ.get("DATABASE_SCHEMA", None)
 
