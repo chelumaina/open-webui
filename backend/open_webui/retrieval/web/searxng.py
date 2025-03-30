@@ -62,7 +62,6 @@ def search_searxng(
         # Strip all query parameters from the URL
         query_url = query_url.split("?")[0]
 
-    log.debug(f"searching {query_url}")
 
     response = requests.get(
         query_url,

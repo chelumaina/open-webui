@@ -76,6 +76,7 @@ from open_webui.routers import (
     tools,
     users,
     utils,
+    subscriptions
 )
 
 from open_webui.routers.retrieval import (
@@ -84,7 +85,7 @@ from open_webui.routers.retrieval import (
     get_rf,
 )
 
-from open_webui.internal.db import Session
+from open_webui.internal.db import Session, engine
 
 from open_webui.models.functions import Functions
 from open_webui.models.models import Models
@@ -186,6 +187,7 @@ from open_webui.config import (
     CHUNK_SIZE,
     CONTENT_EXTRACTION_ENGINE,
     TIKA_SERVER_URL,
+    DOCLING_SERVER_URL,
     DOCUMENT_INTELLIGENCE_ENDPOINT,
     DOCUMENT_INTELLIGENCE_KEY,
     RAG_TOP_K,
@@ -212,6 +214,7 @@ from open_webui.config import (
     SERPSTACK_API_KEY,
     SERPSTACK_HTTPS,
     TAVILY_API_KEY,
+    TAVILY_EXTRACT_DEPTH,
     BING_SEARCH_V7_ENDPOINT,
     BING_SEARCH_V7_SUBSCRIPTION_KEY,
     BRAVE_SEARCH_API_KEY,
@@ -312,6 +315,7 @@ from open_webui.env import (
     AUDIT_EXCLUDED_PATHS,
     AUDIT_LOG_LEVEL,
     CHANGELOG,
+    REDIS_URL,
     GLOBAL_LOG_LEVEL,
     MAX_BODY_LOG_SIZE,
     SAFE_MODE,
@@ -327,6 +331,7 @@ from open_webui.env import (
     BYPASS_MODEL_ACCESS_CONTROL,
     RESET_CONFIG_ON_START,
     OFFLINE_MODE,
+    ENABLE_OTEL,
 )
 
 
@@ -353,7 +358,6 @@ from open_webui.utils.oauth import OAuthManager
 from open_webui.utils.security_headers import SecurityHeadersMiddleware
 
 from open_webui.tasks import stop_task, list_tasks  # Import from tasks.py
-
 
 if SAFE_MODE:
     print("SAFE MODE ENABLED")
@@ -399,15 +403,13 @@ https://github.com/open-webui/open-webui
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     start_logger()
-    print(f"RESET_CONFIG_ON_START {RESET_CONFIG_ON_START}")
     if RESET_CONFIG_ON_START:
         reset_config()
-    print(f"LICENSE_KEY {LICENSE_KEY}")
 
     if LICENSE_KEY:
         get_license_data(app, LICENSE_KEY)
 
-    # asyncio.create_task(periodic_usage_pool_cleanup())
+    asyncio.create_task(periodic_usage_pool_cleanup())
     yield
 
 
@@ -420,10 +422,23 @@ app = FastAPI(
 
 oauth_manager = OAuthManager(app)
 
-app.state.config = AppConfig()
+app.state.config = AppConfig(redis_url=REDIS_URL)
 
 app.state.WEBUI_NAME = WEBUI_NAME
 app.state.LICENSE_METADATA = None
+
+
+########################################
+#
+# OPENTELEMETRY
+#
+########################################
+
+if ENABLE_OTEL:
+    from open_webui.utils.telemetry.setup import setup as setup_opentelemetry
+
+    setup_opentelemetry(app=app, db_engine=engine)
+
 
 ########################################
 #
@@ -551,6 +566,7 @@ app.state.config.ENABLE_RAG_WEB_LOADER_SSL_VERIFICATION = (
 
 app.state.config.CONTENT_EXTRACTION_ENGINE = CONTENT_EXTRACTION_ENGINE
 app.state.config.TIKA_SERVER_URL = TIKA_SERVER_URL
+app.state.config.DOCLING_SERVER_URL = DOCLING_SERVER_URL
 app.state.config.DOCUMENT_INTELLIGENCE_ENDPOINT = DOCUMENT_INTELLIGENCE_ENDPOINT
 app.state.config.DOCUMENT_INTELLIGENCE_KEY = DOCUMENT_INTELLIGENCE_KEY
 
@@ -616,6 +632,7 @@ app.state.config.RAG_WEB_SEARCH_TRUST_ENV = RAG_WEB_SEARCH_TRUST_ENV
 app.state.config.PLAYWRIGHT_WS_URI = PLAYWRIGHT_WS_URI
 app.state.config.FIRECRAWL_API_BASE_URL = FIRECRAWL_API_BASE_URL
 app.state.config.FIRECRAWL_API_KEY = FIRECRAWL_API_KEY
+app.state.config.TAVILY_EXTRACT_DEPTH = TAVILY_EXTRACT_DEPTH
 
 app.state.EMBEDDING_FUNCTION = None
 app.state.ef = None
@@ -844,6 +861,7 @@ async def inspect_websocket(request: Request, call_next):
         "/ws/socket.io" in request.url.path
         and request.query_params.get("transport") == "websocket"
     ):
+        print(f"WebSocket connection from {request.client.host}")
         upgrade = (request.headers.get("Upgrade") or "").lower()
         connection = (request.headers.get("Connection") or "").lower().split(",")
         # Check that there's the correct headers for an upgrade, else reject the connection
@@ -887,6 +905,7 @@ app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
 
 app.include_router(channels.router, prefix="/api/v1/channels", tags=["channels"])
 app.include_router(chats.router, prefix="/api/v1/chats", tags=["chats"])
+app.include_router(subscriptions.router, prefix="/api/v1/subscriptions", tags=["subscriptions"])
 
 app.include_router(models.router, prefix="/api/v1/models", tags=["models"])
 app.include_router(knowledge.router, prefix="/api/v1/knowledge", tags=["knowledge"])
@@ -949,14 +968,24 @@ async def get_models(request: Request, user=Depends(get_verified_user)):
 
         return filtered_models
 
-    models = await get_all_models(request, user=user)
+    all_models = await get_all_models(request, user=user)
 
-    # Filter out filter pipelines
-    models = [
-        model
-        for model in models
-        if "pipeline" not in model or model["pipeline"].get("type", None) != "filter"
-    ]
+    models = []
+    for model in all_models:
+        # Filter out filter pipelines
+        if "pipeline" in model and model["pipeline"].get("type", None) == "filter":
+            continue
+
+        model_tags = [
+            tag.get("name")
+            for tag in model.get("info", {}).get("meta", {}).get("tags", [])
+        ]
+        tags = [tag.get("name") for tag in model.get("tags", [])]
+
+        tags = list(set(model_tags + tags))
+        model["tags"] = [{"name": tag} for tag in tags]
+
+        models.append(model)
 
     model_order_list = request.app.state.config.MODEL_ORDER_LIST
     if model_order_list:
@@ -993,6 +1022,10 @@ async def chat_completion(
 
     model_item = form_data.pop("model_item", {})
     tasks = form_data.pop("background_tasks", None)
+    # print(f"model_item: {model_item}")
+    # print(f"form_data: {form_data}")
+    # print(f"user: {user}")
+    # print(f"tasks: {tasks}")
 
     try:
         if not model_item.get("direct", False):
@@ -1002,12 +1035,13 @@ async def chat_completion(
 
             model = request.app.state.MODELS[model_id]
             model_info = Models.get_model_by_id(model_id)
-
+       
             # Check if user has access to the model
             if not BYPASS_MODEL_ACCESS_CONTROL and user.role == "user":
                 try:
                     check_model_access(user, model)
                 except Exception as e:
+
                     raise e
         else:
             model = model_item
@@ -1041,13 +1075,17 @@ async def chat_completion(
 
         request.state.metadata = metadata
         form_data["metadata"] = metadata
+        
 
         form_data, metadata, events = await process_chat_payload(
             request, form_data, user, metadata, model
         )
+        # print(f"\n\n\n form_data: {metadata}")
+        # print(f"\n\n\n metadata: {metadata}")
+        # print(f"\n\n\n events: {metadata}")
+
 
     except Exception as e:
-        log.debug(f"Error processing chat payload: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
@@ -1055,7 +1093,6 @@ async def chat_completion(
 
     try:
         response = await chat_completion_handler(request, form_data, user)
-
         return await process_chat_response(
             request, response, form_data, user, metadata, model, events, tasks
         )

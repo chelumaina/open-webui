@@ -23,19 +23,26 @@ ARG GID=0
 ######## WebUI frontend ########
 FROM --platform=$BUILDPLATFORM node:22-alpine3.20 AS build
 ARG BUILD_HASH
+ENV NODE_OPTIONS="--max-old-space-size=8192"
 
 WORKDIR /app
-
-COPY package.json package-lock.json ./
-RUN npm ci
-
 COPY . .
+# COPY package.json package-lock.json ./
+RUN npm ci 
+
+
 ENV APP_BUILD_HASH=${BUILD_HASH}
 RUN npm run build
 
 ######## WebUI backend ########
 FROM python:3.11-slim-bookworm AS base
 
+# # Install system dependencies
+# RUN apt-get update && \
+#     apt-get install -y --no-install-recommends \
+#         git build-essential pandoc netcat-openbsd curl jq \
+#         python3-dev ffmpeg libsm6 libxext6 && \
+#     rm -rf /var/lib/apt/lists/*
 # Use args
 ARG USE_CUDA
 ARG USE_OLLAMA
@@ -87,6 +94,9 @@ ENV HF_HOME="/app/backend/data/cache/embedding/models"
 # ENV TORCH_EXTENSIONS_DIR="/.cache/torch_extensions"
 
 #### Other models ##########################################################
+# Set up a virtual environment
+RUN python3 -m venv /venv
+ENV PATH="/venv/bin:$PATH"
 
 WORKDIR /app/backend
 
@@ -173,4 +183,6 @@ ARG BUILD_HASH
 ENV WEBUI_BUILD_VERSION=${BUILD_HASH}
 ENV DOCKER=true
 
-CMD [ "bash", "start.sh"]
+# CMD [ "bash", "start.sh"]
+CMD ["uvicorn", "open_webui.main:app", "--port", "$PORT", "--host", "0.0.0.0", "--forwarded-allow-ips", '*', "--reload"]
+# CMD [ "uvicorn", "open_webui.main:app", "--host", "

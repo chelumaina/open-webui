@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { v4 as uuidv4 } from 'uuid';
 	import {
 		chats,
 		config,
@@ -19,7 +18,13 @@
 	import Message from './Messages/Message.svelte';
 	import Loader from '../common/Loader.svelte';
 	import Spinner from '../common/Spinner.svelte';
+	import SubscriptionModal from '$lib/components/chat/Messages/SubscriptionModal.svelte';
 
+	let showSubscriptionModal = true;
+	let selectedSubscription: any = null;
+	let showPercentage = false;
+	let showRelevance = true;
+ 	
 	import ChatPlaceholder from './ChatPlaceholder.svelte';
 
 	const i18n = getContext('i18n');
@@ -345,10 +350,22 @@
 			}, 100);
 		}
 	};
+	
 </script>
 
+<SubscriptionModal
+	bind:show={showSubscriptionModal}
+	citation={selectedSubscription}
+	{showPercentage}
+	{showRelevance}
+	/>
 <div class={className}>
+	<!-- <script>
+		console.log("TST", Object.keys(history?.messages ?? {}).length == 0);	
+	</script> -->
+	
 	{#if Object.keys(history?.messages ?? {}).length == 0}
+		
 		<ChatPlaceholder
 			modelIds={selectedModels}
 			{atSelectedModel}
@@ -382,7 +399,9 @@
 			}}
 		/>
 	{:else}
+	
 		<div class="w-full pt-2">
+			
 			{#key chatId}
 				<div class="w-full">
 					{#if messages.at(0)?.parentId !== null}
@@ -425,12 +444,46 @@
 							{readOnly}
 						/>
 					{/each}
+
+					<div class="flex flex-col justify-between px-5 mb-3 w-full max-w-5xl mx-auto rounded-lg group">
+						<div class="relative h-full w-full border-1">
+							<div class="flex flex-col gap-3.5 ">
+								<div style="opacity: 1; transform: translateY(0px); will-change: auto;">
+									<div class="flex w-full items-start gap-4 rounded-3xl border py-4 pl-5 pr-3 text-sm [text-wrap:pretty] dark:border-transparent lg:mx-auto shadow-xxs md:items-center border-token-border-light bg-token-main-surface-primary text-token-text-primary dark:bg-token-main-surface-secondary">
+										<div class="flex h-full w-full items-start gap-3 md:items-center">
+											<div class="mt-1.5 flex grow items-start gap-4 md:mt-0 md:flex-row md:items-center md:justify-between md:gap-8 flex-col">
+												<div class="flex max-w-none flex-col">
+													<div class="font-bold text-token-text-primary">You've reached your image creation limit.</div>
+													<div class="text-token-text-secondary">
+														<div>Upgrade to ChatGPT Plus or try again tomorrow after 8:25 AM.</div>
+													</div>
+												</div>
+												<div class="flex shrink-0 gap-2 pb-1 md:pb-0">
+													<button class="btn relative btn-primary shrink-0">
+														<div class="flex items-center justify-center"><a href="/subscribe">Subscribe to Plus and Get more</a></div>
+													</button>
+												</div>
+											</div>
+											<div class="flex shrink-0 items-center gap-2">
+												
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
 				</div>
+				
 				<div class="pb-12" />
 				{#if bottomPadding}
 					<div class="  pb-6" />
 				{/if}
 			{/key}
+			<p class="text-center text-gray-500 text-sm">
+				{$i18n.t('No messages yet')}
+			</p>
 		</div>
 	{/if}
-</div>
+</div> 

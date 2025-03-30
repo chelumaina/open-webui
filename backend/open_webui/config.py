@@ -3,6 +3,7 @@ import logging
 import os
 import shutil
 import base64
+import redis
 
 from datetime import datetime
 from pathlib import Path
@@ -17,6 +18,7 @@ from open_webui.env import (
     DATA_DIR,
     DATABASE_URL,
     ENV,
+    REDIS_URL,
     FRONTEND_BUILD_DIR,
     OFFLINE_MODE,
     OPEN_WEBUI_DIR,
@@ -204,7 +206,7 @@ class PersistentConfig(Generic[T]):
         self.env_value = env_value
         self.config_value = get_config_value(config_path)
         if self.config_value is not None:
-            log.info(f"'{env_name}' loaded from the latest database entry")
+            # log.info(f"'{env_name}' loaded from the latest database entry")
             self.value = self.config_value
         else:
             self.value = env_value
@@ -234,7 +236,7 @@ class PersistentConfig(Generic[T]):
             log.info(f"Updated {self.env_name} to new value {self.value}")
 
     def save(self):
-        log.info(f"Saving '{self.env_name}' to the database")
+        # log.info(f"Saving '{self.env_name}' to the database")
         path_parts = self.config_path.split(".")
         sub_config = CONFIG_DATA
         for key in path_parts[:-1]:
@@ -248,9 +250,14 @@ class PersistentConfig(Generic[T]):
 
 class AppConfig:
     _state: dict[str, PersistentConfig]
+    _redis: Optional[redis.Redis] = None
 
-    def __init__(self):
+    def __init__(self, redis_url: Optional[str] = None):
         super().__setattr__("_state", {})
+        if redis_url:
+            super().__setattr__(
+                "_redis", redis.Redis.from_url(redis_url, decode_responses=True)
+            )
 
     def __setattr__(self, key, value):
         if isinstance(value, PersistentConfig):
@@ -259,7 +266,31 @@ class AppConfig:
             self._state[key].value = value
             self._state[key].save()
 
+            if self._redis:
+                redis_key = f"open-webui:config:{key}"
+                self._redis.set(redis_key, json.dumps(self._state[key].value))
+
     def __getattr__(self, key):
+        if key not in self._state:
+            raise AttributeError(f"Config key '{key}' not found")
+
+        # If Redis is available, check for an updated value
+        if self._redis:
+            redis_key = f"open-webui:config:{key}"
+            redis_value = self._redis.get(redis_key)
+
+            if redis_value is not None:
+                try:
+                    decoded_value = json.loads(redis_value)
+
+                    # Update the in-memory value if different
+                    if self._state[key].value != decoded_value:
+                        self._state[key].value = decoded_value
+                        # log.info(f"Updated {key} from Redis: {decoded_value}")
+
+                except json.JSONDecodeError:
+                    log.error(f"Invalid JSON format in Redis for {key}: {redis_value}")
+
         return self._state[key].value
 
 
@@ -1082,7 +1113,6 @@ def validate_cors_origin(origin):
 # CORS_ALLOW_ORIGIN=http://localhost:5173;http://localhost:8080
 # in your .env file depending on your frontend port, 5173 in this case.
 CORS_ALLOW_ORIGIN = os.environ.get("CORS_ALLOW_ORIGIN", "*").split(";")
-print(f"CORS_ALLOW_ORIGIN = {CORS_ALLOW_ORIGIN}")
 
 if "*" in CORS_ALLOW_ORIGIN:
     log.warning(
@@ -1277,7 +1307,7 @@ Strictly return in JSON format:
 ENABLE_AUTOCOMPLETE_GENERATION = PersistentConfig(
     "ENABLE_AUTOCOMPLETE_GENERATION",
     "task.autocomplete.enable",
-    os.environ.get("ENABLE_AUTOCOMPLETE_GENERATION", "True").lower() == "true",
+    os.environ.get("ENABLE_AUTOCOMPLETE_GENERATION", "False").lower() == "true",
 )
 
 AUTOCOMPLETE_GENERATION_INPUT_MAX_LENGTH = PersistentConfig(
@@ -1549,8 +1579,10 @@ QDRANT_API_KEY = os.environ.get("QDRANT_API_KEY", None)
 
 # OpenSearch
 OPENSEARCH_URI = os.environ.get("OPENSEARCH_URI", "https://localhost:9200")
-OPENSEARCH_SSL = os.environ.get("OPENSEARCH_SSL", True)
-OPENSEARCH_CERT_VERIFY = os.environ.get("OPENSEARCH_CERT_VERIFY", False)
+OPENSEARCH_SSL = os.environ.get("OPENSEARCH_SSL", "true").lower() == "true"
+OPENSEARCH_CERT_VERIFY = (
+    os.environ.get("OPENSEARCH_CERT_VERIFY", "false").lower() == "true"
+)
 OPENSEARCH_USERNAME = os.environ.get("OPENSEARCH_USERNAME", None)
 OPENSEARCH_PASSWORD = os.environ.get("OPENSEARCH_PASSWORD", None)
 
@@ -1622,6 +1654,12 @@ TIKA_SERVER_URL = PersistentConfig(
     "TIKA_SERVER_URL",
     "rag.tika_server_url",
     os.getenv("TIKA_SERVER_URL", "http://tika:9998"),  # Default for sidecar deployment
+)
+
+DOCLING_SERVER_URL = PersistentConfig(
+    "DOCLING_SERVER_URL",
+    "rag.docling_server_url",
+    os.getenv("DOCLING_SERVER_URL", "http://docling:5001"),
 )
 
 DOCUMENT_INTELLIGENCE_ENDPOINT = PersistentConfig(
@@ -1949,6 +1987,12 @@ TAVILY_API_KEY = PersistentConfig(
     "TAVILY_API_KEY",
     "rag.web.search.tavily_api_key",
     os.getenv("TAVILY_API_KEY", ""),
+)
+
+TAVILY_EXTRACT_DEPTH = PersistentConfig(
+    "TAVILY_EXTRACT_DEPTH",
+    "rag.web.search.tavily_extract_depth",
+    os.getenv("TAVILY_EXTRACT_DEPTH", "basic"),
 )
 
 JINA_API_KEY = PersistentConfig(

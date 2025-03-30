@@ -23,7 +23,7 @@
 		} else if (size === 'md') {
 			return 'w-[42rem]';
 		} else {
-			return 'w-[56rem]';
+			return 'w-[80rem]';
 		}
 	};
 

@@ -212,7 +212,14 @@
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 		let _messageId = JSON.parse(JSON.stringify(message.id));
 
-		let messageChildrenIds = history.messages[_messageId].childrenIds;
+		let messageChildrenIds = [];
+		if (_messageId === null) {
+			messageChildrenIds = Object.keys(history.messages).filter(
+				(id) => history.messages[id].parentId === null
+			);
+		} else {
+			messageChildrenIds = history.messages[_messageId].childrenIds;
+		}
 
 		while (messageChildrenIds.length !== 0) {
 			_messageId = messageChildrenIds.at(-1);
@@ -887,6 +894,8 @@
 				await chats.set(await getChatList(localStorage.token, $currentChatPage));
 			}
 		}
+
+		taskId = null;
 	};
 
 	const chatActionHandler = async (chatId, actionId, modelId, responseMessageId, event = null) => {
@@ -1276,12 +1285,13 @@
 		prompt = '';
 
 		// Reset chat input textarea
-		const chatInputElement = document.getElementById('chat-input');
+		if (!($settings?.richTextInput ?? true)) {
+			const chatInputElement = document.getElementById('chat-input');
 
-		if (chatInputElement) {
-			await tick();
-			chatInputElement.style.height = '';
-			chatInputElement.style.height = Math.min(chatInputElement.scrollHeight, 320) + 'px';
+			if (chatInputElement) {
+				await tick();
+				chatInputElement.style.height = '';
+			}
 		}
 
 		const _files = JSON.parse(JSON.stringify(files));
@@ -1733,13 +1743,18 @@
 
 	const regenerateResponse = async (message) => {
 		console.log('regenerateResponse');
+		// console.log('history.currentId', history.currentId);
 
 		if (history.currentId) {
 			let userMessage = history.messages[message.parentId];
 			let userPrompt = userMessage.content;
 
+			// console.log('userMessage', userMessage);
+			
+
 			if ((userMessage?.models ?? [...selectedModels]).length == 1) {
 				// If user message has only one model selected, sendPrompt automatically selects it for regeneration
+				// console.log('history, userPrompt, userMessage.id', history, userPrompt, userMessage.id);
 				await sendPrompt(history, userPrompt, userMessage.id);
 			} else {
 				// If there are multiple models selected, use the model of the response message for regeneration
@@ -2015,7 +2030,10 @@
 									{chatActionHandler}
 									{addMessages}
 									bottomPadding={files.length > 0}
-								/>
+								/> 
+								<!-- <div class=" bottom-10 text-xs text-white-500 text-center line-clamp-1 right-0 left-0">
+									{$i18n.t('LLMs can make mistakes. Verify important information.')} 
+								</div> -->
 							</div>
 						</div>
 
@@ -2067,7 +2085,7 @@
 							<div
 								class="absolute bottom-1 text-xs text-gray-500 text-center line-clamp-1 right-0 left-0"
 							>
-								<!-- {$i18n.t('LLMs can make mistakes. Verify important information.')} -->
+								{$i18n.t('LLMs can make mistakes. Verify important information.')}
 							</div>
 						</div>
 					{:else}

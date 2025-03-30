@@ -1,0 +1,30 @@
+# Use an official Miniconda3 image as the base image
+FROM continuumio/miniconda3:latest
+RUN apt-get update && apt-get install -y ffmpeg
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Create the Conda environment with Python 3.11
+RUN conda create --name open-webui python=3.11
+
+# Make RUN commands use the new environment
+SHELL ["conda", "run", "-n", "open-webui", "/bin/bash", "-c"]
+
+# Install any additional dependencies if needed
+# Example: RUN conda install -n open-webui numpy pandas
+
+# Copy the application code into the container
+COPY backend/requirements.txt .
+# COPY .env .
+COPY backend .
+RUN pip install -r requirements.txt -U
+
+# Expose the port the app runs on (if applicable)
+EXPOSE 8080
+
+# # Set the default PORT environment variable
+# ENV PORT=8080
+
+# # Command to run the application
+# CMD conda run -n open-webui uvicorn open_webui.main:app --port $PORT --host 0.0.0.0 --forwarded-allow-ips '*' --reload

@@ -1,4 +1,5 @@
-import json
+from datetime import date
+import json, os
 import logging
 from typing import Optional
 
@@ -26,6 +27,22 @@ log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
 
 router = APIRouter()
+
+
+
+
+# ############################
+# # GetChatCosts
+# ############################
+
+
+# @router.get("/daily_usage", response_model=list[ChatTitleIdResponse])
+# async def get_session_user_chat_list(
+#     user=Depends(get_verified_user)
+# ):
+#     return Chats.get_chat_title_id_list_by_user_id(user.id)
+
+
 
 ############################
 # GetChatList
@@ -95,10 +112,13 @@ async def get_user_chat_list_by_user_id(
 
 @router.post("/new", response_model=Optional[ChatResponse])
 async def create_new_chat(form_data: ChatForm, user=Depends(get_verified_user)):
+    
     try:
         chat = Chats.insert_new_chat(user.id, form_data)
+        
         return ChatResponse(**chat.model_dump())
     except Exception as e:
+        print(f"error {e}")
         log.exception(e)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
@@ -337,14 +357,85 @@ async def get_user_chat_list_by_tag_name(
 # GetChatById
 ############################
 
+def update_chat_tokens(chat, response_token: float = None, prompt_token: float = None):
+    from open_webui.internal.db import get_db
+    cost_per_prompt_token=0.001#os.environ.get("COST_PER_PROMPT_TOKEN", 0)
+    cost_per_response_token=0.002#os.environ.get("COST_PER_RESPONSE_TOKEN", 0)
+    with get_db() as db:
+        # Update only the provided values
+        if response_token is not None:
+            chat.response_token = response_token*cost_per_response_token
+        if prompt_token is not None:
+            chat.prompt_token = prompt_token*cost_per_prompt_token
+        db.commit()
+        # db.refresh(chat)
+        return chat
+    return None
+
+def calculateCost(chat, promptTokens=0, responseTokens= 0):
+    from open_webui.internal.db import get_db
+    
+    cost_per_prompt_token=0.001#os.environ.get("COST_PER_PROMPT_TOKEN", 0)
+    cost_per_response_token=0.002#os.environ.get("COST_PER_RESPONSE_TOKEN", 0)
+    with get_db() as db:
+        setattr(chat, 'response_token', promptTokens*cost_per_prompt_token)
+        setattr(chat, 'prompt_token', responseTokens*cost_per_response_token)
+        db.commit()
+        # db.refresh(chat)
+    
+    return (promptTokens*cost_per_prompt_token) , (responseTokens*cost_per_response_token)
+
 
 @router.get("/{id}", response_model=Optional[ChatResponse])
 async def get_chat_by_id(id: str, user=Depends(get_verified_user)):
     chat = Chats.get_chat_by_id_and_user_id(id, user.id)
-
     if chat:
-        return ChatResponse(**chat.model_dump())
+        today = date.today()
+        chats= Chats.get_chat_by_user_today( user.id, today)
 
+        # Query today's chats
+        # chats = db.query(Chat).filter(func.date(Chat.created_at) == today).all()
+
+        # # json_chat=json.loads(chat.chat)
+        # # print(f"chat.chat.messages: {chat.chat.get("messages", [])}")
+        cost_per_prompt_token=0.001#os.environ.get("COST_PER_PROMPT_TOKEN", 0)
+        cost_per_response_token=0.002#os.environ.get("COST_PER_RES 
+        today_prompt_token_cost=0
+        today_response_token_cost=0
+        for ch in chats:
+            messages=ch.chat.get("messages", [])
+            # print(f"\n\n\n\n message: \n\n\n{message}")
+            
+            total_prompt_tokens=0
+            total_response_tokens=0
+            for message in messages:
+                if "usage" in message:
+                    # print(f"\n\n\n\n usage: \n\n\n{message.get("usage")}")
+                    prompt_token=message.get("usage").get("prompt_tokens")
+                    response_token=message.get("usage").get("completion_tokens")
+                    total_response_tokens += response_token*cost_per_response_token
+                    total_prompt_tokens += prompt_token*cost_per_prompt_token
+                    today_response_token_cost+=total_response_tokens
+                    today_prompt_token_cost+=total_prompt_tokens
+            chat_updated=Chats.update_chat(ch.id, total_prompt_tokens, total_response_tokens)
+            print(f"\n\n id: =>{chat_updated.chat}")
+            
+            # for message in messages:
+            #     if "usage" in message:
+            #         print(f"\n\n chats: {chat}, \n\n\nprompt_tokens: {message.get("usage").get("prompt_tokens")} \n\n responseTokens: {message.get("usage").get("completion_tokens")}")
+            #         updated=update_chat_tokens(chat, message.get("usage").get("completion_tokens"), message.get("usage").get("prompt_tokens"))
+            #         print(f"\n\n updated: {updated}")
+        #     res=chat.model_dump()
+        #     res['today_response_token_cost']=today_response_token_cost
+        #     res['today_prompt_token_cost']=today_prompt_token_cost
+        # return res
+        data={
+            "cost_per_prompt_token": cost_per_prompt_token,
+            "cost_per_response_token": cost_per_response_token,
+            "today_prompt_token_cost": today_prompt_token_cost,
+            "today_response_token_cost": today_response_token_cost
+        }
+        return ChatResponse(**chat.model_dump(), model_config=data)
     else:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail=ERROR_MESSAGES.NOT_FOUND
@@ -361,6 +452,7 @@ async def update_chat_by_id(
     id: str, form_data: ChatForm, user=Depends(get_verified_user)
 ):
     chat = Chats.get_chat_by_id_and_user_id(id, user.id)
+    
     if chat:
         updated_chat = {**chat.chat, **form_data.chat}
         chat = Chats.update_chat_by_id(id, updated_chat)

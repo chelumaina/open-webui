@@ -9,9 +9,11 @@ from open_webui.models.tags import TagModel, Tag, Tags
 from open_webui.env import SRC_LOG_LEVELS
 
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Boolean, Column, String, Text, JSON
+from sqlalchemy import BigInteger, Boolean, Column, String, Text, JSON, Double, Float, Date
 from sqlalchemy import or_, func, select, and_, text
 from sqlalchemy.sql import exists
+
+from datetime import date, datetime
 
 ####################
 # Chat DB Schema
@@ -38,6 +40,9 @@ class Chat(Base):
 
     meta = Column(JSON, server_default="{}")
     folder_id = Column(Text, nullable=True)
+    
+    response_token = Column(Float, default=0.0)
+    prompt_token = Column(Float, default=0.0)
 
 
 class ChatModel(BaseModel):
@@ -57,6 +62,8 @@ class ChatModel(BaseModel):
 
     meta: dict = {}
     folder_id: Optional[str] = None
+    response_token: Optional[float] = 0.00 
+    prompt_token: Optional[float] = 0.00
 
 
 ####################
@@ -95,6 +102,12 @@ class ChatResponse(BaseModel):
     pinned: Optional[bool] = False
     meta: dict = {}
     folder_id: Optional[str] = None
+    response_token: Optional[float] = 0.00 
+    prompt_token: Optional[float] = 0.00
+    # data: Optional[dict] =[]
+    model_config = ConfigDict(extra="allow")  # Allow extra fields dynamically
+
+
 
 
 class ChatTitleIdResponse(BaseModel):
@@ -172,6 +185,20 @@ class ChatTable:
         except Exception:
             return None
 
+    def update_chat(self, id: str, prompt_token: float, response_token: float, ) -> Optional[ChatModel]:
+        try:
+            with get_db() as db:
+                chat_item = db.get(Chat, id)
+                # chat_item.chat = chat
+                chat_item.prompt_token = prompt_token
+                chat_item.response_token = response_token 
+                db.commit()
+                db.refresh(chat_item) 
+                return ChatModel.model_validate(chat_item)
+        except Exception as ex:
+            print(f"Error updating chat: {ex}")
+            return None
+        
     def update_chat_title_by_id(self, id: str, title: str) -> Optional[ChatModel]:
         chat = self.get_chat_by_id(id)
         if chat is None:
@@ -492,6 +519,20 @@ class ChatTable:
         except Exception:
             return None
 
+    def get_chat_by_user_today(self, user_id: str, today: date) -> Optional[ChatModel]:
+      
+        with get_db() as db:
+            # all_chats = db.query(Chat).filter(func.date(Chat.created_at) == today).all()
+            # all_chats = db.query(Chat).filter(Chat.created_at.cast(Date) == today).all()
+            all_chats = db.query(Chat).filter_by(user_id=user_id).filter(func.to_timestamp(Chat.created_at).cast(Date) == date.today()).all()
+
+
+            return [ChatModel.model_validate(chat) for chat in all_chats]
+
+            # chat = db.query(Chat).filter_by(id=id, user_id=user_id).first()
+            # return ChatModel.model_validate(chats)
+    
+        
     def get_chats(self, skip: int = 0, limit: int = 50) -> list[ChatModel]:
         with get_db() as db:
             all_chats = (
@@ -756,7 +797,6 @@ class ChatTable:
                 )
 
             all_chats = query.all()
-            log.debug(f"all_chats: {all_chats}")
             return [ChatModel.model_validate(chat) for chat in all_chats]
 
     def add_chat_tag_by_id_and_user_id_and_tag_name(

@@ -163,9 +163,7 @@ async def chat_completion_tools_handler(
 
     try:
         response = await generate_chat_completion(request, form_data=payload, user=user)
-        log.debug(f"{response=}")
         content = await get_content_from_response(response)
-        log.debug(f"{content=}")
 
         if not content:
             return body, {}
@@ -180,8 +178,6 @@ async def chat_completion_tools_handler(
             async def tool_call_handler(tool_call):
                 nonlocal skip_files
 
-                log.debug(f"{tool_call=}")
-
                 tool_function_name = tool_call.get("name", None)
                 if tool_function_name not in tools:
                     return body, {}
@@ -189,17 +185,15 @@ async def chat_completion_tools_handler(
                 tool_function_params = tool_call.get("parameters", {})
 
                 try:
-                    required_params = (
-                        tools[tool_function_name]
-                        .get("spec", {})
-                        .get("parameters", {})
-                        .get("required", [])
+                    spec = tools[tool_function_name].get("spec", {})
+                    allowed_params = (
+                        spec.get("parameters", {}).get("properties", {}).keys()
                     )
                     tool_function = tools[tool_function_name]["callable"]
                     tool_function_params = {
                         k: v
                         for k, v in tool_function_params.items()
-                        if k in required_params
+                        if k in allowed_params
                     }
                     tool_output = await tool_function(**tool_function_params)
 
@@ -625,7 +619,7 @@ def apply_params_to_form_data(form_data, model):
 async def process_chat_payload(request, form_data, user, metadata, model):
 
     form_data = apply_params_to_form_data(form_data, model)
-    log.debug(f"form_data: {form_data}")
+    log.debug(f"\n\n\n form_data: {form_data}")
 
     event_emitter = get_event_emitter(metadata)
     event_call = get_event_call(metadata)
@@ -1765,14 +1759,16 @@ async def process_chat_response(
                             spec = tool.get("spec", {})
 
                             try:
-                                required_params = spec.get("parameters", {}).get(
-                                    "required", []
+                                allowed_params = (
+                                    spec.get("parameters", {})
+                                    .get("properties", {})
+                                    .keys()
                                 )
                                 tool_function = tool["callable"]
                                 tool_function_params = {
                                     k: v
                                     for k, v in tool_function_params.items()
-                                    if k in required_params
+                                    if k in allowed_params
                                 }
                                 tool_result = await tool_function(
                                     **tool_function_params

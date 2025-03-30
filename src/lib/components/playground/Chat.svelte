@@ -130,13 +130,17 @@
 					}
 					break;
 				}
+				alert("Chat value: " + value);
 
 				try {
 					let lines = value.split('\n');
+					alert("Chat lines: " + lines);
 
+					
 					for (const line of lines) {
 						if (line !== '') {
 							console.log(line);
+							// alert(line);
 							if (line === 'data: [DONE]') {
 								// responseMessage.done = true;
 								messages = messages;

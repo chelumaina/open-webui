@@ -102,11 +102,13 @@
 	export let messageId;
 
 	let message: MessageType = JSON.parse(JSON.stringify(history.messages[messageId]));
+	
 	$: if (history.messages) {
 		if (JSON.stringify(message) !== JSON.stringify(history.messages[messageId])) {
 			message = JSON.parse(JSON.stringify(history.messages[messageId]));
 		}
 	}
+	console.log("message", message);
 
 	export let siblings;
 
@@ -510,6 +512,7 @@
 	};
 
 	$: if (!edit) {
+		// alert("test")
 		(async () => {
 			await tick();
 		})();
@@ -559,7 +562,7 @@
 		<div class="flex-auto w-0 pl-1">
 			<Name>
 				<Tooltip content={model?.name ?? message.model} placement="top-start">
-					<span class="line-clamp-1">
+					<span class="line-clamp-1 text-black dark:text-white">
 						{model?.name ?? message.model}
 					</span>
 				</Tooltip>
@@ -748,7 +751,9 @@
 										onSourceClick={async (id, idx) => {
 											console.log(id, idx);
 											let sourceButton = document.getElementById(`source-${message.id}-${idx}`);
-											const sourcesCollapsible = document.getElementById(`collapsible-sources`);
+											const sourcesCollapsible = document.getElementById(
+												`collapsible-${message.id}`
+											);
 
 											if (sourceButton) {
 												sourceButton.click();
@@ -878,6 +883,7 @@
 								{#if !readOnly}
 									{#if $user.role === 'user' ? ($user?.permissions?.chat?.edit ?? true) : true}
 										<Tooltip content={$i18n.t('Edit')} placement="bottom">
+											
 											<button
 												class="{isLastMessage
 													? 'visible'
@@ -931,7 +937,7 @@
 									</button>
 								</Tooltip>
 
-								<Tooltip content={$i18n.t('Read Aloud')} placement="bottom">
+								<Tooltip content={$i18n.t('Read Aloud ttttt')} placement="bottom">
 									<button
 										id="speak-button-{message.id}"
 										class="{isLastMessage
@@ -1269,7 +1275,7 @@
 										<Tooltip content={$i18n.t('Delete')} placement="bottom">
 											<button
 												type="button"
-												id="continue-response-button"
+												id="delete-response-button"
 												class="{isLastMessage
 													? 'visible'
 													: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition regenerate-response-button"

@@ -275,9 +275,9 @@ async def generate_chat_tags(
         models,
     )
 
-    log.debug(
-        f"generating chat tags using model {task_model_id} for user {user.email} "
-    )
+    # log.debug(
+    #     f"generating chat tags using model {task_model_id} for user {user.email} "
+    # )
 
     if request.app.state.config.TAGS_GENERATION_PROMPT_TEMPLATE != "":
         template = request.app.state.config.TAGS_GENERATION_PROMPT_TEMPLATE

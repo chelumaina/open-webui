@@ -25,22 +25,7 @@ def convert_ollama_tool_call_to_openai(tool_calls: dict) -> dict:
 
 
 def convert_ollama_usage_to_openai(data: dict) -> dict:
-    return {
-        "response_token/s": (
-            round(
-                (
-                    (
-                        data.get("eval_count", 0)
-                        / ((data.get("eval_duration", 0) / 10_000_000))
-                    )
-                    * 100
-                ),
-                2,
-            )
-            if data.get("eval_duration", 0) > 0
-            else "N/A"
-        ),
-        "prompt_token/s": (
+    prompt_token=(
             round(
                 (
                     (
@@ -53,7 +38,24 @@ def convert_ollama_usage_to_openai(data: dict) -> dict:
             )
             if data.get("prompt_eval_duration", 0) > 0
             else "N/A"
-        ),
+        )
+    response_token=(
+            round(
+                (
+                    (
+                        data.get("eval_count", 0)
+                        / ((data.get("eval_duration", 0) / 10_000_000))
+                    )
+                    * 100
+                ),
+                2,
+            )
+            if data.get("eval_duration", 0) > 0
+            else "N/A"
+        )
+    return {
+        "response_token/s": response_token,
+        "prompt_token/s": prompt_token,
         "total_duration": data.get("total_duration", 0),
         "load_duration": data.get("load_duration", 0),
         "prompt_eval_count": data.get("prompt_eval_count", 0),
@@ -90,7 +92,6 @@ def convert_response_ollama_to_openai(ollama_response: dict) -> dict:
         openai_tool_calls = convert_ollama_tool_call_to_openai(tool_calls)
 
     data = ollama_response
-
     usage = convert_ollama_usage_to_openai(data)
 
     response = openai_chat_completion_message_template(

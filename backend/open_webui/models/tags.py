@@ -98,11 +98,9 @@ class TagTable:
             with get_db() as db:
                 id = name.replace(" ", "_").lower()
                 res = db.query(Tag).filter_by(id=id, user_id=user_id).delete()
-                log.debug(f"res: {res}")
                 db.commit()
                 return True
         except Exception as e:
-            log.error(f"delete_tag: {e}")
             return False
 
 
