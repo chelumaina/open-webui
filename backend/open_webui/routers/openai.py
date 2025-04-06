@@ -367,6 +367,7 @@ async def get_all_models_responses(request: Request, user: UserModel) -> list:
                 ):
                     model["tags"] = tags
 
+    log.debug(f"get_all_models:responses() {responses}")
     return responses
 
 

@@ -79,11 +79,14 @@
 	const submitHandler = async () => {
 		loading = true;
 
-		if (!ollama && (!url || !key)) {
+		if (!ollama && !url) {
 			loading = false;
-			toast.error('URL and Key are required');
+			toast.error('URL is required');
 			return;
 		}
+
+		// remove trailing slash from url
+		url = url.replace(/\/$/, '');
 
 		const connection = {
 			url,
@@ -223,7 +226,7 @@
 										className="w-full text-sm bg-transparent placeholder:text-gray-300 dark:placeholder:text-gray-700 outline-hidden"
 										bind:value={key}
 										placeholder={$i18n.t('API Key')}
-										required={!ollama}
+										required={false}
 									/>
 								</div>
 							</div>
@@ -302,12 +305,12 @@
 							{:else}
 								<div class="text-gray-500 text-xs text-center py-2 px-10">
 									{#if ollama}
-										{$i18n.t('Leave empty to include all models from "{{URL}}/api/tags" endpoint', {
-											URL: url
+										{$i18n.t('Leave empty to include all models from "{{url}}/api/tags" endpoint', {
+											url: url
 										})}
 									{:else}
-										{$i18n.t('Leave empty to include all models from "{{URL}}/models" endpoint', {
-											URL: url
+										{$i18n.t('Leave empty to include all models from "{{url}}/models" endpoint', {
+											url: url
 										})}
 									{/if}
 								</div>
