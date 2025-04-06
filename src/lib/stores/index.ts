@@ -78,6 +78,8 @@ export const currentChatPage = writable(1);
 
 export const isLastActiveTab = writable(true);
 export const playingNotificationSound = writable(false);
+// export const token_cost = Writable<TokenCost> = writable({});
+export const token_cost: Writable<TokenCost> = writable({});
 
 export type Model = OpenAIModel | OllamaModel;
 
@@ -166,6 +168,10 @@ type AudioSettings = {
 	speaker?: string;
 	model?: string;
 	nonLocalVoices?: boolean;
+};
+type TokenCost = {
+	promt_token?: number;
+	rsponse_tokn?: number; 
 };
 
 type TitleSettings = {

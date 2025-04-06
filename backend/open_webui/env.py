@@ -263,11 +263,12 @@ else:
     pass
 
 DATABASE_URL = os.environ.get("DATABASE_URL", f"sqlite:///{DATA_DIR}/webui.db")
-
+# log.info(f"{DATABASE_URL=}")
+# DATABASE_URL="postgresql://postgres:root@localhost:15432/bix"
 # Replace the postgres:// with postgresql://
 if "postgres://" in DATABASE_URL:
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://")
-
+# log.info(f"{DATABASE_URL=}")
 DATABASE_SCHEMA = os.environ.get("DATABASE_SCHEMA", None)
 
 DATABASE_POOL_SIZE = os.environ.get("DATABASE_POOL_SIZE", 0)
@@ -279,6 +280,7 @@ else:
         DATABASE_POOL_SIZE = int(DATABASE_POOL_SIZE)
     except Exception:
         DATABASE_POOL_SIZE = 0
+
 
 DATABASE_POOL_MAX_OVERFLOW = os.environ.get("DATABASE_POOL_MAX_OVERFLOW", 0)
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 	import { toast } from 'svelte-sonner';
-	import mermaid from 'mermaid';
+	// import mermaid from 'mermaid';
 	import { PaneGroup, Pane, PaneResizer } from 'paneforge';
 
 	import { getContext, onDestroy, onMount, tick } from 'svelte';
@@ -22,6 +22,7 @@
 		models,
 		tags as allTags,
 		settings,
+		token_cost,
 		showSidebar,
 		WEBUI_NAME,
 		banners,
@@ -94,6 +95,7 @@
 	let controlPane;
 	let controlPaneComponent;
 
+	let userSettings={}
 	let autoScroll = true;
 	let processing = '';
 	let messagesContainerElement: HTMLDivElement;
@@ -121,6 +123,7 @@
 	let codeInterpreterEnabled = false;
 	let chat = null;
 	let tags = [];
+	let model_config={}
 
 	let history = {
 		messages: {},
@@ -718,6 +721,7 @@
 			messages: {},
 			currentId: null
 		};
+		model_config={}
 
 		chatFiles = [];
 		params = {};
@@ -767,10 +771,11 @@
 			$models.map((m) => m.id).includes(modelId) ? modelId : ''
 		);
 
-		const userSettings = await getUserSettings(localStorage.token);
+		 userSettings = await getUserSettings(localStorage.token);
 
 		if (userSettings) {
 			settings.set(userSettings.ui);
+			token_cost.set(userSettings.tokens);
 		} else {
 			settings.set(JSON.parse(localStorage.getItem('settings') ?? '{}'));
 		}
@@ -792,9 +797,9 @@
 			});
 
 			const chatContent = chat.chat;
-
+			console.log("chatContent", chat.model_config);
 			if (chatContent) {
-				console.log(chatContent);
+				// console.log(chatContent);
 
 				selectedModels =
 					(chatContent?.models ?? undefined) !== undefined
@@ -804,13 +809,19 @@
 					(chatContent?.history ?? undefined) !== undefined
 						? chatContent.history
 						: convertMessagesToHistory(chatContent.messages);
-
+						
+				// console.log("chatContent", chatContent);
+				model_config = (chat?.model_config ?? undefined) !== undefined
+						? chat.model_config
+						: {};
 				chatTitle.set(chatContent.title);
+				console.log("model_config", model_config);
 
-				const userSettings = await getUserSettings(localStorage.token);
+				 userSettings = await getUserSettings(localStorage.token);
 
 				if (userSettings) {
 					await settings.set(userSettings.ui);
+					await token_cost.set(userSettings.tokens);
 				} else {
 					await settings.set(JSON.parse(localStorage.getItem('settings') ?? '{}'));
 				}
@@ -861,6 +872,7 @@
 
 			return null;
 		});
+		 
 
 		if (res !== null && res.messages) {
 			// Update chat history with the new messages
@@ -894,6 +906,8 @@
 				await chats.set(await getChatList(localStorage.token, $currentChatPage));
 			}
 		}
+
+		await getUserSettings(localStorage.token);
 
 		taskId = null;
 	};
@@ -1833,6 +1847,7 @@
 		}
 	};
 
+	console.log("settings",$settings);
 	const initChatHandler = async (history) => {
 		let _chatId = $chatId;
 
@@ -2019,6 +2034,7 @@
 									bind:history
 									bind:autoScroll
 									bind:prompt
+									bind:userSettings
 									{selectedModels}
 									{atSelectedModel}
 									{sendPrompt}

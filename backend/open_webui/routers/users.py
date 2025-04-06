@@ -142,9 +142,15 @@ async def update_user_role(form_data: UserRoleUpdateForm, user=Depends(get_admin
 
 @router.get("/user/settings", response_model=Optional[UserSettings])
 async def get_user_settings_by_session_user(user=Depends(get_verified_user)):
-    user = Users.get_user_by_id(user.id)
+    user = Users.get_user_by_id(user.id) 
+    chats= Chats.get_chat_by_user_today(user.id)
+    response_token=0
+    prompt_token=0
+    for ch in chats:
+        response_token+=ch.response_token
+        prompt_token+=ch.prompt_token 
     if user:
-        return user.settings
+        return {'settings':user.settings, 'tokens':{'prompt_token':round(prompt_token),'response_token':round(response_token) }}
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

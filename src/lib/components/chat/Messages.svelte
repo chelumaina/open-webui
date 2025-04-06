@@ -3,6 +3,7 @@
 		chats,
 		config,
 		settings,
+		token_cost,
 		user as _user,
 		mobile,
 		currentChatPage,
@@ -13,17 +14,20 @@
 
 	import { toast } from 'svelte-sonner';
 	import { getChatList, updateChatById } from '$lib/apis/chats';
-	import { copyToClipboard, findWordIndices } from '$lib/utils';
+	// import { copyToClipboard, findWordIndices } from '$lib/utils';
 
 	import Message from './Messages/Message.svelte';
 	import Loader from '../common/Loader.svelte';
 	import Spinner from '../common/Spinner.svelte';
 	import SubscriptionModal from '$lib/components/chat/Messages/SubscriptionModal.svelte';
+	import { getAndUpdateUserLocation, getUserSettings } from '$lib/apis/users';
 
-	let showSubscriptionModal = true;
+	let showSubscriptionModal = false;
 	let selectedSubscription: any = null;
 	let showPercentage = false;
 	let showRelevance = true;
+
+
  	
 	import ChatPlaceholder from './ChatPlaceholder.svelte';
 
@@ -35,11 +39,11 @@
 	export let user = $_user;
 
 	export let prompt;
-	export let history = {};
+	export let history:any = [];
 	export let selectedModels;
 	export let atSelectedModel;
 
-	let messages = [];
+	let messages:any = [];
 
 	export let sendPrompt: Function;
 	export let continueResponse: Function;
@@ -54,10 +58,14 @@
 	export let readOnly = false;
 
 	export let bottomPadding = false;
-	export let autoScroll;
+	export let autoScroll: any;
+	export let userSettings={};
 
 	let messagesCount = 20;
 	let messagesLoading = false;
+
+	// alert('This is a test alert!');
+	// console.log("model_config33333", model_config)
 
 	const loadMoreMessages = async () => {
 		// scroll slightly down to disable continuous loading
@@ -112,7 +120,7 @@
 		}
 	};
 
-	const showPreviousMessage = async (message) => {
+	const showPreviousMessage = async (message:any) => {
 		if (message.parentId !== null) {
 			let messageId =
 				history.messages[message.parentId].childrenIds[
@@ -159,7 +167,7 @@
 		}
 	};
 
-	const showNextMessage = async (message) => {
+	const showNextMessage = async (message:any) => {
 		if (message.parentId !== null) {
 			let messageId =
 				history.messages[message.parentId].childrenIds[
@@ -181,8 +189,8 @@
 			}
 		} else {
 			let childrenIds = Object.values(history.messages)
-				.filter((message) => message.parentId === null)
-				.map((message) => message.id);
+				.filter((message:any) => message.parentId === null)
+				.map((message:any) => message.id);
 			let messageId =
 				childrenIds[Math.min(childrenIds.indexOf(message.id) + 1, childrenIds.length - 1)];
 
@@ -209,6 +217,7 @@
 			}, 100);
 		}
 	};
+
 
 	const rateMessage = async (messageId, rating) => {
 		history.messages[messageId].annotation = {
@@ -350,7 +359,7 @@
 			}, 100);
 		}
 	};
-	
+	//  await getUserSettings(localStorage.token);
 </script>
 
 <SubscriptionModal
@@ -361,7 +370,7 @@
 	/>
 <div class={className}>
 	<!-- <script>
-		console.log("TST", Object.keys(history?.messages ?? {}).length == 0);	
+		console.log("TST", messages);	
 	</script> -->
 	
 	{#if Object.keys(history?.messages ?? {}).length == 0}
@@ -456,11 +465,17 @@
 													<div class="font-bold text-token-text-primary">You've reached your image creation limit.</div>
 													<div class="text-token-text-secondary">
 														<div>Upgrade to ChatGPT Plus or try again tomorrow after 8:25 AM.</div>
+														<p>{$token_cost?.prompt_token} - {$token_cost?.response_token}</p>
 													</div>
 												</div>
 												<div class="flex shrink-0 gap-2 pb-1 md:pb-0">
 													<button class="btn relative btn-primary shrink-0">
-														<div class="flex items-center justify-center"><a href="/subscribe">Subscribe to Plus and Get more</a></div>
+														<div class="flex items-center justify-center">
+															<button class="btn relative btn-primary shrink-0" on:click={() => {
+															showSubscriptionModal = true;showPercentage = true;showRelevance = true; showPercentage = true; selectedSubscription = 'plus';
+															}}
+														
+													>Subscribe to Plus and Get more</button></div>
 													</button>
 												</div>
 											</div>
@@ -481,9 +496,7 @@
 					<div class="  pb-6" />
 				{/if}
 			{/key}
-			<p class="text-center text-gray-500 text-sm">
-				{$i18n.t('No messages yet')}
-			</p>
+			 
 		</div>
 	{/if}
 </div> 

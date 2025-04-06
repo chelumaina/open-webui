@@ -76,7 +76,10 @@ from open_webui.routers import (
     tools,
     users,
     utils,
-    subscriptions
+    plans,
+    subscriptions,
+    invoices,
+    transactions
 )
 
 from open_webui.routers.retrieval import (
@@ -89,7 +92,7 @@ from open_webui.internal.db import Session, engine
 
 from open_webui.models.functions import Functions
 from open_webui.models.models import Models
-from open_webui.models.users import UserModel, Users
+from open_webui.models.users import Users
 
 from open_webui.config import (
     LICENSE_KEY,
@@ -905,7 +908,11 @@ app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
 
 app.include_router(channels.router, prefix="/api/v1/channels", tags=["channels"])
 app.include_router(chats.router, prefix="/api/v1/chats", tags=["chats"])
+app.include_router(plans.router, prefix="/api/v1/plans", tags=["plans"])
 app.include_router(subscriptions.router, prefix="/api/v1/subscriptions", tags=["subscriptions"])
+app.include_router(invoices.router, prefix="/api/v1/invoices", tags=["invoices"])
+
+app.include_router(transactions.router, prefix="/api/v1/transactions", tags=["transactions"])
 
 app.include_router(models.router, prefix="/api/v1/models", tags=["models"])
 app.include_router(knowledge.router, prefix="/api/v1/knowledge", tags=["knowledge"])
@@ -1022,10 +1029,6 @@ async def chat_completion(
 
     model_item = form_data.pop("model_item", {})
     tasks = form_data.pop("background_tasks", None)
-    # print(f"model_item: {model_item}")
-    # print(f"form_data: {form_data}")
-    # print(f"user: {user}")
-    # print(f"tasks: {tasks}")
 
     try:
         if not model_item.get("direct", False):
@@ -1080,10 +1083,7 @@ async def chat_completion(
         form_data, metadata, events = await process_chat_payload(
             request, form_data, user, metadata, model
         )
-        # print(f"\n\n\n form_data: {metadata}")
-        # print(f"\n\n\n metadata: {metadata}")
-        # print(f"\n\n\n events: {metadata}")
-
+ 
 
     except Exception as e:
         raise HTTPException(

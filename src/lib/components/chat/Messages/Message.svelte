@@ -15,7 +15,7 @@
 	export let chatId;
 	export let idx = 0;
 
-	export let history;
+	export let history:any;
 	export let messageId;
 
 	export let user;

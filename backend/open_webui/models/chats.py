@@ -22,6 +22,16 @@ from datetime import date, datetime
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
 
+from datetime import datetime, timedelta
+
+def get_today_range():
+    dt = datetime.utcnow()
+    timestamp = dt.timestamp()  # float
+    timestamp_int = int(dt.timestamp())  # integer
+    
+    start_of_day = datetime(now.year, now.month, now.day)
+    end_of_day = start_of_day + timedelta(days=1)
+    return start_of_day, end_of_day
 
 class Chat(Base):
     __tablename__ = "chat"
@@ -519,20 +529,21 @@ class ChatTable:
         except Exception:
             return None
 
-    def get_chat_by_user_today(self, user_id: str, today: date) -> Optional[ChatModel]:
+    def get_chat_by_user_today(self, user_id: str) -> Optional[ChatModel]:
       
-        with get_db() as db:
-            # all_chats = db.query(Chat).filter(func.date(Chat.created_at) == today).all()
-            # all_chats = db.query(Chat).filter(Chat.created_at.cast(Date) == today).all()
-            all_chats = db.query(Chat).filter_by(user_id=user_id).filter(func.to_timestamp(Chat.created_at).cast(Date) == date.today()).all()
-
-
-            return [ChatModel.model_validate(chat) for chat in all_chats]
-
-            # chat = db.query(Chat).filter_by(id=id, user_id=user_id).first()
-            # return ChatModel.model_validate(chats)
-    
-        
+        with get_db() as db: 
+            now = datetime.utcnow()  # Or datetime.now() if you're using local time
+            start = int(datetime.combine(now.date(), datetime.min.time()).timestamp())  # 00:00 AM today
+            end = int(datetime.combine(now.date(), datetime.max.time()).timestamp()) # 23:59 AM tomorrow
+            
+            all_chats = (
+                db.query(Chat)
+                .filter_by(user_id=user_id)
+                # .filter(Chat.created_at >= start, Chat.created_at < end)
+                .all()
+            ) 
+            return all_chats
+     
     def get_chats(self, skip: int = 0, limit: int = 50) -> list[ChatModel]:
         with get_db() as db:
             all_chats = (

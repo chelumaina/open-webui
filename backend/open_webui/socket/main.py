@@ -131,7 +131,6 @@ def get_models_in_use():
 async def usage(sid, data):
    
     user=get_current_user()
-    print(f"user {user.name} - ({user.id}) connected with session ID {sid}")
     model_id = data["model"]
     # Record the timestamp for the last update
     current_time = int(time.time())
@@ -162,7 +161,6 @@ async def connect(sid, environ, auth):
             else:
                 USER_POOL[user.id] = [sid]
 
-            # print(f"user {user.name}({user.id}) connected with session ID {sid}")
             await sio.emit("user-list", {"user_ids": list(USER_POOL.keys())})
             await sio.emit("usage", {"models": get_models_in_use()})
 
@@ -194,7 +192,6 @@ async def user_join(sid, data):
     for channel in channels:
         await sio.enter_room(sid, f"channel:{channel.id}")
 
-    # print(f"user {user.name}({user.id}) connected with session ID {sid}")
 
     await sio.emit("user-list", {"user_ids": list(USER_POOL.keys())})
     return {"id": user.id, "name": user.name}
@@ -269,7 +266,6 @@ async def disconnect(sid):
         await sio.emit("user-list", {"user_ids": list(USER_POOL.keys())})
     else:
         pass
-        # print(f"Unknown session ID {sid} disconnected")
 
 
 def get_event_emitter(request_info):

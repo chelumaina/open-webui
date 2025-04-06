@@ -1,6 +1,6 @@
 import time
 import logging
-import sys
+import sys,os
 
 from aiocache import cached
 from typing import Any, Optional
@@ -345,23 +345,19 @@ async def chat_completed(request: Request, form_data: dict, user: Any):
         )
         Chats = ChatTable()
         chat = Chats.get_chat_by_id_and_user_id(data["chat_id"], user.id)
-        # print(f"\n\n\n\n chat_completed: \n\n\n{chat}")
         if chat:
-            cost_per_prompt_token=0.001#os.environ.get("COST_PER_PROMPT_TOKEN", 0)
-            cost_per_response_token=0.002#os.environ.get("COST_PER_RES 
+            cost_per_prompt_token=os.environ.get("COST_PER_PROMPT_TOKEN", 0)
+            cost_per_response_token=os.environ.get("COST_PER_RESPONSE_TOKEN", 0) 
             messages=data.get("messages", [])
             total_prompt_tokens=0
             total_response_tokens=0
             for message in messages:
-                # print(f"\n\n\n\n message: \n\n\n{message}")
                 if "usage" in message:
-                    # print(f"\n\n\n\n usage: \n\n\n{message.get("usage")}")
                     prompt_token=message.get("usage").get("prompt_tokens")
                     response_token=message.get("usage").get("completion_tokens")
                     total_response_tokens += response_token*cost_per_response_token
                     total_prompt_tokens += prompt_token*cost_per_prompt_token
-            id=Chats.update_chat(chat.id, total_prompt_tokens, total_response_tokens)
-            print(f"\n\n\n\n id: \n\n\n{id}")
+            Chats.update_chat(chat.id, total_prompt_tokens, total_response_tokens)
             
         return result
     except Exception as e:
@@ -472,5 +468,4 @@ async def chat_action(request: Request, action_id: str, form_data: dict, user: A
         except Exception as e:
             return Exception(f"Error: {e}")
 
-    print(f"\n\n\n\n chat_completed: \n\n\n{data}")
     return data

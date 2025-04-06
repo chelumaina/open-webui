@@ -1,6 +1,11 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 import { getUserPosition } from '$lib/utils';
 
+import {
+	settings,
+	token_cost,
+} from '$lib/stores';
+
 export const getUserGroups = async (token: string) => {
 	let error = null;
 
@@ -152,9 +157,14 @@ export const getUserSettings = async (token: string) => {
 			Authorization: `Bearer ${token}`
 		}
 	})
-		.then(async (res) => {
+		.then(async (res:any) => {
 			if (!res.ok) throw await res.json();
-			return res.json();
+			let response=await res.json();
+			console.log("response", response)
+			console.log("response.tokens", response.tokens)
+			token_cost.set(response.tokens);
+			// settings.set(response.settings);
+			return response;
 		})
 		.catch((err) => {
 			console.log(err);

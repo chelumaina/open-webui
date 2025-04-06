@@ -9,6 +9,7 @@ WORKDIR /app
 RUN conda create --name open-webui python=3.11
 
 # Make RUN commands use the new environment
+# conda run -n open-webui /bin/bash
 SHELL ["conda", "run", "-n", "open-webui", "/bin/bash", "-c"]
 
 # Install any additional dependencies if needed

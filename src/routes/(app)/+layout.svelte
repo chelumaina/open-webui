@@ -26,6 +26,7 @@
 		config,
 		user,
 		settings,
+		token_cost,
 		models,
 		prompts,
 		knowledge,
@@ -80,7 +81,8 @@
 			});
 
 			if (userSettings) {
-				settings.set(userSettings.ui);
+				settings.set(userSettings.ui); 
+				token_cost.set(userSettings.tokens);
 			} else {
 				let localStorageSettings = {} as Parameters<(typeof settings)['set']>[0];
 

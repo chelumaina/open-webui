@@ -1,5 +1,6 @@
 import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
 import { getOpenAIModelsDirect } from './openai';
+import { getUserSettings } from '$lib/apis/users';
 
 export const getModels = async (
 	token: string = '',
@@ -32,7 +33,7 @@ export const getModels = async (
 	let models = res?.data ?? [];
 
 	if (connections && !base) {
-		let localModels = [];
+		let localModels:any = [];
 
 		if (connections) {
 			const OPENAI_API_BASE_URLS = connections.OPENAI_API_BASE_URLS;
@@ -105,7 +106,7 @@ export const getModels = async (
 				const apiConfig = OPENAI_API_CONFIGS[idx.toString()] ?? {};
 
 				let models = Array.isArray(response) ? response : (response?.data ?? []);
-				models = models.map((model) => ({ ...model, openai: { id: model.id }, urlIdx: idx }));
+				models = models.map((model:any) => ({ ...model, openai: { id: model.id }, urlIdx: idx }));
 
 				const prefixId = apiConfig.prefix_id;
 				if (prefixId) {
@@ -181,7 +182,7 @@ export const chatCompleted = async (token: string, body: ChatCompletedForm) => {
 	if (error) {
 		throw error;
 	}
-
+	// await getUserSettings(localStorage.token);
 	return res;
 };
 
