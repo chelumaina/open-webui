@@ -345,6 +345,7 @@ async def chat_completed(request: Request, form_data: dict, user: Any):
         )
         Chats = ChatTable()
         chat = Chats.get_chat_by_id_and_user_id(data["chat_id"], user.id)
+        
         if chat:
             cost_per_prompt_token=os.environ.get("COST_PER_PROMPT_TOKEN", 0)
             cost_per_response_token=os.environ.get("COST_PER_RESPONSE_TOKEN", 0) 
@@ -352,12 +353,12 @@ async def chat_completed(request: Request, form_data: dict, user: Any):
             total_prompt_tokens=0
             total_response_tokens=0
             for message in messages:
+                
                 if "usage" in message:
-                    prompt_token=message.get("usage").get("prompt_tokens")
-                    response_token=message.get("usage").get("completion_tokens")
-                    total_response_tokens += response_token*cost_per_response_token
-                    total_prompt_tokens += prompt_token*cost_per_prompt_token
-            Chats.update_chat(chat.id, total_prompt_tokens, total_response_tokens)
+                    total_prompt_tokens+=message.get("usage").get("prompt_tokens")
+                    total_response_tokens+=message.get("usage").get("completion_tokens")
+                     
+            Chats.update_chat(chat.id, total_prompt_tokens, total_response_tokens, cost_per_prompt_token, cost_per_response_token)
             
         return result
     except Exception as e:

@@ -1,6 +1,4 @@
-import json
-import logging
-import time
+import logging 
 from typing import Optional
 import uuid
 from sqlalchemy import not_
@@ -16,8 +14,6 @@ from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import relationship
 from open_webui.internal.db import Base, get_db
 from open_webui.env import SRC_LOG_LEVELS
-
-from open_webui.models.users import UserModel, Users
 
 
 from pydantic import BaseModel as PydanticBaseModel

@@ -1,12 +1,12 @@
 import time
 from typing import Optional
-
+from datetime import datetime 
 from open_webui.internal.db import Base, JSONField, get_db
 
 
 from open_webui.models.chats import Chats
 from open_webui.models.groups import Groups
-
+from open_webui.models.subscriptions import Subscription
 
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import BigInteger, Column, String, Text
@@ -134,7 +134,22 @@ class UsersTable:
                 return UserModel.model_validate(user)
         except Exception:
             return None
-
+        
+    def is_user_subscription_valid(self, user_id: str) -> Optional[bool]:
+        try:
+            with get_db() as db:
+                # user = db.query(User).filter_by(id=id).first()
+                # return UserModel.model_validate(user)
+                sub = db.query(Subscription).filter(
+                    Subscription.customer_id == user_id,
+                    Subscription.status == "active",
+                    Subscription.end_date >= datetime.utcnow()
+                ).first()
+                return sub is not None
+                    
+        except Exception:
+            return False
+ 
     def get_user_by_api_key(self, api_key: str) -> Optional[UserModel]:
         try:
             with get_db() as db:

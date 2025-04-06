@@ -1,7 +1,7 @@
 import logging
 import json
 import time
-import uuid
+import uuid, os
 from typing import Optional
 
 from open_webui.internal.db import Base, get_db
@@ -53,7 +53,8 @@ class Chat(Base):
     
     response_token = Column(Float, default=0.0)
     prompt_token = Column(Float, default=0.0)
-
+    cost_per_prompt_token = Column(Float, default=0.0)
+    cost_per_response_token = Column(Float, default=0.0)
 
 class ChatModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -74,6 +75,9 @@ class ChatModel(BaseModel):
     folder_id: Optional[str] = None
     response_token: Optional[float] = 0.00 
     prompt_token: Optional[float] = 0.00
+    
+    cost_per_prompt_token: Optional[float] = os.environ.get("COST_PER_PROMPT_TOKEN", 0)
+    cost_per_response_token: Optional[float] = os.environ.get("COST_PER_RESPONSE_TOKEN", 0)
 
 
 ####################
@@ -113,7 +117,10 @@ class ChatResponse(BaseModel):
     meta: dict = {}
     folder_id: Optional[str] = None
     response_token: Optional[float] = 0.00 
-    prompt_token: Optional[float] = 0.00
+    prompt_token: Optional[float] = 0.00 
+    
+    cost_per_prompt_token: Optional[float] = os.environ.get("COST_PER_PROMPT_TOKEN", 0)
+    cost_per_response_token: Optional[float] = os.environ.get("COST_PER_RESPONSE_TOKEN", 0)
     # data: Optional[dict] =[]
     model_config = ConfigDict(extra="allow")  # Allow extra fields dynamically
 
@@ -195,13 +202,15 @@ class ChatTable:
         except Exception:
             return None
 
-    def update_chat(self, id: str, prompt_token: float, response_token: float, ) -> Optional[ChatModel]:
+    def update_chat(self, id: str, prompt_token: float, response_token: float, cost_per_prompt_token: float=os.environ.get("COST_PER_PROMPT_TOKEN", 0), cost_per_response_token: float=os.environ.get("COST_PER_RESPONSE_TOKEN", 0)) -> Optional[ChatModel]:
         try:
             with get_db() as db:
                 chat_item = db.get(Chat, id)
                 # chat_item.chat = chat
                 chat_item.prompt_token = prompt_token
                 chat_item.response_token = response_token 
+                chat_item.cost_per_prompt_token = cost_per_prompt_token
+                chat_item.cost_per_response_token = cost_per_response_token
                 db.commit()
                 db.refresh(chat_item) 
                 return ChatModel.model_validate(chat_item)

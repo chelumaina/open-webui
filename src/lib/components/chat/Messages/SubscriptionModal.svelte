@@ -94,7 +94,8 @@
 				<section class="bg-white dark:bg-gray-900">
 					<div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
 						<div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
-							<p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">Here at Flowbite we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.</p>
+							<!-- <h4 class="mb-5 font-light text-white-500 sm:text-xl dark:text-black-400">Upgrade your plan</h4> -->
+							<h2 class="mb-4 text-3xl font-semibold text-white-800 dark:text-black-800">Upgrade your plan</h2>
 						</div>
 						<div class="space-y-4 lg:grid lg:grid-cols-2 sm:gap-1 xl:gap-1 lg:space-y-0">
 							<!-- Pricing Card -->
