@@ -49,7 +49,8 @@
 		splitStream,
 		sleep,
 		removeDetails,
-		getPromptVariables
+		getPromptVariables,
+		processDetails
 	} from '$lib/utils';
 
 	import { generateChatCompletion } from '$lib/apis/ollama';
@@ -1350,6 +1351,10 @@
 		parentId: string,
 		{ modelId = null, modelIdx = null, newChat = false } = {}
 	) => {
+		if (autoScroll) {
+			scrollToBottom();
+		}
+
 		let _chatId = JSON.parse(JSON.stringify($chatId));
 		_history = JSON.parse(JSON.stringify(_history));
 
@@ -1512,7 +1517,7 @@
 						role: 'system',
 						content: `${promptTemplate(
 							params?.system ?? $settings?.system ?? '',
-							$user.name,
+							$user?.name,
 							$settings?.userLocation
 								? await getAndUpdateUserLocation(localStorage.token).catch((err) => {
 										console.error(err);
@@ -1528,7 +1533,7 @@
 				: undefined,
 			...createMessagesList(_history, responseMessageId).map((message) => ({
 				...message,
-				content: removeDetails(message.content, ['reasoning', 'code_interpreter'])
+				content: processDetails(message.content)
 			}))
 		].filter((message) => message);
 
@@ -1586,23 +1591,23 @@
 				features: {
 					image_generation:
 						$config?.features?.enable_image_generation &&
-						($user.role === 'admin' || $user?.permissions?.features?.image_generation)
+						($user?.role === 'admin' || $user?.permissions?.features?.image_generation)
 							? imageGenerationEnabled
 							: false,
 					code_interpreter:
 						$config?.features?.enable_code_interpreter &&
-						($user.role === 'admin' || $user?.permissions?.features?.code_interpreter)
+						($user?.role === 'admin' || $user?.permissions?.features?.code_interpreter)
 							? codeInterpreterEnabled
 							: false,
 					web_search:
 						$config?.features?.enable_web_search &&
-						($user.role === 'admin' || $user?.permissions?.features?.web_search)
+						($user?.role === 'admin' || $user?.permissions?.features?.web_search)
 							? webSearchEnabled || ($settings?.webSearch ?? false) === 'always'
 							: false
 				},
 				variables: {
 					...getPromptVariables(
-						$user.name,
+						$user?.name,
 						$settings?.userLocation
 							? await getAndUpdateUserLocation(localStorage.token).catch((err) => {
 									console.error(err);
