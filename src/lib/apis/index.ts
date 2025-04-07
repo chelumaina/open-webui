@@ -295,7 +295,6 @@ export const getToolServerData = async (token: string, url: string) => {
 		specs: convertOpenApiToToolPayload(res)
 	};
 
-	console.log(data);
 	return data;
 };
 

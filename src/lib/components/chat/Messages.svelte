@@ -121,15 +121,15 @@
 		}
 	};
 
-	const gotoMessage = async (message, idx) => {
+	const gotoMessage = async (message:any, idx:any) => {
 		// Determine the correct sibling list (either parent's children or root messages)
 		let siblings;
 		if (message.parentId !== null) {
 			siblings = history.messages[message.parentId].childrenIds;
 		} else {
 			siblings = Object.values(history.messages)
-				.filter((msg) => msg.parentId === null)
-				.map((msg) => msg.id);
+				.filter((msg:any) => msg.parentId === null)
+				.map((msg:any) => msg.id);
 		}
 
 		// Clamp index to a valid range
@@ -162,7 +162,7 @@
 		}
 	};
 
-	const showPreviousMessage = async (message) => {
+	const showPreviousMessage = async (message:any) => {
 		if (message.parentId !== null) {
 			let messageId =
 				history.messages[message.parentId].childrenIds[
@@ -181,8 +181,8 @@
 			}
 		} else {
 			let childrenIds = Object.values(history.messages)
-				.filter((message) => message.parentId === null)
-				.map((message) => message.id);
+				.filter((message:any) => message.parentId === null)
+				.map((message:any) => message.id);
 			let messageId = childrenIds[Math.max(childrenIds.indexOf(message.id) - 1, 0)];
 
 			if (message.id !== messageId) {
@@ -261,7 +261,7 @@
 	};
 
 
-	const rateMessage = async (messageId, rating) => {
+	const rateMessage = async (messageId:any, rating:any) => {
 		history.messages[messageId].annotation = {
 			...history.messages[messageId].annotation,
 			rating: rating
@@ -270,7 +270,7 @@
 		await updateChat();
 	};
 
-	const editMessage = async (messageId, content, submit = true) => {
+	const editMessage = async (messageId:any, content:any, submit = true) => {
 		if (history.messages[messageId].role === 'user') {
 			if (submit) {
 				// New user message
@@ -345,23 +345,23 @@
 		}
 	};
 
-	const actionMessage = async (actionId, message, event = null) => {
+	const actionMessage = async (actionId:any, message:any, event = null) => {
 		await chatActionHandler(chatId, actionId, message.model, message.id, event);
 	};
 
-	const saveMessage = async (messageId, message) => {
+	const saveMessage = async (messageId:any, message:any) => {
 		history.messages[messageId] = message;
 		await updateChat();
 	};
 
-	const deleteMessage = async (messageId) => {
+	const deleteMessage = async (messageId:any) => {
 		const messageToDelete = history.messages[messageId];
 		const parentMessageId = messageToDelete.parentId;
 		const childMessageIds = messageToDelete.childrenIds ?? [];
 
 		// Collect all grandchildren
 		const grandchildrenIds = childMessageIds.flatMap(
-			(childId) => history.messages[childId]?.childrenIds ?? []
+			(childId:any) => history.messages[childId]?.childrenIds ?? []
 		);
 
 		// Update parent's children
@@ -373,7 +373,7 @@
 		}
 
 		// Update grandchildren's parent
-		grandchildrenIds.forEach((grandchildId) => {
+		grandchildrenIds.forEach((grandchildId:any) => {
 			if (history.messages[grandchildId]) {
 				history.messages[grandchildId].parentId = parentMessageId;
 			}
@@ -488,7 +488,7 @@
 						</div>
 					{/if}
 
-					{#if $token_cost.cost > 1 && $token_cost.is_user_subscription_valid==true} 
+					{#if $token_cost.cost > 1 && $token_cost.is_user_subscription_valid==false} 
 						<div class="flex flex-col justify-between px-5 mb-3 w-full max-w-5xl mx-auto rounded-lg group">
 							<div class="relative h-full w-full border-1 rounded-2xl border-token-border-light bg-token-main-surface-primary text-token-text-primary dark:bg-token-main-surface-secondary">
 								<div class="flex flex-col gap-3.5 ">

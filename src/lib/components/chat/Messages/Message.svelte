@@ -56,8 +56,8 @@
 				siblings={history.messages[messageId].parentId !== null
 					? (history.messages[history.messages[messageId].parentId]?.childrenIds ?? [])
 					: (Object.values(history.messages)
-							.filter((message) => message.parentId === null)
-							.map((message) => message.id) ?? [])}
+							.filter((message) => message?.parentId === null)
+							.map((message) => message?.id) ?? [])}
 				{gotoMessage}
 				{showPreviousMessage}
 				{showNextMessage}

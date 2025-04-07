@@ -160,8 +160,6 @@ export const getUserSettings = async (token: string) => {
 		.then(async (res:any) => {
 			if (!res.ok) throw await res.json();
 			let response=await res.json();
-			console.log("response", response)
-			console.log("response.tokens", response.tokens)
 			token_cost.set(response.tokens);
 			// settings.set(response.settings);
 			return response;
@@ -302,7 +300,7 @@ export const getAndUpdateUserLocation = async (token: string) => {
 		await updateUserInfo(token, { location: location });
 		return location;
 	} else {
-		console.log('Failed to get user location');
+		// console.log('Failed to get user location');
 		return null;
 	}
 };

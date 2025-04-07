@@ -20,7 +20,8 @@ services:
     networks:
       - mynetwork
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway" 
+      - "google.com:142.250.190.78"
 
   backend:
     build:
@@ -30,10 +31,8 @@ services:
       - .env
     container_name: backend 
     hostname: backend 
-    # command: sh -c "conda init && conda activate open-webui && sh dev.sh" 
     command: bash -c "source ~/.bashrc && conda activate open-webui && sh dev.sh"
     ports:
-      # - 3000:5173 
       - 8080:8080 
     volumes:
       - ./backend:/app
@@ -41,13 +40,18 @@ services:
       - ./CHANGELOG.md:/app/open_webui/CHANGELOG.md
       # - ./CHANGELOG.md:/app/CHANGELOG.md
       # - ./backend:/app/backend
-
+    links:
+      - pg_db
+      - redis
+    depends_on:
+      - pg_db
+      - redis
     networks:
       - mynetwork
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
+      - "google.com:142.250.190.78"
 
   nginx: 
     container_name: open-webui-nginx 
@@ -66,47 +70,88 @@ services:
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=1800
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
+
+  certbot:
+    container_name: certbot
+    hostname: 'certbot'
+    image: certbot/certbot
+    volumes: 
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+      - ./logs:/var/log/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 48h & wait $${!}; done;'"
+    depends_on: 
+      - nginx
+      - frontend  
+    networks:
+      mynetwork: 
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
+ 
+  pg_db:
+    container_name: pg_db
+    hostname: pg_db
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: transcription
+      POSTGRES_PASSWORD: "6^2Y?2E£ojJ5"
+      POSTGRES_DB: smart_ai_latest
+    ports:
+      - "5503:5432"
+    volumes:
+      - ./data/pg:/var/lib/postgresql/data
+      - ./logs:/var/log/pg_db
+    networks:
+      mynetwork:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"  # Maximum size of a log file before rotation
+        max-file: "3"    # Number of rotated log files to keep
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
+ 
+  redis:
+    image: redis:alpine
+    container_name: redis
+    hostname: redis
+    restart: always
+    command: [
+      "redis-server",
+      "--requirepass", "s93s1nDwSOdlOna", 
+      "--masteruser", "scriber", 
+      "--masterauth", "s93s1nDwSOdlOna" 
+    ]
+    
+    environment:
+      - REDIS_USER="scriber"
+      - REDIS_PASSWORD="s93s1nDwSOdlOna"
+    volumes:
+      - ./data/redis/data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
+    networks:
+      mynetwork: 
 
 networks:
   mynetwork:
 
-# services:
-
-#   open-webui:
-#     build:
-#       context: .
-#       args:
-#         OLLAMA_BASE_URL: '/ollama'
-#       dockerfile: Dockerfile
-#     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
-#     container_name: open-webui
-#     # command: sh -c "npm run dev" 
-#     # volumes:
-#       # - ./:/app/
-#     ports:
-#       - ${OPEN_WEBUI_PORT-3001}:8080
-#     env_file:
-#       - .env
-#     environment:
-#       - 'OLLAMA_BASE_URL=http://host.docker.internal:11434'
-#       - 'WEBUI_SECRET_KEY=${SECRET_KEY}'
-#       - 'OPENAI_API_KEY=${OPENAI_API_KEY}'
-#       - 'LANGFUSE_PUBLIC_KEY=${LANGFUSE_PUBLIC_KEY}'
-#       - 'LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY}'
-#     extra_hosts:
-#       - host.docker.internal:host-gateway
-#     restart: unless-stopped
-
-#   watchtower:
-#     container_name: watchtower
-#     image: containrrr/watchtower:latest
-#     restart: unless-stopped
-#     volumes:
-#       - /var/run/docker.sock:/var/run/docker.sock
-#     environment:
-#       - WATCHTOWER_CLEANUP=true
-#       - WATCHTOWER_POLL_INTERVAL=1800
-
-# volumes:
-#   ollama: {}
-#   open-webui: {}

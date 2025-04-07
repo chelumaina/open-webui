@@ -58,7 +58,7 @@
 		}
 	}
 
-	const gotoMessage = async (modelIdx, messageIdx) => {
+	const gotoMessage = async (modelIdx:any, messageIdx:any) => {
 		// Clamp messageIdx to ensure it's within valid range
 		groupedMessageIdsIdx[modelIdx] = Math.max(
 			0,

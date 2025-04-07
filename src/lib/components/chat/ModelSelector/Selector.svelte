@@ -468,8 +468,6 @@
 						on:click={() => {
 							const exists = item.model.tags.some(item=> item.name === 'Upgrade to Plus Plan');
 
-							// alert('token_cost.is_user_subscription_valid '+ $token_cost.is_user_subscription_valid==false);
-
 							if($token_cost.cost < 1  && exists)
 							{
 								value = item.value;
@@ -494,31 +492,6 @@
 								show = false;
 							}
 
-							
-
-							// if(exists && $token_cost.cost > 1 && $token_cost.is_user_subscription_valid==true) {
-								
-							// }
-							// else
-							// {
-							// 	value = item.value;
-							//  	selectedModelIdx = index;
-							// 	show = false;
-							// }
-							
-							// const exists = item.model.tags.some(item=> item.name === 'Upgrade to Plus Plan');
-							// show = false;
-							// if (exists) {
-							// 	console.log('Item exists in array');
-							// 	showSubscriptionModal.set(true); 
-							// } else {
-							// 	console.log('Item does not exist in array');
-							// 	value = item.value;
-							// 	selectedModelIdx = index;
-							// }
-							// console.log('JSON.stringify(item)', item.model.tags);
-
-			
 						}}
 					>
 						<div class="flex flex-col">

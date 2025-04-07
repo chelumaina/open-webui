@@ -408,7 +408,6 @@ export const deleteModel = async (token: string, tagName: string, urlIdx: string
 			return res.json();
 		})
 		.then((json) => {
-			console.log(json);
 			return true;
 		})
 		.catch((err) => {
