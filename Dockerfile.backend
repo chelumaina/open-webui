@@ -19,7 +19,7 @@ SHELL ["conda", "run", "-n", "open-webui", "/bin/bash", "-c"]
 COPY backend/requirements.txt .
 # COPY .env .
 COPY backend .
-RUN pip install -r requirements.txt -U
+RUN pip install -r requirements.txt -U --verbose --no-cache-dir
 
 # Expose the port the app runs on (if applicable)
 EXPOSE 8080

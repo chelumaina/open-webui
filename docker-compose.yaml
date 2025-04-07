@@ -18,9 +18,10 @@ services:
     links:
       - backend
     networks:
-      - mynetwork
+      mynetwork:
+        ipv4_address: 172.28.0.21
     extra_hosts:
-      - "host.docker.internal:host-gateway" 
+      # - "host.docker.internal:host-gateway" 
       - "google.com:142.250.190.78"
 
   backend:
@@ -29,9 +30,15 @@ services:
       dockerfile: Dockerfile.backend
     env_file:
       - .env
+    # environment:
+    #   # REDIS_URL: sentinel://mymaster
+    #   REDIS_URL: redis://:mystrongpassword@redis-sentinel/1
+    #   REDIS_SENTINEL_HOSTS: redis-sentinel
+    #   REDIS_SENTINEL_PORT: 26379
+    #   REDIS_PASSWORD: mystrongpassword
     container_name: backend 
     hostname: backend 
-    command: bash -c "source ~/.bashrc && conda activate open-webui && sh dev.sh"
+    command: bash -c "pip install uvicorn && source ~/.bashrc && conda activate open-webui && sh dev.sh"
     ports:
       - 8080:8080 
     volumes:
@@ -42,15 +49,16 @@ services:
       # - ./backend:/app/backend
     links:
       - pg_db
-      - redis
+      - redis-sentinel
     depends_on:
-      - pg_db
-      - redis
+      - pg_db 
+      - redis-sentinel
     networks:
-      - mynetwork
+      mynetwork:
+        ipv4_address: 172.28.0.22
     restart: unless-stopped
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      # - "host.docker.internal:redis-master"
       - "google.com:142.250.190.78"
 
   nginx: 
@@ -66,23 +74,11 @@ services:
     depends_on:
       - frontend
     networks:
-      - mynetwork
+      mynetwork:
+        ipv4_address: 172.28.0.23
     restart: unless-stopped
     extra_hosts:
-      - "host.docker.internal:host-gateway"
-      - "google.com:142.250.190.78"
-
-  watchtower:
-    container_name: watchtower
-    image: containrrr/watchtower:latest
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_POLL_INTERVAL=1800
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      # - "host.docker.internal:host-gateway"
       - "google.com:142.250.190.78"
 
   certbot:
@@ -98,9 +94,10 @@ services:
       - nginx
       - frontend  
     networks:
-      mynetwork: 
+      mynetwork:
+        ipv4_address: 172.28.0.24 
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      # - "host.docker.internal:host-gateway"
       - "google.com:142.250.190.78"
  
   pg_db:
@@ -119,39 +116,61 @@ services:
       - ./logs:/var/log/pg_db
     networks:
       mynetwork:
+        ipv4_address: 172.28.0.25
     logging:
       driver: "json-file"
       options:
         max-size: "10m"  # Maximum size of a log file before rotation
         max-file: "3"    # Number of rotated log files to keep
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      # - "host.docker.internal:host-gateway"
       - "google.com:142.250.190.78"
- 
-  redis:
-    image: redis:alpine
-    container_name: redis
-    hostname: redis
-    restart: always
-    command: [
-      "redis-server",
-      "--requirepass", "s93s1nDwSOdlOna", 
-      "--masteruser", "scriber", 
-      "--masterauth", "s93s1nDwSOdlOna" 
-    ]
-    
-    environment:
-      - REDIS_USER="scriber"
-      - REDIS_PASSWORD="s93s1nDwSOdlOna"
-    volumes:
-      - ./data/redis/data:/data
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-      - "google.com:142.250.190.78"
+  
+  redis-master:
+    image: redis:7
+    container_name: redis-master
+    hostname: redis-master
+    ports:
+      - "6379:6379"
     networks:
-      mynetwork: 
+      mynetwork:
+        ipv4_address: 172.28.0.26
+    restart: unless-stopped
+    volumes:
+      - ./redis/master:/usr/local/etc/redis
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"] 
+
+    extra_hosts:
+      # - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
+
+  redis-sentinel:
+    image: redis:7
+    container_name: redis-sentinel
+    hostname: redis-sentinel
+    depends_on:
+      - redis-master
+    links:
+      - redis-master
+    ports:
+      - "26379:26379"
+    networks:
+      mynetwork:
+        ipv4_address: 172.28.0.27
+    restart: unless-stopped
+    volumes:
+      - ./redis/sentinel-data:/usr/local/etc/redis
+      # - ./sentinel-data:/data
+    command: ["redis-server", "/usr/local/etc/redis/sentinel.conf", "--sentinel"]  
+    extra_hosts:
+      # - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
+
 
 networks:
   mynetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
 

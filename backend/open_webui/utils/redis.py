@@ -21,6 +21,7 @@ def parse_redis_sentinel_url(redis_url):
 def get_redis_connection(redis_url, redis_sentinels, decode_responses=True):
     if redis_sentinels:
         redis_config = parse_redis_sentinel_url(redis_url)
+       
         sentinel = redis.sentinel.Sentinel(
             redis_sentinels,
             port=redis_config["port"],
@@ -38,8 +39,11 @@ def get_redis_connection(redis_url, redis_sentinels, decode_responses=True):
 
 
 def get_sentinels_from_env(sentinel_hosts_env, sentinel_port_env):
+    # print(f"Redis sentinel_hosts_env: {sentinel_hosts_env}")
+
     if sentinel_hosts_env:
         sentinel_hosts = sentinel_hosts_env.split(",")
+        # print(f"Redis sentinel_hosts: {sentinel_hosts}")
         sentinel_port = int(sentinel_port_env)
         return [(host, sentinel_port) for host in sentinel_hosts]
     return []
