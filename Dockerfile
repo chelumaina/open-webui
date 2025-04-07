@@ -28,6 +28,8 @@ ENV NODE_OPTIONS="--max-old-space-size=8192"
 WORKDIR /app
 COPY . .
 # COPY package.json package-lock.json ./
+ENV NODE_OPTIONS="--max-old-space-size=8192"
+
 RUN npm ci 
 
 
