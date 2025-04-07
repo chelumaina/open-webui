@@ -127,13 +127,13 @@ services:
     restart: always
     environment:
       POSTGRES_USER: transcription
-      POSTGRES_PASSWORD: "6^2Y?2E£ojJ5"
+      POSTGRES_PASSWORD: "62Y2xXcDojJ52054"
       POSTGRES_DB: smart_ai_latest
     ports:
       - "5503:5432"
     volumes:
-      - ./data/pg:/var/lib/postgresql/data
-      - ./logs:/var/log/pg_db
+      - ./data/postgres-data:/var/lib/postgresql/data
+      # - ./logs:/var/log/pg_db
     networks:
       mynetwork:
         ipv4_address: 172.28.0.25
