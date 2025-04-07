@@ -1,196 +1,34 @@
 services:
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
-    container_name: frontend 
-    hostname: frontend
-    depends_on:
-      - backend 
-    command: sh -c "npm run dev" 
-    ports:
-      - 3000:5173 
-      # - 8080:8080 
-    volumes:
-      - ./:/app
-      
-    restart: unless-stopped
-    links:
-      - backend
-    networks:
-      mynetwork:
-        ipv4_address: 172.28.0.21
-    extra_hosts:
-      # - "host.docker.internal:host-gateway" 
-      - "google.com:142.250.190.78"
-
   ollama:
     volumes:
-      - ./ollama:/root/.ollama
+      - ollama:/root/.ollama
     container_name: ollama
     pull_policy: always
-    ports:
-      - 11435:11434
     tty: true
     restart: unless-stopped
-    image: ollama/ollama:latest
-    networks:
-      mynetwork:
-        ipv4_address: 172.28.0.20
-    extra_hosts:
-      # - "host.docker.internal:redis-master"
-      - "google.com:142.250.190.78"
+    image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
 
-
-  backend:
+  open-webui:
     build:
       context: .
-      dockerfile: Dockerfile.backend
-    env_file:
-      - .env
-    # environment:
-    #   # REDIS_URL: sentinel://mymaster
-    #   REDIS_URL: redis://:mystrongpassword@redis-sentinel/1
-    #   REDIS_SENTINEL_HOSTS: redis-sentinel
-    #   REDIS_SENTINEL_PORT: 26379
-    #   REDIS_PASSWORD: mystrongpassword
-    container_name: backend 
-    hostname: backend 
-    command: bash -c "pip install uvicorn && source ~/.bashrc && conda activate open-webui && sh dev.sh"
-    ports:
-      - 8080:8080 
+      args:
+        OLLAMA_BASE_URL: '/ollama'
+      dockerfile: Dockerfile
+    # image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
+    container_name: open-webui
     volumes:
-      - ./backend:/app
-      - ./.env:/app/.env
-      - ./CHANGELOG.md:/app/open_webui/CHANGELOG.md
-      # - ./CHANGELOG.md:/app/CHANGELOG.md
-      # - ./backend:/app/backend
-    links:
-      - pg_db
-      - redis-sentinel
-      - ollama
+      - open-webui:/app/backend/data
     depends_on:
-      - pg_db 
-      - redis-sentinel 
       - ollama
-    networks:
-      mynetwork:
-        ipv4_address: 172.28.0.22
-    restart: unless-stopped
-    extra_hosts:
-      # - "host.docker.internal:redis-master"
-      - "google.com:142.250.190.78"
-
-  nginx: 
-    container_name: open-webui-nginx 
-    hostname: open-webui-nginx
-    image: nginx:alpine
     ports:
-      - "3005:80"
-      # - "443:443"
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      # - ./ssl:/etc/nginx/ssl
-    depends_on:
-      - frontend
-    networks:
-      mynetwork:
-        ipv4_address: 172.28.0.23
-    restart: unless-stopped
-    extra_hosts:
-      # - "host.docker.internal:host-gateway"
-      - "google.com:142.250.190.78"
-
-  certbot:
-    container_name: certbot
-    hostname: 'certbot'
-    image: certbot/certbot
-    volumes: 
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-      - ./logs:/var/log/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 48h & wait $${!}; done;'"
-    depends_on: 
-      - nginx
-      - frontend  
-    networks:
-      mynetwork:
-        ipv4_address: 172.28.0.24 
-    extra_hosts:
-      # - "host.docker.internal:host-gateway"
-      - "google.com:142.250.190.78"
- 
-  pg_db:
-    container_name: pg_db
-    hostname: pg_db
-    image: postgres:latest
-    restart: always
+      - ${OPEN_WEBUI_PORT-3000}:8080
     environment:
-      POSTGRES_USER: transcription
-      POSTGRES_PASSWORD: "62Y2xXcDojJ52054"
-      POSTGRES_DB: smart_ai_latest
-    ports:
-      - "5503:5432"
-    volumes:
-      - ./data/postgres-data:/var/lib/postgresql/data
-      # - ./logs:/var/log/pg_db
-    networks:
-      mynetwork:
-        ipv4_address: 172.28.0.25
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"  # Maximum size of a log file before rotation
-        max-file: "3"    # Number of rotated log files to keep
+      - 'OLLAMA_BASE_URL=http://ollama:11434'
+      - 'WEBUI_SECRET_KEY='
     extra_hosts:
-      # - "host.docker.internal:host-gateway"
-      - "google.com:142.250.190.78"
-  
-  redis-master:
-    image: redis:7
-    container_name: redis-master
-    hostname: redis-master
-    ports:
-      - "6379:6379"
-    networks:
-      mynetwork:
-        ipv4_address: 172.28.0.26
+      - host.docker.internal:host-gateway
     restart: unless-stopped
-    volumes:
-      - ./redis/master:/usr/local/etc/redis
-    command: ["redis-server", "/usr/local/etc/redis/redis.conf"] 
 
-    extra_hosts:
-      # - "host.docker.internal:host-gateway"
-      - "google.com:142.250.190.78"
-
-  redis-sentinel:
-    image: redis:7
-    container_name: redis-sentinel
-    hostname: redis-sentinel
-    depends_on:
-      - redis-master
-    links:
-      - redis-master
-    ports:
-      - "26379:26379"
-    networks:
-      mynetwork:
-        ipv4_address: 172.28.0.27
-    restart: unless-stopped
-    volumes:
-      - ./redis/sentinel-data:/usr/local/etc/redis
-      # - ./sentinel-data:/data
-    command: ["redis-server", "/usr/local/etc/redis/sentinel.conf", "--sentinel"]  
-    extra_hosts:
-      # - "host.docker.internal:host-gateway"
-      - "google.com:142.250.190.78"
-
-
-networks:
-  mynetwork:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.28.0.0/16
-
+volumes:
+  ollama: {}
+  open-webui: {}
