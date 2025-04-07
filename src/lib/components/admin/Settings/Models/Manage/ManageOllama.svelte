@@ -115,7 +115,7 @@
 							}
 						}
 					} catch (error) {
-						console.log(error);
+						
 					}
 				}
 			}
@@ -216,7 +216,7 @@
 						}
 					}
 				} catch (error) {
-					console.log(error);
+					
 					if (typeof error !== 'string') {
 						error = error.message;
 					}
@@ -320,7 +320,7 @@
 						}
 					}
 				} catch (error) {
-					console.log(error);
+					
 				}
 			}
 		} else {
@@ -383,7 +383,7 @@
 							}
 						}
 					} catch (error) {
-						console.log(error);
+						
 						toast.error(`${error}`);
 					}
 				}
@@ -515,7 +515,7 @@
 						}
 					}
 				} catch (error) {
-					console.log(error);
+					
 					toast.error(`${error}`);
 				}
 			}

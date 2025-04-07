@@ -59,7 +59,7 @@
 			});
 
 			if (res) {
-				console.log(res);
+				
 				models = res.models;
 			}
 		}
@@ -82,7 +82,7 @@
 			});
 
 			if (res) {
-				console.log(res);
+				
 				voices = res.voices;
 				voices.sort((a, b) => a.name.localeCompare(b.name, $i18n.resolvedLanguage));
 			}
@@ -128,7 +128,7 @@
 		const res = await getAudioConfig(localStorage.token);
 
 		if (res) {
-			console.log(res);
+			
 			TTS_OPENAI_API_BASE_URL = res.tts.OPENAI_API_BASE_URL;
 			TTS_OPENAI_API_KEY = res.tts.OPENAI_API_KEY;
 			TTS_API_KEY = res.tts.API_KEY;
@@ -317,7 +317,7 @@
 						</div>
 
 						<div class="mt-2 mb-1 text-xs text-gray-400 dark:text-gray-500">
-							{$i18n.t(`Open WebUI uses faster-whisper internally.`)}
+							{$i18n.t(`BiXAI uses faster-whisper internally.`)}
 
 							<a
 								class=" hover:underline dark:text-gray-200 text-gray-800"
@@ -453,7 +453,7 @@
 							</div>
 						</div>
 						<div class="mt-2 mb-1 text-xs text-gray-400 dark:text-gray-500">
-							{$i18n.t(`Open WebUI uses SpeechT5 and CMU Arctic speaker embeddings.`)}
+							{$i18n.t(`BiXAI uses SpeechT5 and CMU Arctic speaker embeddings.`)}
 
 							To learn more about SpeechT5,
 

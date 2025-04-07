@@ -8,14 +8,15 @@
 		mobile,
 		settings,
 		showArchivedChats,
+		token_cost,
 		showControls,
 		showSidebar,
 		temporaryChatEnabled,
 		user
 	} from '$lib/stores';
 
-	import { slide } from 'svelte/transition';
-	import { page } from '$app/stores';
+	// import { slide } from 'svelte/transition';
+	// import { page } from '$app/stores';
 
 	import ShareChatModal from '../chat/ShareChatModal.svelte';
 	import ModelSelector from '../chat/ModelSelector.svelte';
@@ -30,11 +31,11 @@
 	const i18n = getContext('i18n');
 
 	export let initNewChat: Function;
-	export let title: string = $WEBUI_NAME;
+	// export let title: string = $WEBUI_NAME;
 	export let shareEnabled: boolean = false;
 
 	export let chat;
-	export let selectedModels;
+	export let selectedModels:any;
 	export let showModelSelector = true;
 
 	let showShareChatModal = false;
@@ -78,7 +79,7 @@
 			<div class="flex-1 overflow-hidden max-w-full py-0.5 {$showSidebar ? 'ml-1' : ''}">
 				<div class="mt-1.5 flex grow gap-4 md:mt-0 md:flex-row md:items-center md:justify-between md:gap-8 flex-col">
 					<div class="flex max-w-none flex-col">
-						<div class="font-bold text-token-text-primary">Your daily usage is. <strong>USD $00</strong></div>
+						<div class="font-bold text-token-text-primary">Your daily usage is. <strong>USD ${$token_cost.cost}</strong></div>
 						
 					</div>
 				</div>

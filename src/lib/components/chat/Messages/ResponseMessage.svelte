@@ -404,7 +404,7 @@
 		const res = await imageGenerations(localStorage.token, message.content).catch((error) => {
 			toast.error(`${error}`);
 		});
-		console.log(res);
+		
 
 		if (res) {
 			const files = res.map((image) => ({

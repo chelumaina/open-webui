@@ -14,6 +14,8 @@
 
 	import {
 		user,
+		showSubscriptionModal,
+		token_cost,
 		MODEL_DOWNLOAD_POOL,
 		models,
 		mobile,
@@ -153,7 +155,7 @@
 	const pullModelHandler = async () => {
 		const sanitizedModelTag = searchValue.trim().replace(/^ollama\s+(run|pull)\s+/, '');
 
-		console.log($MODEL_DOWNLOAD_POOL);
+		
 		if ($MODEL_DOWNLOAD_POOL[sanitizedModelTag]) {
 			toast.error(
 				$i18n.t(`Model '{{modelTag}}' is already in queue for downloading.`, {
@@ -241,8 +243,8 @@
 							}
 						}
 					}
-				} catch (error) {
-					console.log(error);
+				} catch (error:any) {
+					
 					if (typeof error !== 'string') {
 						error = error.message;
 					}
@@ -319,11 +321,8 @@
 	<DropdownMenu.Trigger
 		class="relative w-full font-primary"
 		aria-label={placeholder}
-		id="model-selector-{id}-button"
-	>
-		<div
-			class="flex w-full text-left px-0.5 outline-hidden bg-transparent truncate {triggerClassName} justify-between font-medium placeholder-gray-400 focus:outline-hidden"
-		>
+		id="model-selector-{id}-button">
+		<div class="flex w-full text-left px-0.5 outline-hidden bg-transparent truncate {triggerClassName} justify-between font-medium placeholder-gray-400 focus:outline-hidden">
 			{#if selectedModel}
 				{selectedModel.label}
 			{:else}
@@ -467,10 +466,59 @@
 						data-arrow-selected={index === selectedModelIdx}
 						data-value={item.value}
 						on:click={() => {
-							value = item.value;
-							selectedModelIdx = index;
+							const exists = item.model.tags.some(item=> item.name === 'Upgrade to Plus Plan');
 
-							show = false;
+							// alert('token_cost.is_user_subscription_valid '+ $token_cost.is_user_subscription_valid==false);
+
+							if($token_cost.cost < 1  && exists)
+							{
+								value = item.value;
+							 	selectedModelIdx = index;
+								show = false;
+							}
+							else if($token_cost.cost > 1  && $token_cost.is_user_subscription_valid==true && exists)
+							{
+								value = item.value;
+							 	selectedModelIdx = index;
+								show = false;
+							}
+							else if($token_cost.cost > 1  && $token_cost.is_user_subscription_valid==false && exists)
+							{
+								showSubscriptionModal.set(true); 
+								show = false;
+							}
+							else
+							{
+								value = item.value;
+							 	selectedModelIdx = index;
+								show = false;
+							}
+
+							
+
+							// if(exists && $token_cost.cost > 1 && $token_cost.is_user_subscription_valid==true) {
+								
+							// }
+							// else
+							// {
+							// 	value = item.value;
+							//  	selectedModelIdx = index;
+							// 	show = false;
+							// }
+							
+							// const exists = item.model.tags.some(item=> item.name === 'Upgrade to Plus Plan');
+							// show = false;
+							// if (exists) {
+							// 	console.log('Item exists in array');
+							// 	showSubscriptionModal.set(true); 
+							// } else {
+							// 	console.log('Item does not exist in array');
+							// 	value = item.value;
+							// 	selectedModelIdx = index;
+							// }
+							// console.log('JSON.stringify(item)', item.model.tags);
+
+			
 						}}
 					>
 						<div class="flex flex-col">
@@ -480,8 +528,15 @@
 										<div
 											class=" text-xs font-bold px-1 rounded-sm uppercase line-clamp-1 bg-gray-500/20 text-gray-700 dark:text-gray-200"
 										>
+										{#if $token_cost.cost < 1  && item.model.tags.some(item=> item.name === 'Upgrade to Plus Plan')}
+											{''}
+										{:else if $token_cost.cost > 1  && $token_cost.is_user_subscription_valid==true && item.model.tags.some(item=> item.name === 'Upgrade to Plus Plan')}
+											{''}
+										{:else}
 											{tag.name}
+										{/if}
 										</div>
+										
 									{/each}
 								</div>
 							{/if}
@@ -520,8 +575,7 @@
 															>
 																<span
 																	class=" text-xs font-medium text-gray-600 dark:text-gray-400 line-clamp-1"
-																	>{item.model.ollama?.details?.parameter_size ?? ''}</span
-																>
+																	>{item.model.ollama?.details?.parameter_size ?? ''}</span>
 															</Tooltip>
 														</div>
 													{/if}
@@ -531,7 +585,7 @@
 									</div>
 								</div>
 
-								<!-- {JSON.stringify(item.info)} -->
+								<!-- {JSON.stringify(item)} -->
 
 								{#if item.model?.direct}
 									<Tooltip content={`${'Direct'}`}>
@@ -608,10 +662,15 @@
 									>
 										{#each item.model?.tags.sort((a, b) => a.name.localeCompare(b.name)) as tag}
 											<Tooltip content={tag.name} className="flex-shrink-0">
-												<div
-													class=" text-xs font-bold px-1 rounded-sm uppercase bg-gray-500/20 text-gray-700 dark:text-gray-200"
-												>
-													{tag.name}
+												<div class=" text-xs font-bold px-1 rounded-sm uppercase bg-gray-500/20 text-gray-700 dark:text-gray-200"> 
+													
+													{#if $token_cost.cost < 1  && item.model.tags.some(item=> item.name === 'Upgrade to Plus Plan')}
+														{''}
+													{:else if $token_cost.cost > 1  && $token_cost.is_user_subscription_valid==true && item.model.tags.some(item=> item.name === 'Upgrade to Plus Plan')}
+														{''}
+													{:else}
+														{tag.name}
+													{/if}
 												</div>
 											</Tooltip>
 										{/each}
@@ -622,7 +681,7 @@
 
 						{#if value === item.value}
 							<div class="ml-auto pl-2 pr-2 md:pr-0">
-								<Check />
+								<Check /> 
 							</div>
 						{/if}
 					</button>

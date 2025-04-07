@@ -154,6 +154,8 @@
 			onboarding = $config?.onboarding ?? false;
 		}
 	});
+
+	console.log($config?.oauth?.providers?.google)
 </script>
 
 <svelte:head>
@@ -190,9 +192,7 @@
 			</div>
 		</div>
 
-		<div
-			class="fixed bg-transparent min-h-screen w-full flex justify-center font-primary z-50 text-black dark:text-white"
-		>
+		<div class="fixed bg-transparent min-h-screen w-full flex justify-center font-primary z-50 text-black dark:text-white">
 			<div class="w-full sm:max-w-md px-10 min-h-screen flex flex-col text-center">
 				{#if ($config?.features.auth_trusted_header ?? false) || $config?.features.auth === false}
 					<div class=" my-auto pb-10 w-full">

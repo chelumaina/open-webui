@@ -23,7 +23,7 @@
 		});
 
 		if (res) {
-			console.log(res);
+			
 			toast.success($i18n.t('Memory added successfully'));
 			content = '';
 			show = false;

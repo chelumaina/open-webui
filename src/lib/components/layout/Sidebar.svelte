@@ -13,6 +13,7 @@
 		showSidebar,
 		mobile,
 		showArchivedChats,
+		showSubscriptionModal,
 		pinnedChats,
 		scrollPaginationEnabled,
 		currentChatPage,
@@ -58,6 +59,7 @@
 	import ChannelItem from './Sidebar/ChannelItem.svelte';
 	import PencilSquare from '../icons/PencilSquare.svelte';
 	import Home from '../icons/Home.svelte';
+	import SubscriptionModal from '../chat/Messages/SubscriptionModal.svelte';
 
 	const BREAKPOINT = 768;
 
@@ -425,10 +427,17 @@
 		dropZone?.removeEventListener('drop', onDrop);
 		dropZone?.removeEventListener('dragleave', onDragLeave);
 	});
+	showSubscriptionModal.set(false);
 </script>
 
 <ArchivedChatsModal
 	bind:show={$showArchivedChats}
+	on:change={async () => {
+		await initChatList();
+	}}
+/>
+
+<SubscriptionModal bind:show={$showSubscriptionModal} 
 	on:change={async () => {
 		await initChatList();
 	}}
@@ -895,6 +904,7 @@
 					<UserMenu
 						role={$user?.role}
 						on:show={(e) => {
+							alert
 							if (e.detail === 'archived-chat') {
 								showArchivedChats.set(true);
 							}

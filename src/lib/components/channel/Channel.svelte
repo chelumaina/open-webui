@@ -195,7 +195,7 @@
 </script>
 
 <svelte:head>
-	<title>#{channel?.name ?? 'Channel'} | Open WebUI</title>
+	<title>#{channel?.name ?? 'Channel'} | BiXAI</title>
 </svelte:head>
 
 <div
