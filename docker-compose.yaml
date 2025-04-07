@@ -86,7 +86,7 @@ services:
     hostname: open-webui-nginx
     image: nginx:alpine
     ports:
-      - "88:80"
+      - "3005:80"
       # - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
