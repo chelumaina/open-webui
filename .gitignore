@@ -311,7 +311,4 @@ backend/open_webui/static
 backend/data
 backend/venv
 backend/.venv
-data/certbot
-data/pg
-data/redis*
 data/*
