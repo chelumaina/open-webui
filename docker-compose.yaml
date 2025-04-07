@@ -24,6 +24,24 @@ services:
       # - "host.docker.internal:host-gateway" 
       - "google.com:142.250.190.78"
 
+  ollama:
+    volumes:
+      - ./ollama:/root/.ollama
+    container_name: ollama
+    pull_policy: always
+    ports:
+      - 11435:11434
+    tty: true
+    restart: unless-stopped
+    image: ollama/ollama:latest
+    networks:
+      mynetwork:
+        ipv4_address: 172.28.0.20
+    extra_hosts:
+      # - "host.docker.internal:redis-master"
+      - "google.com:142.250.190.78"
+
+
   backend:
     build:
       context: .
@@ -50,9 +68,11 @@ services:
     links:
       - pg_db
       - redis-sentinel
+      - ollama
     depends_on:
       - pg_db 
-      - redis-sentinel
+      - redis-sentinel 
+      - ollama
     networks:
       mynetwork:
         ipv4_address: 172.28.0.22

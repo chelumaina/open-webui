@@ -312,3 +312,4 @@ backend/data
 backend/venv
 backend/.venv
 data/*
+ollama/*
