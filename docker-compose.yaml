@@ -64,6 +64,7 @@ services:
       - ./.env:/app/.env
       - ./CHANGELOG.md:/app/open_webui/CHANGELOG.md
       - ./static:/app/open_webui/static
+      - ./build:/build
       # - ./CHANGELOG.md:/app/CHANGELOG.md
       # - ./backend:/app/backend
     links:
