@@ -132,7 +132,7 @@ services:
       POSTGRES_PASSWORD: "62Y2xXcDojJ52054"
       POSTGRES_DB: smart_ai_latest
     ports:
-      - "5503:5432"
+      - "5509:5432"
     volumes:
       - ./data/postgres-data:/var/lib/postgresql/data
       # - ./logs:/var/log/pg_db
