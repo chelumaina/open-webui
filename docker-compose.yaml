@@ -82,7 +82,7 @@ services:
       - ./logs:/var/log/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 48h & wait $${!}; done;'"
     depends_on: 
-      - nginx
+      - webui-nginx
       - webui  
     extra_hosts:
       # - "host.docker.internal:host-gateway"
