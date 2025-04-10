@@ -24,7 +24,7 @@ services:
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui
-    command: bash -c "python3 -m venv /venv && sh /app/backend/dev.sh"
+    command: bash -c "python3 -m venv /venv && pip3 install hf_xet && sh /app/backend/dev.sh"
     volumes:
       # - open-webui:/app/backend/data
       - ./backend:/app/backend
