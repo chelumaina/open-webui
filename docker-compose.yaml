@@ -16,17 +16,17 @@ services:
       - "google.com:142.250.190.78"
 
  
-  open-webui:
+  webui:
     build:
       context: .
       args:
         OLLAMA_BASE_URL: 'host.docker.internal'
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
-    container_name: open-webui
+    container_name: webui
     command: bash -c "python3 -m venv /venv && pip3 install hf_xet && sh /app/backend/dev.sh"
     volumes:
-      # - open-webui:/app/backend/data
+      # - webui:/app/backend/data
       - ./backend:/app/backend
       - ./build:/app/build
       - ./CHANGELOG.md:/app/CHANGELOG.md
@@ -51,9 +51,9 @@ services:
       - ollama
 
 
-  nginx: 
-    container_name: open-webui-nginx 
-    hostname: open-webui-nginx
+  webui-nginx: 
+    container_name: webui-nginx 
+    hostname: webui-nginx
     image: nginx:alpine
     ports:
       - "3005:80"
@@ -64,9 +64,9 @@ services:
       # - ./static:/usr/static
       # - ./ssl:/etc/nginx/ssl
     depends_on:
-      - open-webui
+      - webui
     links:
-      - open-webui
+      - webui
     restart: unless-stopped
     extra_hosts:
       # - "host.docker.internal:host-gateway"
@@ -83,7 +83,7 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 48h & wait $${!}; done;'"
     depends_on: 
       - nginx
-      - open-webui  
+      - webui  
     extra_hosts:
       # - "host.docker.internal:host-gateway"
       - "google.com:142.250.190.78"
@@ -149,4 +149,4 @@ services:
 
 volumes:
   ollama: {}
-  open-webui: {}
+  webui: {}
