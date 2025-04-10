@@ -1,6 +1,6 @@
 .DS_Store
 node_modules
-# /build
+/build
 /.svelte-kit
 /package
 .env
@@ -22,7 +22,7 @@ static/pyodide/*
 
 # Distribution / packaging
 .Python
-# build/
+build/
 develop-eggs/
 dist/
 downloads/
@@ -210,7 +210,7 @@ bower_components
 .lock-wscript
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
-# build/Release
+build/Release
 
 # Dependency directories
 node_modules/
