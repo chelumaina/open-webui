@@ -80,7 +80,7 @@
 
 					// Process lines within the chunk
 					const lines = chunk.split('\n').filter((line) => line.trim() !== '');
-					alert("Floating lines: " + lines);
+					// alert("Floating lines: " + lines);
 
 					for (const line of lines) {
 						if (line.startsWith('data: ')) {

@@ -69,7 +69,7 @@
 					}
 					break;
 				}
-				alert("Chat value: " + value);
+				// alert("Chat value: " + value);
 
 				try {
 					let lines = value.split('\n');

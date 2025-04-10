@@ -130,11 +130,11 @@
 					}
 					break;
 				}
-				alert("Chat value: " + value);
+				// alert("Chat value: " + value);
 
 				try {
 					let lines = value.split('\n');
-					alert("Chat lines: " + lines);
+					// alert("Chat lines: " + lines);
 
 					
 					for (const line of lines) {

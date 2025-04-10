@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Optional
 from urllib.parse import quote
 
+
 from fastapi import (
     APIRouter,
     Depends,

@@ -20,31 +20,23 @@ ARG BUILD_HASH=dev-build
 ARG UID=0
 ARG GID=0
 
-######## WebUI frontend ########
-FROM --platform=$BUILDPLATFORM node:22-alpine3.20 AS build
-ARG BUILD_HASH
-ENV NODE_OPTIONS="--max-old-space-size=8192"
+# ######## WebUI frontend ########
+# FROM --platform=$BUILDPLATFORM node:22-alpine3.20 AS build
+# ARG BUILD_HASH
 
-WORKDIR /app
-COPY . .
+# WORKDIR /app
+
 # COPY package.json package-lock.json ./
-ENV NODE_OPTIONS="--max-old-space-size=8192"
+# ENV NODE_OPTIONS="--max-old-space-size=8192"
+# RUN npm ci
 
-RUN npm ci 
-
-
-ENV APP_BUILD_HASH=${BUILD_HASH}
-RUN npm run build
+# COPY . .
+# ENV APP_BUILD_HASH=${BUILD_HASH}
+# RUN npm run build
 
 ######## WebUI backend ########
 FROM python:3.11-slim-bookworm AS base
 
-# # Install system dependencies
-# RUN apt-get update && \
-#     apt-get install -y --no-install-recommends \
-#         git build-essential pandoc netcat-openbsd curl jq \
-#         python3-dev ffmpeg libsm6 libxext6 && \
-#     rm -rf /var/lib/apt/lists/*
 # Use args
 ARG USE_CUDA
 ARG USE_OLLAMA
@@ -96,9 +88,6 @@ ENV HF_HOME="/app/backend/data/cache/embedding/models"
 # ENV TORCH_EXTENSIONS_DIR="/.cache/torch_extensions"
 
 #### Other models ##########################################################
-# Set up a virtual environment
-RUN python3 -m venv /venv
-ENV PATH="/venv/bin:$PATH"
 
 WORKDIR /app/backend
 
@@ -144,33 +133,33 @@ RUN if [ "$USE_OLLAMA" = "true" ]; then \
 # install python dependencies
 COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
 
-RUN pip3 install --no-cache-dir uv && \
+RUN pip3 install  uv && \
     if [ "$USE_CUDA" = "true" ]; then \
-    # If you use CUDA the whisper and embedding model will be downloaded on first use
-    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/$USE_CUDA_DOCKER_VER --no-cache-dir && \
-    uv pip install --system -r requirements.txt --no-cache-dir && \
-    python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" && \
-    python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"; \
-    python -c "import os; import tiktoken; tiktoken.get_encoding(os.environ['TIKTOKEN_ENCODING_NAME'])"; \
+        # If you use CUDA the whisper and embedding model will be downloaded on first use
+        pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/$USE_CUDA_DOCKER_VER  && \
+        uv pip install --system -r requirements.txt  && \
+        python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" && \
+        python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"; \
+        python -c "import os; import tiktoken; tiktoken.get_encoding(os.environ['TIKTOKEN_ENCODING_NAME'])"; \
     else \
-    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-cache-dir && \
-    uv pip install --system -r requirements.txt --no-cache-dir && \
-    python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" && \
-    python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"; \
-    python -c "import os; import tiktoken; tiktoken.get_encoding(os.environ['TIKTOKEN_ENCODING_NAME'])"; \
+        pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu  && \
+        uv pip install --system -r requirements.txt  && \
+        python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" && \
+        python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"; \
+        python -c "import os; import tiktoken; tiktoken.get_encoding(os.environ['TIKTOKEN_ENCODING_NAME'])"; \
     fi; \
     chown -R $UID:$GID /app/backend/data/
 
 
 
-# copy embedding weight from build
-# RUN mkdir -p /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2
-# COPY --from=build /app/onnx /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx
+# # copy embedding weight from build
+# # RUN mkdir -p /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2
+# # COPY --from=build /app/onnx /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx
 
-# copy built frontend files
-COPY --chown=$UID:$GID --from=build /app/build /app/build
-COPY --chown=$UID:$GID --from=build /app/CHANGELOG.md /app/CHANGELOG.md
-COPY --chown=$UID:$GID --from=build /app/package.json /app/package.json
+# # copy built frontend files
+# COPY --chown=$UID:$GID --from=build /app/build /app/build
+# COPY --chown=$UID:$GID --from=build /app/CHANGELOG.md /app/CHANGELOG.md
+# COPY --chown=$UID:$GID --from=build /app/package.json /app/package.json
 
 # copy backend files
 COPY --chown=$UID:$GID ./backend .
@@ -185,6 +174,4 @@ ARG BUILD_HASH
 ENV WEBUI_BUILD_VERSION=${BUILD_HASH}
 ENV DOCKER=true
 
-# CMD [ "bash", "start.sh"]
-CMD ["uvicorn", "open_webui.main:app", "--port", "$PORT", "--host", "0.0.0.0", "--forwarded-allow-ips", '*', "--reload"]
-# CMD [ "uvicorn", "open_webui.main:app", "--host", "
+CMD [ "bash", "start.sh"]

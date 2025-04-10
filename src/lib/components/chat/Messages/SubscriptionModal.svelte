@@ -47,7 +47,7 @@
 	// Detect when modal is shown
 	$: if (show) {
 		dispatch('show');
-		loadData();
+		 loadData();
 	} else {
 		dispatch('close');
 	}
@@ -58,7 +58,7 @@
 	}
 
 	onMount(async () => {
-        await loadData();
+        // await loadData();
 		
 		await tick();
     });

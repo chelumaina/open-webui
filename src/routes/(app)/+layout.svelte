@@ -194,6 +194,12 @@
 			});
 
 			if ($user?.role === 'admin' && ($settings?.showChangelog ?? true)) {
+				// alert($settings?.version +"  "+ $config.version)
+				console.log("$settings")
+				console.log($settings)
+				console.log("$config")
+				console.log($config)
+
 				showChangelog.set($settings?.version !== $config.version);
 			}
 

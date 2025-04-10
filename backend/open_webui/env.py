@@ -23,6 +23,7 @@ BASE_DIR = BACKEND_DIR.parent  # the path containing the backend/
 
 print(BACKEND_DIR)
 print(BASE_DIR)
+print(str(BASE_DIR / ".env"))
 
 try:
     from dotenv import find_dotenv, load_dotenv
@@ -32,6 +33,7 @@ except ImportError:
     print("dotenv not installed, skipping...")
 
 DOCKER = os.environ.get("DOCKER", "False").lower() == "true"
+print(f"{DOCKER=}")
 
 # device type embedding models - "cpu" (default), "cuda" (nvidia gpu required) or "mps" (apple silicon) - choosing this right can lead to better performance
 USE_CUDA = os.environ.get("USE_CUDA_DOCKER", "false")
@@ -333,6 +335,8 @@ REDIS_SENTINEL_PORT = os.environ.get("REDIS_SENTINEL_PORT", "26379")
 ####################################
 
 WEBUI_AUTH = os.environ.get("WEBUI_AUTH", "True").lower() == "true"
+print(f"{WEBUI_AUTH=}")
+
 WEBUI_AUTH_TRUSTED_EMAIL_HEADER = os.environ.get(
     "WEBUI_AUTH_TRUSTED_EMAIL_HEADER", None
 )
@@ -352,6 +356,9 @@ WEBUI_SECRET_KEY = os.environ.get(
         "WEBUI_JWT_SECRET_KEY", "t0p-s3cr3t"
     ),  # DEPRECATED: remove at next major version
 )
+print(f"{WEBUI_SECRET_KEY=}")
+WEBUI_SECRET_KEY = "t0p-s3cr3t"#os.environ.get("WEBUI_SECRET_KEY", "t0p-s3cr3t")
+print(f"{WEBUI_SECRET_KEY=}")
 
 WEBUI_SESSION_COOKIE_SAME_SITE = os.environ.get("WEBUI_SESSION_COOKIE_SAME_SITE", "lax")
 

@@ -313,3 +313,4 @@ backend/venv
 backend/.venv
 data/*
 ollama/*
+build.old
