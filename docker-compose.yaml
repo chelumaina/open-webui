@@ -1,11 +1,20 @@
 services:
-#   ollama:
-#     volumes:
-#       - ollama:/root/.ollama
-#     container_name: ollama 
-#     restart: unless-stopped
-#     image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
- 
+  ollama:
+    volumes:
+      - ./ollama:/root/.ollama
+    container_name: ollama
+    hostname: ollama
+    # pull_policy: always
+    ports:
+      - 11435:11434
+    # tty: true
+    restart: unless-stopped
+    image: ollama/ollama:latest
+
+    extra_hosts:
+      # - "host.docker.internal:redis-master"
+      - "google.com:142.250.190.78"
+
  
   open-webui:
     build:
@@ -32,6 +41,14 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
+    links:
+      - pg_db
+      - redis-sentinel
+      - ollama
+    depends_on:
+      - pg_db 
+      - redis-sentinel 
+      - ollama
 
 
   nginx: 
@@ -70,6 +87,65 @@ services:
       # - "host.docker.internal:host-gateway"
       - "google.com:142.250.190.78"
  
+
+
+
+  pg_db:
+    container_name: pg_db
+    hostname: pg_db
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: transcription
+      POSTGRES_PASSWORD: "62Y2xXcDojJ52054"
+      POSTGRES_DB: smart_ai_latest
+    ports:
+      - "5509:5432"
+    volumes:
+      - ./data/postgres-data:/var/lib/postgresql/data
+    #   # - ./logs:/var/log/pg_db
+
+    extra_hosts:
+      # - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
+  
+  redis-master:
+    image: redis:7
+    container_name: redis-master
+    hostname: redis-master
+    ports:
+      - "6379:6379"
+
+    restart: unless-stopped
+    volumes:
+      - ./redis/master:/usr/local/etc/redis
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"] 
+
+    extra_hosts:
+      # - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
+
+  redis-sentinel:
+    image: redis:7
+    container_name: redis-sentinel
+    hostname: redis-sentinel
+    depends_on:
+      - redis-master
+    links:
+      - redis-master
+    ports:
+      - "26379:26379"
+
+    restart: unless-stopped
+    volumes:
+      - ./redis/sentinel-data:/usr/local/etc/redis
+      # - ./sentinel-data:/data
+    command: ["redis-server", "/usr/local/etc/redis/sentinel.conf", "--sentinel"]  
+    extra_hosts:
+      # - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
+
+
 volumes:
   ollama: {}
   open-webui: {}
