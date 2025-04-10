@@ -10,7 +10,8 @@ services:
     # tty: true
     restart: unless-stopped
     image: ollama/ollama:latest
-
+    networks:
+      - app-network
     extra_hosts:
       # - "host.docker.internal:redis-master"
       - "google.com:142.250.190.78"
@@ -33,6 +34,8 @@ services:
       - ./package.json:/app/package.json
       - ./.env:/app/.env
  
+    networks:
+      - app-network
     ports:
       - ${OPEN_WEBUI_PORT-3004}:8080
     environment:
@@ -51,46 +54,6 @@ services:
       - ollama
 
 
-  webui-nginx: 
-    container_name: webui-nginx 
-    hostname: webui-nginx
-    image: nginx:alpine
-    ports:
-      - "3005:80"
-      # - "443:443"
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/logs:/var/log/nginx
-      # - ./static:/usr/static
-      # - ./ssl:/etc/nginx/ssl
-    depends_on:
-      - webui
-    links:
-      - webui
-    restart: unless-stopped
-    extra_hosts:
-      # - "host.docker.internal:host-gateway"
-      - "google.com:142.250.190.78"
-
-  certbot:
-    container_name: certbot
-    hostname: 'certbot'
-    image: certbot/certbot
-    volumes: 
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-      - ./logs:/var/log/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 48h & wait $${!}; done;'"
-    depends_on: 
-      - webui-nginx
-      - webui  
-    extra_hosts:
-      # - "host.docker.internal:host-gateway"
-      - "google.com:142.250.190.78"
- 
-
-
-
   pg_db:
     container_name: pg_db
     hostname: pg_db
@@ -105,7 +68,8 @@ services:
     volumes:
       - ./data/postgres-data:/var/lib/postgresql/data
     #   # - ./logs:/var/log/pg_db
-
+    networks:
+      - app-network
     extra_hosts:
       # - "host.docker.internal:host-gateway"
       - "google.com:142.250.190.78"
@@ -116,7 +80,8 @@ services:
     hostname: redis-master
     ports:
       - "6379:6379"
-
+    networks:
+      - app-network
     restart: unless-stopped
     volumes:
       - ./redis/master:/usr/local/etc/redis
@@ -136,7 +101,8 @@ services:
       - redis-master
     ports:
       - "26379:26379"
-
+    networks:
+      - app-network
     restart: unless-stopped
     volumes:
       - ./redis/sentinel-data:/usr/local/etc/redis
@@ -146,6 +112,11 @@ services:
       # - "host.docker.internal:host-gateway"
       - "google.com:142.250.190.78"
 
+
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   ollama: {}
