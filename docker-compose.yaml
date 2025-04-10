@@ -33,7 +33,7 @@ services:
       - ./CHANGELOG.md:/app/CHANGELOG.md
       - ./package.json:/app/package.json
       - ./.env:/app/.env
- 
+
     networks:
       - app-network
     ports:
@@ -41,6 +41,9 @@ services:
     environment:
       - 'OLLAMA_BASE_URL=http://host.docker.internal:11434'
       - 'WEBUI_SECRET_KEY='
+      - VIRTUAL_HOST=verbaltranscript.com,www.verbaltranscript.com
+      - LETSENCRYPT_HOST=verbaltranscript.com,www.verbaltranscript.com
+      - LETSENCRYPT_EMAIL=support@verbaltranscript.com
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
