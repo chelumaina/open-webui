@@ -43,8 +43,10 @@ services:
     container_name: ollama
     hostname: ollama
     # pull_policy: always
-    ports:
-      - 11435:11434
+    # ports:
+    #   - 11435:11434
+    expose:
+      - 11435
     # tty: true
     restart: unless-stopped
     image: ollama/ollama:latest
@@ -74,8 +76,10 @@ services:
 
     networks:
       - app-network
-    ports:
-      - ${OPEN_WEBUI_PORT-3004}:8080
+    # ports:
+    #   - ${OPEN_WEBUI_PORT-3004}:8080
+    expose:
+      - 8080
     environment:
       - 'OLLAMA_BASE_URL=http://host.docker.internal:11434'
       - 'WEBUI_SECRET_KEY='
@@ -104,8 +108,10 @@ services:
       POSTGRES_USER: transcription
       POSTGRES_PASSWORD: "62Y2xXcDojJ52054"
       POSTGRES_DB: smart_ai_latest
-    ports:
-      - "5509:5432"
+    # ports:
+    #   - "5509:5432"
+    expose:
+      - 5432
     volumes:
       - ./data/postgres-data:/var/lib/postgresql/data
     #   # - ./logs:/var/log/pg_db
@@ -119,8 +125,10 @@ services:
     image: redis:7
     container_name: redis-master
     hostname: redis-master
-    ports:
-      - "6379:6379"
+    # ports:
+    #   - "6379:6379"
+    expose:
+      - 6379
     networks:
       - app-network
     restart: unless-stopped
@@ -139,8 +147,10 @@ services:
       - redis-master
     links:
       - redis-master
-    ports:
-      - "26379:26379"
+    # ports:
+    #   - "26379:26379"
+    expose:
+      - 26379
     networks:
       - app-network
     restart: unless-stopped
