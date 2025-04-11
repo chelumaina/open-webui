@@ -449,7 +449,7 @@
 							exportHandler();
 						}}
 					>
-						<button class="p-0.5 dark:hover:bg-gray-850 rounded-lg touch-auto" on:click={(e) => {}}>
+						<button class="p-0.5 dark:hover:bg-gray-850 rounded-lg touch-auto border border-gray-300 dark:border-white" on:click={(e) => {}}>
 							<EllipsisHorizontal className="size-4" strokeWidth="2.5" />
 						</button>
 					</FolderMenu>

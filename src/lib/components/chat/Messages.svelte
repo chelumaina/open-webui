@@ -504,7 +504,7 @@
 														</div>
 													</div>
 													<div class="flex shrink-0 gap-2 pb-1 md:pb-0">
-														<button class="btn relative btn-primary shrink-0">
+														<button class="btn relative btn-primary shrink-0 border border-gray-300 dark:border-white">
 															<div class="flex items-center justify-center">
 																<button class="btn relative btn-primary shrink-0" on:click={() => {
 																showSubscriptionModal = true;showPercentage = true;showRelevance = true; showPercentage = true; selectedSubscription = 'plus';

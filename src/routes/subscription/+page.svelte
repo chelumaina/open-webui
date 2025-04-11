@@ -51,7 +51,7 @@
 		<div>
 			<div class="relative grid grid-cols-[1fr_auto_1fr] px-6 py-4 md:pb-10 md:pt-[4.5rem]">
 			 
-				<button class="justify-self-end text-token-text-primary opacity-50 transition hover:opacity-75 md:absolute md:right-6 md:top-6">
+				<button class="justify-self-end text-token-text-primary opacity-50 transition hover:opacity-75 md:absolute md:right-6 md:top-6 border border-gray-300 dark:border-white">
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-lg">
 						<path
 							fill-rule="evenodd"
@@ -206,7 +206,7 @@
 					<div class="relative flex flex-col bg-token-main-surface-primary">
 						<div>
 							<div class="bg-green-600 bg-opacity-5">
-								<button class="btn relative btn-green btn-large w-full font-semibold" data-testid="select-plan-button-plus-upgrade"><div class="flex items-center justify-center">Get Plus</div></button>
+								<button class="btn relative btn-green btn-large w-full font-semibold border border-gray-300 dark:border-white" data-testid="select-plan-button-plus-upgrade"><div class="flex items-center justify-center">Get Plus</div></button>
 							</div>
 						</div>
 					</div>
@@ -346,7 +346,7 @@
 					</div>
 					<div class="relative flex flex-col bg-token-main-surface-primary">
 						<div>
-							<button class="btn relative btn-primary btn-large w-full" data-testid="select-plan-button-pro-upgrade"><div class="flex items-center justify-center">Get Pro</div></button>
+							<button class="btn relative btn-primary btn-large w-full border border-gray-300 dark:border-white" data-testid="select-plan-button-pro-upgrade"><div class="flex items-center justify-center">Get Pro</div></button>
 						</div>
 					</div>
 					<div class="flex flex-col flex-grow gap-2">

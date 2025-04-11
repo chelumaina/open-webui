@@ -86,7 +86,7 @@
 				showEditChannelModal = true;
 			}}
 		>
-			<button class="p-0.5 dark:hover:bg-gray-850 rounded-lg touch-auto" on:click={(e) => {}}>
+			<button class="p-0.5 dark:hover:bg-gray-850 rounded-lg touch-auto border border-gray-300 dark:border-white" on:click={(e) => {}}>
 				<Cog6 className="size-3.5" />
 			</button>
 		</button>

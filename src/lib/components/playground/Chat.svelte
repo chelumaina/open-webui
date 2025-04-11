@@ -271,7 +271,7 @@
 						{/if}
 
 						<div class="shrink-0">
-							<button class="p-1.5 bg-transparent hover:bg-white/5 transition rounded-lg">
+							<button class="p-1.5 bg-transparent hover:bg-white/5 transition rounded-lg border border-gray-300 dark:border-white">
 								{#if showSystem}
 									<ChevronUp className="size-3.5" />
 								{:else}
