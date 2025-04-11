@@ -1402,7 +1402,7 @@ async def oauth_callback(provider: str, request: Request, response: Response):
     print(f"oauth_callback {response=}")
     
     
-    # return await oauth_manager.handle_callback(request, provider, response)
+    return await oauth_manager.handle_callback(request, provider, response)
 
 
 @app.get("/manifest.json")

@@ -166,7 +166,7 @@ def get_models_in_use():
 @sio.on("usage")
 async def usage(sid, data):
    
-    user=get_current_user()
+    # user=get_current_user()
     model_id = data["model"]
     # Record the timestamp for the last update
     current_time = int(time.time())
