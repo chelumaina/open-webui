@@ -1,4 +1,42 @@
 services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"   # Expose port 80 for HTTP
+      - "443:443" # Expose port 443 for HTTPS
+    networks:
+      - app-network
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro  # Mount custom Nginx config
+      - ./nginx/conf/logs:/var/log/nginx
+      - ./nginx/data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    restart: always
+    depends_on:
+     - webui
+    links:
+     - webui
+    extra_hosts:
+      - "google.com:142.250.190.78"
+
+  certbot_app:
+    container_name: certbot_app
+    hostname: 'certbot_app'
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    #- ./logs:/var/log/certbot_app
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 48h & wait $${!}; done;'"
+    depends_on: 
+      - nginx   
+    networks:
+      - app-network
+    extra_hosts:
+      - "google.com:142.250.190.78"
+
+
   ollama:
     volumes:
       - ./ollama:/root/.ollama
@@ -31,7 +69,7 @@ services:
       - ./backend:/app/backend
       - ./build:/app/build
       - ./CHANGELOG.md:/app/CHANGELOG.md
-      - ./package.json:/app/package.json
+      - .package.json:/app/package.json
       - ./.env:/app/.env
 
     networks:
@@ -41,9 +79,9 @@ services:
     environment:
       - 'OLLAMA_BASE_URL=http://host.docker.internal:11434'
       - 'WEBUI_SECRET_KEY='
-      - VIRTUAL_HOST=verbaltranscript.com,www.verbaltranscript.com
-      - LETSENCRYPT_HOST=verbaltranscript.com,www.verbaltranscript.com
-      - LETSENCRYPT_EMAIL=support@verbaltranscript.com
+      - 'VIRTUAL_HOST=verbaltranscript.com,www.verbaltranscript.com'
+      - 'LETSENCRYPT_HOST=verbaltranscript.com,www.verbaltranscript.com'
+      - 'LETSENCRYPT_EMAIL=support@verbaltranscript.com'
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
@@ -52,8 +90,8 @@ services:
       - redis-sentinel
       - ollama
     depends_on:
-      - pg_db 
-      - redis-sentinel 
+      - pg_db
+      - redis-sentinel
       - ollama
 
 
@@ -91,8 +129,7 @@ services:
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"] 
 
     extra_hosts:
-      # - "host.docker.internal:host-gateway"
-      - "google.com:142.250.190.78"
+     - "google.com:142.250.190.78"
 
   redis-sentinel:
     image: redis:7
@@ -110,18 +147,12 @@ services:
     volumes:
       - ./redis/sentinel-data:/usr/local/etc/redis
       # - ./sentinel-data:/data
-    command: ["redis-server", "/usr/local/etc/redis/sentinel.conf", "--sentinel"]  
+    command: ["redis-server", "/usr/local/etc/redis/sentinel.conf", "--sentinel"]
     extra_hosts:
       # - "host.docker.internal:host-gateway"
       - "google.com:142.250.190.78"
-
-
-
+ 
 networks:
   app-network:
     driver: bridge
     external: true
-
-volumes:
-  ollama: {}
-  webui: {}
