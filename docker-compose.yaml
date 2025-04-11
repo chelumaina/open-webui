@@ -48,6 +48,22 @@ services:
     expose:
       - 11435
     # tty: true
+    environment:
+      - OLLAMA_NUM_THREADS=8
+      - OLLAMA_BATCH_SIZE=32
+      - OLLAMA_MEMORY_GB=12
+    deploy:
+      resources:
+        limits:
+          memory: 14G
+        reservations:
+          memory: 12G
+    mem_limit: 14g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
     restart: unless-stopped
     image: ollama/ollama:latest
     networks:
