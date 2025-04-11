@@ -10,8 +10,10 @@ services:
     volumes:
       - ./nginx/conf.d/nginx.conf:/etc/nginx/nginx.conf:ro  # Mount custom Nginx config
       - ./nginx/conf.d/logs:/var/log/nginx
+      - ./nginx/letsencrypt/logs:/var/log/letsencrypt
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
+      - ./static:/usr/src/static
     restart: always
     depends_on:
      - webui
