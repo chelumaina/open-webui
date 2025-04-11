@@ -69,7 +69,7 @@ services:
       - ./backend:/app/backend
       - ./build:/app/build
       - ./CHANGELOG.md:/app/CHANGELOG.md
-      - .package.json:/app/package.json
+      - ./package.json:/app/package.json
       - ./.env:/app/.env
 
     networks:
