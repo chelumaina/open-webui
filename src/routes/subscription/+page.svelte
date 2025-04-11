@@ -51,7 +51,7 @@
 		<div>
 			<div class="relative grid grid-cols-[1fr_auto_1fr] px-6 py-4 md:pb-10 md:pt-[4.5rem]">
 			 
-				<button class="justify-self-end text-token-text-primary opacity-50 transition hover:opacity-75 md:absolute md:right-6 md:top-6 border border-gray-300 dark:border-white">
+				<button class="justify-self-end text-token-text-primary opacity-50 transition hover:opacity-75 md:absolute md:right-6 md:top-6">
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-lg">
 						<path
 							fill-rule="evenodd"
