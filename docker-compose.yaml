@@ -83,7 +83,7 @@ services:
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: webui
-    command: bash -c "python3 -m venv /venv && pip3 install hf_xet && sh /app/backend/start.sh"
+    # command: bash -c "python3 -m venv /venv && pip3 install hf_xet && sh /app/backend/start.sh"
     volumes:
       # - webui:/app/backend/data
       - ./backend:/app/backend

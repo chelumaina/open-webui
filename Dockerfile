@@ -2,7 +2,7 @@
 # Initialize device type args
 # use build args in the docker build command with --build-arg="BUILDARG=true"
 ARG USE_CUDA=false
-ARG USE_OLLAMA=false
+ARG USE_OLLAMA=true
 # Tested with cu117 for CUDA 11 and cu121 for CUDA 12 (default)
 ARG USE_CUDA_VER=cu121
 # any sentence transformer model; models to use can be found at https://huggingface.co/models?library=sentence-transformers
@@ -30,7 +30,7 @@ ARG GID=0
 # ENV NODE_OPTIONS="--max-old-space-size=8192"
 # RUN npm ci
 
-# COPY . .
+COPY ./build /app/build
 # ENV APP_BUILD_HASH=${BUILD_HASH}
 # RUN npm run build
 
@@ -60,16 +60,10 @@ ENV ENV=prod \
 ENV OLLAMA_BASE_URL="/ollama" \
     OPENAI_API_BASE_URL=""
 
-## API Key and Security Config ##
-ENV OPENAI_API_KEY="" \
-    WEBUI_SECRET_KEY="" \
-    SCARF_NO_ANALYTICS=true \
-    DO_NOT_TRACK=true \
-    ANONYMIZED_TELEMETRY=false
 
 #### Other models #########################################################
 ## whisper TTS model settings ##
-ENV WHISPER_MODEL="base" \
+ENV WHISPER_MODEL="tiny" \
     WHISPER_MODEL_DIR="/app/backend/data/cache/whisper/models"
 
 ## RAG Embedding model settings ##
@@ -150,16 +144,18 @@ RUN pip3 install  uv && \
     fi; \
     chown -R $UID:$GID /app/backend/data/
 
-
+RUN pip3 install hf_xet
 
 # # copy embedding weight from build
 # # RUN mkdir -p /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2
 # # COPY --from=build /app/onnx /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx
 
-# # copy built frontend files
-# COPY --chown=$UID:$GID --from=build /app/build /app/build
-# COPY --chown=$UID:$GID --from=build /app/CHANGELOG.md /app/CHANGELOG.md
-# COPY --chown=$UID:$GID --from=build /app/package.json /app/package.json
+# COPY ./build /app/build
+
+# copy built frontend files
+COPY --chown=$UID:$GID --from=build ./build /app/build
+COPY --chown=$UID:$GID --from=build ./CHANGELOG.md /app/CHANGELOG.md
+COPY --chown=$UID:$GID --from=build ./package.json /app/package.json
 
 # copy backend files
 COPY --chown=$UID:$GID ./backend .
