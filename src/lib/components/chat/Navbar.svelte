@@ -80,11 +80,11 @@
 				<div class="mt-1.5 flex grow gap-4 md:mt-0 md:flex-row md:items-center md:justify-between md:gap-8 flex-col">
 					{#if ($token_cost.cost > 1  && $token_cost.is_user_subscription_valid==true) || $token_cost.cost < 1 }
 						<div class="flex max-w-none flex-col bg-green-600 px-4">
-							<div class="font-bold text-token-text-primary">Your daily usage is. <strong>USD ${$token_cost.cost}</strong></div>
+							<div class="font-bold text-token-text-primary"> Daily usage  <strong> ${$token_cost.cost}</strong></div>
 						</div>
 					{:else if $token_cost.cost > 1 && $token_cost.is_user_subscription_valid==false}
 						<div class="flex max-w-none flex-col bg-red-600 px-4">
-							<div class="font-bold text-token-text-primary">Your daily usage is. <strong>USD ${$token_cost.cost}</strong></div>
+							<div class="font-bold text-token-text-primary">Daily usage. <strong> ${$token_cost.cost}</strong></div>
 						</div>
 					{/if}
 

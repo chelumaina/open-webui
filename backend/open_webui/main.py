@@ -1417,13 +1417,13 @@ async def get_manifest_json():
         "orientation": "natural",
         "icons": [
             {
-                "src": "/static/logo.png",
+                "src": "/static/splash.png",
                 "type": "image/png",
                 "sizes": "500x500",
                 "purpose": "any",
             },
             {
-                "src": "/static/logo.png",
+                "src": "/static/splash-dark.png",
                 "type": "image/png",
                 "sizes": "500x500",
                 "purpose": "maskable",
