@@ -93,6 +93,15 @@ services:
     restart: always
     networks:
       - app-network
+    links:
+      - pg_db
+      # - redis-sentinel
+      - ollama
+    depends_on:
+      - pg_db
+      # - redis-sentinel
+      - ollama
+
  
 
   # webui:
@@ -136,27 +145,27 @@ services:
   #     - redis-sentinel
   #     - ollama
 
-  # pg_db:
-  #   container_name: pg_db
-  #   hostname: pg_db
-  #   image: postgres:latest
-  #   restart: always
-  #   environment:
-  #     POSTGRES_USER: transcription
-  #     POSTGRES_PASSWORD: "62Y2xXcDojJ52054"
-  #     POSTGRES_DB: smart_ai_latest
-  #   # ports:
-  #   #   - "5509:5432"
-  #   expose:
-  #     - 5432
-  #   volumes:
-  #     - ./data/postgres-data:/var/lib/postgresql/data
-  #   #   # - ./logs:/var/log/pg_db
-  #   networks:
-  #     - app-network
-  #   extra_hosts:
-  #     # - "host.docker.internal:host-gateway"
-  #     - "google.com:142.250.190.78"
+  pg_db:
+    container_name: pg_db
+    hostname: pg_db
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: transcription
+      POSTGRES_PASSWORD: "62Y2xXcDojJ52054"
+      POSTGRES_DB: smart_ai_latest
+    # ports:
+    #   - "5509:5432"
+    expose:
+      - 5432
+    volumes:
+      - ./data/postgres-data:/var/lib/postgresql/data
+    #   # - ./logs:/var/log/pg_db
+    networks:
+      - app-network
+    extra_hosts:
+      # - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
   
   # redis-master:
   #   image: redis:7
