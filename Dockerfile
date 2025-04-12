@@ -30,9 +30,9 @@ COPY package.json package-lock.json ./
 ENV NODE_OPTIONS="--max-old-space-size=8192"
 RUN npm ci
 
-# COPY ./build /app/build
-# ENV APP_BUILD_HASH=${BUILD_HASH}
-# RUN npm run build
+COPY ./build /app/build
+ENV APP_BUILD_HASH=${BUILD_HASH}
+RUN npm run build
 
 ######## WebUI backend ########
 FROM python:3.11-slim-bookworm AS base

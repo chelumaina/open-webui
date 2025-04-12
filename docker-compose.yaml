@@ -76,26 +76,26 @@ services:
 
  
   webui:
-    build:
-      context: .
-      args:
-        OLLAMA_BASE_URL: 'host.docker.internal'
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   args:
+    #     OLLAMA_BASE_URL: 'host.docker.internal'
+    #   dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: webui
     # command: bash -c "python3 -m venv /venv && pip3 install hf_xet && sh /app/backend/start.sh"
-    volumes:
-      # - webui:/app/backend/data
-      - ./backend:/app/backend
-      - ./build:/app/build
-      - ./CHANGELOG.md:/app/CHANGELOG.md
-      - ./package.json:/app/package.json
-      - ./.env:/app/.env
+    # volumes:
+    #   # - webui:/app/backend/data
+    #   - ./backend:/app/backend
+    #   - ./build:/app/build
+    #   - ./CHANGELOG.md:/app/CHANGELOG.md
+    #   - ./package.json:/app/package.json
+    #   - ./.env:/app/.env
 
     networks:
       - app-network
-    # ports:
-    #   - ${OPEN_WEBUI_PORT-3004}:8080
+    ports:
+      - ${OPEN_WEBUI_PORT-3004}:8080
     expose:
       - 8080
     environment:
