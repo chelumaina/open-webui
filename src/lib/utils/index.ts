@@ -983,7 +983,7 @@ export const getTimeRange = (timestamp) => {
  * @param content {string} - The content string with potential frontmatter.
  * @returns {Object} - The extracted frontmatter as a dictionary.
  */
-export const extractFrontmatter = (content) => {
+export const extractFrontmatter = (content: any) => {
 	const frontmatter = {};
 	let frontmatterStarted = false;
 	let frontmatterEnded = false;
@@ -1022,11 +1022,11 @@ export const extractFrontmatter = (content) => {
 };
 
 // Function to determine the best matching language
-export const bestMatchingLanguage = (supportedLanguages, preferredLanguages, defaultLocale) => {
-	const languages = supportedLanguages.map((lang) => lang.code);
+export const bestMatchingLanguage = (supportedLanguages: any, preferredLanguages: any, defaultLocale: any) => {
+	const languages = supportedLanguages.map((lang: any) => lang.code);
 
 	const match = preferredLanguages
-		.map((prefLang) => languages.find((lang) => lang.startsWith(prefLang)))
+		.map((prefLang: any) => languages.find((lang: any) => lang.startsWith(prefLang)))
 		.find(Boolean);
 
 	return match || defaultLocale;
@@ -1064,7 +1064,7 @@ export const getWeekday = () => {
 	return weekdays[date.getDay()];
 };
 
-export const createMessagesList = (history, messageId) => {
+export const createMessagesList = (history: any, messageId: any) => {
 	if (messageId === null) {
 		return [];
 	}
@@ -1077,7 +1077,7 @@ export const createMessagesList = (history, messageId) => {
 	}
 };
 
-export const formatFileSize = (size) => {
+export const formatFileSize = (size: any) => {
 	if (size == null) return 'Unknown size';
 	if (typeof size !== 'number' || size < 0) return 'Invalid size';
 	if (size === 0) return '0 B';
@@ -1091,13 +1091,13 @@ export const formatFileSize = (size) => {
 	return `${size.toFixed(1)} ${units[unitIndex]}`;
 };
 
-export const getLineCount = (text) => {
+export const getLineCount = (text: any) => {
 	console.log(typeof text);
 	return text ? text.split('\n').length : 0;
 };
 
 // Helper function to recursively resolve OpenAPI schema into JSON schema format
-function resolveSchema(schemaRef, components, resolvedSchemas = new Set()) {
+function resolveSchema(schemaRef: any, components: any, resolvedSchemas: any = new Set()) {
 	if (!schemaRef) return {};
 
 	if (schemaRef['$ref']) {
@@ -1145,7 +1145,7 @@ function resolveSchema(schemaRef, components, resolvedSchemas = new Set()) {
 }
 
 // Main conversion function
-export const convertOpenApiToToolPayload = (openApiSpec) => {
+export const convertOpenApiToToolPayload = (openApiSpec: any) => {
 	const toolPayload = [];
 
 	for (const [path, methods] of Object.entries(openApiSpec.paths)) {

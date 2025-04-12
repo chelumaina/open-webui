@@ -16,6 +16,17 @@
 	let clone = false;
 	let func = null;
 
+	/**
+	 * @typedef {Object} FunctionData
+	 * @property {string} id
+	 * @property {string} name
+	 * @property {Object} meta
+	 * @property {string} content
+	 */
+
+	/**
+	 * @param {FunctionData} data
+	 */
 	const saveHandler = async (data) => {
 		console.log(data);
 

@@ -31,13 +31,13 @@
 	let showModelSelector = false;
 	let selectedModels = [''];
 
-	let chat = null;
-	let user = null;
+	let chat: any = null;
+	let user: any = null;
 
 	let title = '';
 	let files = [];
 
-	let messages = [];
+	let messages: any[] = [];
 	let history = {
 		messages: {},
 		currentId: null
