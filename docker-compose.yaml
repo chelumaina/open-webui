@@ -73,6 +73,24 @@ services:
       # - "host.docker.internal:redis-master"
       - "google.com:142.250.190.78"
 
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - "3005:8080"
+    expose:
+      - 8080
+    volumes:
+      # - ./open-webui-data:/app/backend/data
+      # - ./backend:/app/backend
+      - ./app:/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+    detach: true  # Optional: for compatibility with the detached run behavior
+
+
   # webui:
   #   build:
   #     context: .
