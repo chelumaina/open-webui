@@ -83,8 +83,8 @@ services:
       - 8080
     volumes:
       # - ./open-webui-data:/app/backend/data
-      # - ./backend:/app/backend
-      - ./app:/app
+      - ./backend:/app/backend
+      # - ./app:/app
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: always
