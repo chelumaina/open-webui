@@ -20,17 +20,17 @@ ARG BUILD_HASH=dev-build
 ARG UID=0
 ARG GID=0
 
-# ######## WebUI frontend ########
-# FROM --platform=$BUILDPLATFORM node:22-alpine3.20 AS build
-# ARG BUILD_HASH
+######## WebUI frontend ########
+FROM --platform=$BUILDPLATFORM node:22-alpine3.20 AS build
+ARG BUILD_HASH
 
-# WORKDIR /app
+WORKDIR /app
 
-# COPY package.json package-lock.json ./
-# ENV NODE_OPTIONS="--max-old-space-size=8192"
-# RUN npm ci
+COPY package.json package-lock.json ./
+ENV NODE_OPTIONS="--max-old-space-size=8192"
+RUN npm ci
 
-COPY ./build /app/build
+# COPY ./build /app/build
 # ENV APP_BUILD_HASH=${BUILD_HASH}
 # RUN npm run build
 
