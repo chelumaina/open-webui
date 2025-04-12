@@ -1397,11 +1397,7 @@ async def oauth_login(provider: str, request: Request):
 #    - Email addresses are considered unique, so we fail registration if the email address is already taken
 @app.get("/oauth/{provider}/callback")
 async def oauth_callback(provider: str, request: Request, response: Response):
-    print(f"oauth_callback {provider=}")
-    print(f"oauth_callback {request=}")
-    print(f"oauth_callback {response=}")
-    
-    
+  
     return await oauth_manager.handle_callback(request, provider, response)
 
 
@@ -1417,13 +1413,13 @@ async def get_manifest_json():
         "orientation": "natural",
         "icons": [
             {
-                "src": "/static/splash.png",
+                "src": "/static/logo.png",
                 "type": "image/png",
                 "sizes": "500x500",
                 "purpose": "any",
             },
             {
-                "src": "/static/splash-dark.png",
+                "src": "/static/logo.png",
                 "type": "image/png",
                 "sizes": "500x500",
                 "purpose": "maskable",
