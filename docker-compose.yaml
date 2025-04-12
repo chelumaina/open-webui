@@ -20,7 +20,59 @@ services:
     links:
      - webui
     extra_hosts:
-      - host.docker.internal:host-gateway
+      - "google.com:142.250.190.78"
+
+  certbot_app:
+    container_name: certbot_app
+    hostname: 'certbot_app'
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    #- ./logs:/var/log/certbot_app
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 48h & wait $${!}; done;'"
+    depends_on: 
+      - nginx   
+    networks:
+      - app-network
+    extra_hosts:
+      - "google.com:142.250.190.78"
+
+
+  ollama:
+    volumes:
+      - ./ollama:/root/.ollama
+    container_name: ollama
+    hostname: ollama
+    # pull_policy: always
+    # ports:
+    #   - 11435:11434
+    expose:
+      - 11435
+    # tty: true
+    environment:
+      - OLLAMA_NUM_THREADS=8
+      - OLLAMA_BATCH_SIZE=32
+      - OLLAMA_MEMORY_GB=12
+    deploy:
+      resources:
+        limits:
+          memory: 14G
+        reservations:
+          memory: 12G
+    mem_limit: 14g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+    restart: unless-stopped
+    image: ollama/ollama:latest
+    networks:
+      - app-network
+    extra_hosts:
+      # - "host.docker.internal:redis-master"
+      - "google.com:142.250.190.78"
 
   webui:
     build:
@@ -126,90 +178,6 @@ services:
     extra_hosts:
       # - "host.docker.internal:host-gateway"
       - "google.com:142.250.190.78"
-      - "google.com:142.250.190.78"
-
-  certbot_app:
-    container_name: certbot_app
-    hostname: 'certbot_app'
-    image: certbot/certbot
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-    #- ./logs:/var/log/certbot_app
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 48h & wait $${!}; done;'"
-    depends_on: 
-      - nginx   
-    networks:
-      - app-network
-    extra_hosts:
-      - "google.com:142.250.190.78"
-
-
-  ollama:
-    volumes:
-      - ./ollama:/root/.ollama
-    container_name: ollama
-    hostname: ollama
-    # pull_policy: always
-    # ports:
-    #   - 11435:11434
-    expose:
-      - 11435
-    # tty: true
-    environment:
-      - OLLAMA_NUM_THREADS=8
-      - OLLAMA_BATCH_SIZE=32
-      - OLLAMA_MEMORY_GB=12
-    deploy:
-      resources:
-        limits:
-          memory: 14G
-        reservations:
-          memory: 12G
-    mem_limit: 14g
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-
-    restart: unless-stopped
-    image: ollama/ollama:latest
-    networks:
-      - app-network
-    extra_hosts:
-      # - "host.docker.internal:redis-master"
-      - "google.com:142.250.190.78"
-
-  open-webui:
-    # build:
-    #   context: .
-    #   args:
-    #     OLLAMA_BASE_URL: '/ollama'
-    #   dockerfile: Dockerfile
-    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
-    container_name: open-webui
-    volumes:
-      - open-webui:/app/backend/data
-    links:
-      - pg_db
-      # - redis-sentinel
-      - ollama
-    depends_on:
-      - pg_db
-      # - redis-sentinel
-      - ollama
-    networks:
-      - app-network
-
-    ports:
-      - ${OPEN_WEBUI_PORT-3000}:8080
-    environment:
-      - 'OLLAMA_BASE_URL=http://ollama:11434'
-      - 'WEBUI_SECRET_KEY='
-    extra_hosts:
-      - host.docker.internal:host-gateway
-    restart: unless-stopped
-
  
 networks:
   app-network:
