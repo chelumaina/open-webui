@@ -897,7 +897,6 @@ async def inspect_websocket(request: Request, call_next):
         "/ws/socket.io" in request.url.path
         and request.query_params.get("transport") == "websocket"
     ):
-        print(f"WebSocket connection from {request.client.host}")
         upgrade = (request.headers.get("Upgrade") or "").lower()
         connection = (request.headers.get("Connection") or "").lower().split(",")
         # Check that there's the correct headers for an upgrade, else reject the connection

@@ -466,7 +466,6 @@ class PlanTable:
                 db.refresh(plan_item) 
                 return PlanModel.model_validate(plan_item)
         except Exception as ex:
-            print(f"Error updating chat: {ex}")
             return None
          
     def get_plans(self) -> list[PlanModel]:
@@ -483,7 +482,6 @@ class PlanTable:
                 return PlanModel.model_validate(plan_item)
                 # return Plan(**plan_item.model_dump())
         except Exception as ex:
-            print(f"Error updating chat: {ex}")
             return None
         
         # plan = self.get_plan_by_id(id)
@@ -572,7 +570,6 @@ class SubscriptionTable:
                 db.refresh(plan_item) 
                 return SubscriptionModel.model_validate(plan_item)
         except Exception as ex:
-            print(f"Error updating chat: {ex}")
             return None
          
     def get_subscriptions(self, user_id:str) -> list[SubscriptionModel]:
@@ -647,7 +644,6 @@ class TransactionTable:
                 db.refresh(plan_item) 
                 return TransactionModel.model_validate(plan_item)
         except Exception as ex:
-            print(f"Error updating chat: {ex}")
             return None
          
     def get_transactions(self, user_id:str) -> list[TransactionModel]:
@@ -723,7 +719,6 @@ class InvoiceTable:
                 db.refresh(plan_item) 
                 return InvoiceModel.model_validate(plan_item)
         except Exception as ex:
-            print(f"Error updating chat: {ex}")
             return None
          
     def get_invoices(self, user_id:str) -> list[InvoiceModel]:
@@ -810,7 +805,6 @@ class TransactionTable:
                 db.refresh(plan_item) 
                 return TransactionModel.model_validate(plan_item)
         except Exception as ex:
-            print(f"Error updating chat: {ex}")
             return None
          
     def get_transactions(self, user_id:str) -> list[TransactionModel]:
@@ -827,7 +821,6 @@ class TransactionTable:
                 return TransactionModel.model_validate(plan_item)
                 # return Plan(**plan_item.model_dump())
         except Exception as ex:
-            print(f"Error updating chat: {ex}")
             return None
 
     def delete_transaction_by_id(self, id: str) -> bool:
@@ -865,11 +858,9 @@ class TransactionTable:
                 # end_date = datetime.strptime(subscription.end_date, "%Y-%m-%d")
                 one_month_later = datetime.now() + relativedelta(months=1)+days
 
-                # print(f"{one_month_later=}")
 
                 # # Add 1 month
                 # new_end_date = end_date + relativedelta(months=1)
-                # print(f"{new_end_date=}")
 
 
                 subscription.status = 'active'
@@ -959,7 +950,6 @@ class TransactionTable:
                 # db.commit()
 
         except Exception as e:
-            print(f"Error saving PayPal response to DB: {e}")
             return False
 
 Transactions = TransactionTable()
