@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-domains=(www.verbaltranscript.com)
+domains=(www.neurohog.com)
 rsa_key_size=4096
 data_path="./data/certbot"
 email="support@verbaltranscript.com" # Adding a valid address is strongly recommended
@@ -34,7 +34,7 @@ docker-compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
     -keyout '$path/privkey.pem' \
     -out '$path/fullchain.pem' \
-    -subj '/CN=www.verbaltranscript.com'" certbot_app
+    -subj '/CN=www.neurohog.com'" certbot_app
 echo
 
 
