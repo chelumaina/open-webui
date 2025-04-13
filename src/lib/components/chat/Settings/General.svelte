@@ -279,10 +279,10 @@
 					Couldn't find your language?
 					<a
 						class=" text-gray-300 font-medium underline"
-						href="mailto:support@aispeechpro.com"
+						href="mailto:support@neurohog.com"
 						target="_blank"
 					>
-						email: support@aispeechpro.com
+						email: support@neurohog.com
 					</a>
 				</div>
 			{/if}
