@@ -3,7 +3,7 @@ services:
     image: nginx:latest
     container_name: nginx
     ports:
-      - "85:80"   # Expose port 80 for HTTP
+      - "80:80"   # Expose port 80 for HTTP
       - "443:443" # Expose port 443 for HTTPS
     networks:
       - app-network
