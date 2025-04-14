@@ -3,7 +3,7 @@ services:
     image: nginx:latest
     container_name: nginx
     ports:
-      - "80:80"   # Expose port 80 for HTTP
+      - "85:80"   # Expose port 80 for HTTP
       - "443:443" # Expose port 443 for HTTPS
     networks:
       - app-network
@@ -77,8 +77,8 @@ services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
     container_name: open-webui
-    # ports:
-    #   - "3005:8080"
+    ports:
+      - "3005:8080"
     expose:
       - 8080
     volumes:
@@ -103,48 +103,6 @@ services:
       - ollama
 
  
-
-  # webui:
-  #   build:
-  #     context: .
-  #     args:
-  #       OLLAMA_BASE_URL: 'host.docker.internal'
-  #     dockerfile: Dockerfile
-  #   image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
-  #   container_name: webui
-  #   # command: bash -c "python3 -m venv /venv && pip3 install hf_xet && sh /app/backend/start.sh"
-  #   volumes:
-  #     # - webui:/app/backend/data
-  #     - ./backend:/app/backend
-  #     - ./build:/app/build
-  #     - ./CHANGELOG.md:/app/CHANGELOG.md
-  #     - ./package.json:/app/package.json
-  #     - ./.env:/app/.env
-
-  #   networks:
-  #     - app-network
-  #   # ports:
-  #   #   - ${OPEN_WEBUI_PORT-3004}:8080
-  #   expose:
-  #     - 8080
-  #   environment:
-  #     - 'OLLAMA_BASE_URL=http://host.docker.internal:11434'
-  #     - 'WEBUI_SECRET_KEY='
-  #     - 'VIRTUAL_HOST=neurohog.com,neurohog.com'
-  #     - 'LETSENCRYPT_HOST=neurohog.com,neurohog.com'
-  #     - 'LETSENCRYPT_EMAIL=support@neurohog.com'
-  #   extra_hosts:
-  #     - host.docker.internal:host-gateway
-  #   restart: unless-stopped
-  #   links:
-  #     - pg_db
-  #     - redis-sentinel
-  #     - ollama
-  #   depends_on:
-  #     - pg_db
-  #     - redis-sentinel
-  #     - ollama
-
   pg_db:
     container_name: pg_db
     hostname: pg_db
