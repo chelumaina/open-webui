@@ -77,8 +77,8 @@ services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
     container_name: open-webui
-    ports:
-      - "3005:8080"
+    # ports:
+    #   - "3005:8080"
     expose:
       - 8080
     volumes:
@@ -95,11 +95,11 @@ services:
       - app-network
     links:
       - pg_db
-      # - redis-sentinel
+      - redis-sentinel
       - ollama
     depends_on:
       - pg_db
-      # - redis-sentinel
+      - redis-sentinel
       - ollama
 
  
@@ -125,46 +125,46 @@ services:
       # - "host.docker.internal:host-gateway"
       - "google.com:142.250.190.78"
   
-  # redis-master:
-  #   image: redis:7
-  #   container_name: redis-master
-  #   hostname: redis-master
-  #   # ports:
-  #   #   - "6379:6379"
-  #   expose:
-  #     - 6379
-  #   networks:
-  #     - app-network
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./redis/master:/usr/local/etc/redis
-  #   command: ["redis-server", "/usr/local/etc/redis/redis.conf"] 
+  redis-master:
+    image: redis:7
+    container_name: redis-master
+    hostname: redis-master
+    # ports:
+    #   - "6379:6379"
+    expose:
+      - 6379
+    networks:
+      - app-network
+    restart: unless-stopped
+    volumes:
+      - ./redis/master:/usr/local/etc/redis
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"] 
 
-  #   extra_hosts:
-  #    - "google.com:142.250.190.78"
+    extra_hosts:
+     - "google.com:142.250.190.78"
 
-  # redis-sentinel:
-  #   image: redis:7
-  #   container_name: redis-sentinel
-  #   hostname: redis-sentinel
-  #   depends_on:
-  #     - redis-master
-  #   links:
-  #     - redis-master
-  #   # ports:
-  #   #   - "26379:26379"
-  #   expose:
-  #     - 26379
-  #   networks:
-  #     - app-network
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./redis/sentinel-data:/usr/local/etc/redis
-  #     # - ./sentinel-data:/data
-  #   command: ["redis-server", "/usr/local/etc/redis/sentinel.conf", "--sentinel"]
-  #   extra_hosts:
-  #     # - "host.docker.internal:host-gateway"
-  #     - "google.com:142.250.190.78"
+  redis-sentinel:
+    image: redis:7
+    container_name: redis-sentinel
+    hostname: redis-sentinel
+    depends_on:
+      - redis-master
+    links:
+      - redis-master
+    # ports:
+    #   - "26379:26379"
+    expose:
+      - 26379
+    networks:
+      - app-network
+    restart: unless-stopped
+    volumes:
+      - ./redis/sentinel-data:/usr/local/etc/redis
+      # - ./sentinel-data:/data
+    command: ["redis-server", "/usr/local/etc/redis/sentinel.conf", "--sentinel"]
+    extra_hosts:
+      # - "host.docker.internal:host-gateway"
+      - "google.com:142.250.190.78"
  
 networks:
   app-network:
