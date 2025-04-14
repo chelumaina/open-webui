@@ -130,8 +130,8 @@ services:
   #   environment:
   #     - 'OLLAMA_BASE_URL=http://host.docker.internal:11434'
   #     - 'WEBUI_SECRET_KEY='
-  #     - 'VIRTUAL_HOST=neurohog.com,www.neurohog.com'
-  #     - 'LETSENCRYPT_HOST=neurohog.com,www.neurohog.com'
+  #     - 'VIRTUAL_HOST=neurohog.com,neurohog.com'
+  #     - 'LETSENCRYPT_HOST=neurohog.com,neurohog.com'
   #     - 'LETSENCRYPT_EMAIL=support@neurohog.com'
   #   extra_hosts:
   #     - host.docker.internal:host-gateway
