@@ -3,7 +3,7 @@ services:
     image: nginx:latest
     container_name: nginx
     ports:
-      - "80:80"   # Expose port 80 for HTTP
+      - "90:80"   # Expose port 80 for HTTP
       - "443:443" # Expose port 443 for HTTPS
     networks:
       - app-network
@@ -13,7 +13,7 @@ services:
       - ./nginx/letsencrypt/logs:/var/log/letsencrypt
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
-      - ./static:/usr/src
+      - ./static:/usr/src/static
     restart: always
     depends_on:
      - open-webui
