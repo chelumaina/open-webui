@@ -17,7 +17,7 @@ def version_callback(value: bool):
     if value:
         from open_webui.env import VERSION
 
-        typer.echo(f"BiXAI version: {VERSION}")
+        typer.echo(f"NeuroHog version: {VERSION}")
         raise typer.Exit()
 
 

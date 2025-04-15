@@ -560,7 +560,7 @@ def transcribe(request: Request, file_path):
                 except Exception:
                     detail = f"External: {e}"
 
-            raise Exception(detail if detail else "BiXAI: Server Connection Error")
+            raise Exception(detail if detail else "NeuroHog: Server Connection Error")
 
     elif request.app.state.config.STT_ENGINE == "deepgram":
         try:
@@ -623,7 +623,7 @@ def transcribe(request: Request, file_path):
                         detail = f"External: {res['error'].get('message', '')}"
                 except Exception:
                     detail = f"External: {e}"
-            raise Exception(detail if detail else "BiXAI: Server Connection Error")
+            raise Exception(detail if detail else "NeuroHog: Server Connection Error")
 
     elif request.app.state.config.STT_ENGINE == "azure":
         # Check file exists and size

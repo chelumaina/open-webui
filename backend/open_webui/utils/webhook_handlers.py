@@ -73,10 +73,10 @@ async def create_paypal_order(user_id:str, amount: float = "10.00", currency: st
                 }
                 }
             },
-            "description": "BixAI subscription",
+            "description": "NeuroHog subscription",
             "items": [
                 {
-                "name": "BixAI Plus Subscription Plan",
+                "name": "NeuroHog Plus Subscription Plan",
                 "unit_amount": {
                     "currency_code": currency,
                     "value": amount
