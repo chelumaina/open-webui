@@ -3,8 +3,8 @@ services:
     image: nginx:latest
     container_name: nginx
     ports:
-      - "80:80"   # Expose port 80 for HTTP
-      - "443:443" # Expose port 443 for HTTPS
+      - "90:80"   # Expose port 80 for HTTP
+      # - "443:443" # Expose port 443 for HTTPS
     networks:
       - app-network
     volumes:
@@ -13,7 +13,7 @@ services:
       - ./nginx/letsencrypt/logs:/var/log/letsencrypt
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
-      - ./static:/usr/src/static
+      - ./static:/usr/src
     restart: always
     depends_on:
      - open-webui
@@ -77,8 +77,8 @@ services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
     container_name: open-webui
-    # ports:
-    #   - "3005:8080"
+    ports:
+      - "3005:8080"
     expose:
       - 8080
     volumes:
@@ -88,6 +88,8 @@ services:
       - ./CHANGELOG.md:/app/CHANGELOG.md
       - ./package.json:/app/package.json
       - ./.env:/app/.env
+      # - ./static:/app/build/static
+      # - ./static:/app/backend/open-webui/static
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: always

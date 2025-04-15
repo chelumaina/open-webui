@@ -82,9 +82,11 @@
 				console.error(error);
 				return null;
 			});
-
+			console.log("userSettings.settings", userSettings.settings)
+ 
 			if (userSettings) {
-				settings.set(userSettings.ui); 
+				settings.set(userSettings.settings); 
+				localStorage.setItem('settings', JSON.stringify(userSettings.settings))
 				token_cost.set(userSettings.tokens);
 			} else {
 				let localStorageSettings = {} as Parameters<(typeof settings)['set']>[0];
@@ -196,12 +198,12 @@
 
 			if ($user?.role === 'admin' && ($settings?.showChangelog ?? true)) {
 				// alert($settings?.version +"  "+ $config.version)
-				console.log("$settings")
-				console.log($settings)
-				console.log("$config")
-				console.log($config)
+				// console.log("$settings")
+				// console.log($settings.ui.version)
+				// console.log("$config")
+				// console.log($config)
 
-				showChangelog.set($settings?.version !== $config.version);
+				showChangelog.set($settings?.ui?.version !== $config.version);
 			}
 
 			if ($user?.permissions?.chat?.temporary ?? true) {

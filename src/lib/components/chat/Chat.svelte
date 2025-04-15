@@ -145,7 +145,7 @@
 	$: if (chatIdProp) {
 		(async () => {
 			loading = true;
-			console.log(chatIdProp);
+			// console.log(chatIdProp);
 
 			prompt = '';
 			files = [];
@@ -187,7 +187,7 @@
 			return;
 		}
 		sessionStorage.selectedModels = JSON.stringify(selectedModels);
-		console.log('saveSessionSelectedModels', selectedModels, sessionStorage.selectedModels);
+		// console.log('saveSessionSelectedModels', selectedModels, sessionStorage.selectedModels);
 	};
 
 	$: if (selectedModels) {

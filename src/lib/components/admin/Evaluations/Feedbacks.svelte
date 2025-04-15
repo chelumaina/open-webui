@@ -65,7 +65,7 @@
 	};
 
 	const shareHandler = async () => {
-		toast.success($i18n.t('Redirecting you to BiXAI Community'));
+		toast.success($i18n.t('Redirecting you to NeuroHog Community'));
 
 		// remove snapshot from feedbacks
 		const feedbacksToShare = feedbacks.map((f) => {
@@ -267,7 +267,7 @@
 					}}
 				>
 					<div class=" self-center mr-2 font-medium line-clamp-1">
-						{$i18n.t('Share to BiXAI Community')}
+						{$i18n.t('Share to NeuroHog Community')}
 					</div>
 
 					<div class=" self-center">

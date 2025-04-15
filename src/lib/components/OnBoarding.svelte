@@ -19,10 +19,10 @@
 
 			if (isDarkMode) {
 				const darkImage = new Image();
-				darkImage.src = '/static/favicon-dark.png';
+				darkImage.src = '/static/favicon.png';
 
 				darkImage.onload = () => {
-					logo.src = '/static/favicon-dark.png';
+					logo.src = '/static/favicon.png';
 					logo.style.filter = ''; // Ensure no inversion is applied if splash-dark.png exists
 				};
 

@@ -195,7 +195,7 @@
 </script>
 
 <svelte:head>
-	<title>#{channel?.name ?? 'Channel'} | BiXAI</title>
+	<title>#{channel?.name ?? 'Channel'} | NeuroHog</title>
 </svelte:head>
 
 <div
