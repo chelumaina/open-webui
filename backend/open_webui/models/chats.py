@@ -548,7 +548,7 @@ class ChatTable:
             all_chats = (
                 db.query(Chat)
                 .filter_by(user_id=user_id)
-                # .filter(Chat.created_at >= start, Chat.created_at < end)
+                .filter(Chat.created_at >= start, Chat.created_at < end)
                 .all()
             ) 
             return all_chats
