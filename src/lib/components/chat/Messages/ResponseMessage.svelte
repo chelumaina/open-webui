@@ -105,13 +105,14 @@
 	export let messageId;
 
 	let message: MessageType = JSON.parse(JSON.stringify(history.messages[messageId]));
-	
+	console.log("message1", message);
+
 	$: if (history.messages) {
 		if (JSON.stringify(message) !== JSON.stringify(history.messages[messageId])) {
 			message = JSON.parse(JSON.stringify(history.messages[messageId]));
 		}
 	}
-	console.log("message", message);
+	console.log("message2", message);
 
 	export let siblings;
 
@@ -156,7 +157,7 @@
 
 	let showRateComment = false;
 
-	const copyToClipboard = async (text) => {
+	const copyToClipboard = async (text:any) => {
 		text = removeAllDetails(text);
 
 		const res = await _copyToClipboard(text, $settings?.copyFormatted ?? false);
@@ -412,7 +413,7 @@
 		
 
 		if (res) {
-			const files = res.map((image) => ({
+			const files = res.map((image: any) => ({
 				type: 'image',
 				url: `${image.url}`
 			}));
@@ -656,6 +657,8 @@
 														{status?.description}
 													{/if}
 												</div>
+
+
 											</div>
 										</WebSearchResults>
 									{:else if status?.action === 'knowledge_search'}

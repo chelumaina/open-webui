@@ -921,7 +921,7 @@
 
 		await getUserSettings(localStorage.token);
 
-		taskId = null;
+		// taskId = null;
 	};
 
 	const chatActionHandler = async (chatId, actionId, modelId, responseMessageId, event = null) => {
