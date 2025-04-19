@@ -3,7 +3,7 @@ services:
     image: nginx:latest
     container_name: nginx
     ports:
-      - "90:80"   # Expose port 80 for HTTP
+      # - "90:80"   # Expose port 80 for HTTP
       - "443:443" # Expose port 443 for HTTPS
     networks:
       - app-network
@@ -77,8 +77,8 @@ services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
     container_name: open-webui
-    ports:
-      - "3005:8080"
+    # ports:
+    #   - "3005:8080"
     expose:
       - 8080
     volumes:
