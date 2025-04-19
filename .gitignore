@@ -314,4 +314,4 @@ backend/.venv
 data/*
 ollama/*
 build.old
-redis/sentinel-data
+redis
