@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from open_webui.utils.webhook_handlers import create_paypal_order, capture_paypal_order
+# from open_webui.utils.webhook_handlers import create_paypal_order, capture_paypal_order
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 import logging
 from open_webui.utils.auth import get_verified_user

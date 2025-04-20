@@ -20,6 +20,12 @@ PAYPAL_BASE_URL = "https://api-m.sandbox.paypal.com"  # Change to "live" for pro
 PAYPAL_CLIENT_ID = "AV7CoRHni5FA0I-RQkQRcjGbmR6fiE2sxbOV9iivnm7Sn03UG5gufJceXBGj08qI4-N3cDE17i6bSR48"
 PAYPAL_CLIENT_SECRET ="EI2HsBHaJvG5rKAsoAMdfA1pSKms7J5gNOIk8TZC1VS8FBDAzsAg0-K0Lk4Waw996AFjThfHQV-0wnb5"
 
+
+PAYPAL_BASE_URL = os.getenv("PAYPAL_BASE_URL","https://api-m.sandbox.paypal.com") # Change to "live" for production
+PAYPAL_CLIENT_ID = os.getenv("PAYPAL_CLIENT_ID","AV7CoRHni5FA0I-RQkQRcjGbmR6fiE2sxbOV9iivnm7Sn03UG5gufJceXBGj08qI4-N3cDE17i6bSR48")
+PAYPAL_CLIENT_SECRET =os.getenv("PAYPAL_CLIENT_SECRET","EI2HsBHaJvG5rKAsoAMdfA1pSKms7J5gNOIk8TZC1VS8FBDAzsAg0-K0Lk4Waw996AFjThfHQV-0wnb5")
+
+
 async def get_paypal_token():
     auth = base64.b64encode(f"{PAYPAL_CLIENT_ID}:{PAYPAL_CLIENT_SECRET}".encode()).decode()
     headers = {"Authorization": f"Basic {auth}", "Content-Type": "application/x-www-form-urlencoded"}
@@ -88,8 +94,8 @@ async def create_paypal_order(user_id:str, amount: float = "10.00", currency: st
         ],
         # "purchase_units": [{"amount": {"currency_code": currency, "value": amount}}],
         "application_context": {
-            "return_url": "https://yourdomain.com/success",
-            "cancel_url": "https://yourdomain.com/cancel"
+            "return_url": "https://neurohog.com/success",
+            "cancel_url": "https://neurohog.com/cancel"
         }
     }
  
