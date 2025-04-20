@@ -69,6 +69,8 @@ async def get_payment_details_update(order_id: str):
 
 async def create_paypal_order(user_id:str, amount: float = "10.00", currency: str = "USD"):
     access_token = await get_paypal_token()
+    print("headers", headers)
+    print("access_token", access_token)
     headers = {"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"}
     order_data = {
         "intent": "CAPTURE",
