@@ -314,5 +314,6 @@ backend/.venv
 data/*
 ollama/*
 build.old
+# redis/
+# redis/sentinel-data/sentinel.conf
 redis
-redis/sentinel-data/sentinel.conf
