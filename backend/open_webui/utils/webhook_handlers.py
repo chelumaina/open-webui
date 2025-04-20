@@ -27,9 +27,9 @@ PAYPAL_CLIENT_SECRET =os.getenv("PAYPAL_CLIENT_SECRET","EI2HsBHaJvG5rKAsoAMdfA1p
 
 
 async def get_paypal_token():
-    print("PAYPAL_BASE_URL", PAYPAL_BASE_URL)
-    print("PAYPAL_CLIENT_ID", PAYPAL_CLIENT_ID)
-    print("PAYPAL_CLIENT_SECRET", PAYPAL_CLIENT_SECRET)
+    # print("PAYPAL_BASE_URL", PAYPAL_BASE_URL)
+    # print("PAYPAL_CLIENT_ID", PAYPAL_CLIENT_ID)
+    # print("PAYPAL_CLIENT_SECRET", PAYPAL_CLIENT_SECRET)
 
     auth = base64.b64encode(f"{PAYPAL_CLIENT_ID}:{PAYPAL_CLIENT_SECRET}".encode()).decode()
     headers = {"Authorization": f"Basic {auth}", "Content-Type": "application/x-www-form-urlencoded"}
