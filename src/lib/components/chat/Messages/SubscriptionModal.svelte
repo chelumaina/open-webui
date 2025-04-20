@@ -12,7 +12,7 @@
 	let mergedDocuments = [];
 
 	let loadData=async () => {
-		paypal = await loadScript({ "client-id": "AV7CoRHni5FA0I-RQkQRcjGbmR6fiE2sxbOV9iivnm7Sn03UG5gufJceXBGj08qI4-N3cDE17i6bSR48" });
+		paypal = await loadScript({ "client-id": "ATFgapo5n9uD3glfQ1tcwDHelvL8Wkj-0MFQIx02789MSS_41tCFOEsmnacByzNFfi9PQ2HZi75Nb4_y" });
 
 		if (!paypal) {
 			console.error("PayPal SDK failed to load.");
