@@ -315,3 +315,4 @@ data/*
 ollama/*
 build.old
 redis
+redis/sentinel-data/sentinel.conf
