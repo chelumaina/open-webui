@@ -27,6 +27,10 @@ PAYPAL_CLIENT_SECRET =os.getenv("PAYPAL_CLIENT_SECRET","EI2HsBHaJvG5rKAsoAMdfA1p
 
 
 async def get_paypal_token():
+    print("PAYPAL_BASE_URL", PAYPAL_BASE_URL)
+    print("PAYPAL_CLIENT_ID", PAYPAL_CLIENT_ID)
+    print("PAYPAL_CLIENT_SECRET", PAYPAL_CLIENT_SECRET)
+
     auth = base64.b64encode(f"{PAYPAL_CLIENT_ID}:{PAYPAL_CLIENT_SECRET}".encode()).decode()
     headers = {"Authorization": f"Basic {auth}", "Content-Type": "application/x-www-form-urlencoded"}
 
@@ -48,6 +52,8 @@ async def capture_paypal_order(order_id: str):
 async def get_payment_details_update(order_id: str):
     access_token = await get_paypal_token()
     headers = {"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"}
+    print("headers", headers)
+    print("access_token", access_token)
     #curl -v -X GET https://api-m.sandbox.paypal.com/v2/checkout/orders/5O190127TN364715T \
 
     url = f"{PAYPAL_BASE_URL}/v2/checkout/orders/{order_id}"
