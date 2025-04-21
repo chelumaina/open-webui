@@ -298,8 +298,8 @@ services:
     environment:
       - CELERY_BROKER_URL=redis://:s93s1nDwSOdlOna@redis_server/0   
       - FLOWER_BASIC_AUTH=admin:admin_password  # Basic auth
-    # volumes:
-    #   - ../sonix-clone:/usr/src/app/ 
+    volumes:
+      - ../sonix-clone:/usr/src/app/ 
     extra_hosts:
       - "google.com:142.250.190.78"
 
