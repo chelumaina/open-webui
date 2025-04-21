@@ -168,6 +168,145 @@ services:
       # - "host.docker.internal:host-gateway"
       - "google.com:142.250.190.78"
  
+
+
+ ##SONIX APPs
+
+  web_server:
+    container_name: web_server
+    hostname: 'web_server'
+    restart: always 
+    ports:
+      - 8009:8000
+    build:
+      context: .
+      dockerfile: Dockerfile.web 
+    image: web_server:latest
+    command: 
+      # sh -c "python3 manage.py collectstatic --noinput && python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+      sh -c "pip install gunicorn && python3 manage.py collectstatic --noinput && python3 manage.py makemigrations && python3 manage.py migrate && gunicorn snx.wsgi:application --bind 0.0.0.0:8000 --workers 4"
+
+    volumes:
+      - ../sonix-clone:/usr/src/app/
+      - ../sonix-clone/tmp/web:/tmp
+    #- ./logs:/var/log/web_server
+    env_file:
+      - ./.env
+    networks:
+      - app-network
+    depends_on:
+      - redis_server
+      - pg_db_server
+    links:
+      - redis_server
+      - pg_db_server
+    extra_hosts:
+      - "google.com:142.250.190.78"
+
+  celery_server:
+    container_name: celery_server
+    hostname: 'celery_server'
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.celery 
+    image: celery_server:latest 
+    # mem_limit: 2g  # Set the memory limit to 2 GB (adjust as needed)
+    command: sh -c "celery -A snx worker --concurrency=2 -l INFO" 
+    volumes:
+      - ../sonix-clone:/usr/src/app/
+      - ../sonix-clone/tmp/celery:/tmp
+    #- ./logs:/var/log/celery_server
+    env_file:
+      - ../sonix-clone/.env
+    networks:
+      - app-network
+    depends_on:
+      - redis_server
+      - web_server  
+      - pg_db_server 
+    links:
+      - redis_server
+      - web_server
+      - pg_db_server
+    extra_hosts:
+      - "google.com:142.250.190.78"
+
+
+
+  pg_db_server:
+    container_name: pg_db_server
+    hostname: pg_db_server
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: transcription
+      POSTGRES_PASSWORD: "6^2Y?2E£ojJ5"
+      POSTGRES_DB: smart_ai_latest
+    ports:
+      - "5503:5432"
+    volumes:
+      - ../sonix-clone/data/pg:/var/lib/postgresql/data
+    #- ./logs:/var/log/pg_db_server
+    networks:
+      - app-network
+    extra_hosts:
+      - "google.com:142.250.190.78"
+
+
+
+  redis_server:
+    image: redis:alpine
+    container_name: redis_server
+    hostname: redis_server
+    restart: always
+    command: [
+      "redis-server",
+      "--requirepass", "s93s1nDwSOdlOna", 
+      "--masteruser", "scriber", 
+      "--masterauth", "s93s1nDwSOdlOna" 
+    ]
+    environment:
+      - REDIS_USER="scriber"
+      - REDIS_PASSWORD="s93s1nDwSOdlOna"
+    volumes:
+      - ../sonix-clone/data/redis/data:/data
+      - ../sonix-clone/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - app-network
+    extra_hosts:
+      - "google.com:142.250.190.78"
+
+
+
+  flower_server:
+    container_name: flower_server
+    hostname: flower_server
+    restart: always
+    image: web_server:latest 
+    command: sh -c "celery -A snx --broker=redis://:s93s1nDwSOdlOna@redis_server/0 flower --port=5555"
+    networks:
+      - app-network
+    depends_on:
+      - redis_server
+      - web_server
+    links:
+      - redis_server
+      - web_server 
+    ports:
+      - "5556:5555" 
+    environment:
+      - CELERY_BROKER_URL=redis://:s93s1nDwSOdlOna@redis_server/0   
+      - FLOWER_BASIC_AUTH=admin:admin_password  # Basic auth
+    # volumes:
+    #   - ../sonix-clone:/usr/src/app/ 
+    extra_hosts:
+      - "google.com:142.250.190.78"
+
+
+
+
+
 networks:
   app-network:
     driver: bridge
