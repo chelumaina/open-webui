@@ -1,44 +1,44 @@
 services:
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    ports:
-      - "80:80"   # Expose port 80 for HTTP
-      # - "443:443" # Expose port 443 for HTTPS
-    networks:
-      - app-network
-    volumes:
-      - ./nginx/conf.d/nginx.conf:/etc/nginx/nginx.conf:ro  # Mount custom Nginx config
-      - ./nginx/conf.d/logs:/var/log/nginx
-      - ./nginx/letsencrypt/logs:/var/log/letsencrypt
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-      - ./static:/usr/src/static
-    restart: always
-    depends_on:
-     - open-webui 
-     - web_server
-    links:
-     - open-webui
-     - web_server
-    extra_hosts:
-      - "google.com:142.250.190.78"
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx
+  #   ports:
+  #     - "80:80"   # Expose port 80 for HTTP
+  #     # - "443:443" # Expose port 443 for HTTPS
+  #   networks:
+  #     - app-network
+  #   volumes:
+  #     - ./nginx/conf.d/nginx.conf:/etc/nginx/nginx.conf:ro  # Mount custom Nginx config
+  #     - ./nginx/conf.d/logs:/var/log/nginx
+  #     - ./nginx/letsencrypt/logs:/var/log/letsencrypt
+  #     - ./data/certbot/conf:/etc/letsencrypt
+  #     - ./data/certbot/www:/var/www/certbot
+  #     - ./static:/usr/src/static
+  #   restart: always
+  #   depends_on:
+  #    - open-webui 
+  #    - web_server
+  #   links:
+  #    - open-webui
+  #    - web_server
+  #   extra_hosts:
+  #     - "google.com:142.250.190.78"
 
-  certbot_app:
-    container_name: certbot_app
-    hostname: 'certbot_app'
-    image: certbot/certbot
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-    #- ./logs:/var/log/certbot_app
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 48h & wait $${!}; done;'"
-    depends_on: 
-      - nginx   
-    networks:
-      - app-network
-    extra_hosts:
-      - "google.com:142.250.190.78"
+  # certbot_app:
+  #   container_name: certbot_app
+  #   hostname: 'certbot_app'
+  #   image: certbot/certbot
+  #   volumes:
+  #     - ./data/certbot/conf:/etc/letsencrypt
+  #     - ./data/certbot/www:/var/www/certbot
+  #   #- ./logs:/var/log/certbot_app
+  #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 48h & wait $${!}; done;'"
+  #   depends_on: 
+  #     - nginx   
+  #   networks:
+  #     - app-network
+  #   extra_hosts:
+  #     - "google.com:142.250.190.78"
 
   ollama:
     volumes:
