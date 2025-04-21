@@ -187,11 +187,11 @@ services:
       sh -c "pip install gunicorn && python3 manage.py collectstatic --noinput && python3 manage.py makemigrations && python3 manage.py migrate && gunicorn snx.wsgi:application --bind 0.0.0.0:8000 --workers 4"
 
     volumes:
-      - ../sonix-clone:/usr/src/app/
-      - ../sonix-clone/tmp/web:/tmp
+      - /root/docker/sonix-clone:/usr/src/app/
+      - /root/docker/sonix-clone/tmp/web:/tmp
     #- ./logs:/var/log/web_server
     env_file:
-      - ./.env
+      - /root/docker/sonix-clone/.env
     networks:
       - app-network
     depends_on:
@@ -214,11 +214,11 @@ services:
     # mem_limit: 2g  # Set the memory limit to 2 GB (adjust as needed)
     command: sh -c "celery -A snx worker --concurrency=2 -l INFO" 
     volumes:
-      - ../sonix-clone:/usr/src/app/
-      - ../sonix-clone/tmp/celery:/tmp
+      - /root/docker/sonix-clone:/usr/src/app/
+      - /root/docker/sonix-clone/tmp/celery:/tmp
     #- ./logs:/var/log/celery_server
     env_file:
-      - ../sonix-clone/.env
+      - /root/docker/sonix-clone/.env
     networks:
       - app-network
     depends_on:
@@ -246,7 +246,7 @@ services:
     ports:
       - "5503:5432"
     volumes:
-      - ../sonix-clone/data/pg:/var/lib/postgresql/data
+      - /root/docker/sonix-clone/data/pg:/var/lib/postgresql/data
     #- ./logs:/var/log/pg_db_server
     networks:
       - app-network
@@ -270,8 +270,8 @@ services:
       - REDIS_USER="scriber"
       - REDIS_PASSWORD="s93s1nDwSOdlOna"
     volumes:
-      - ../sonix-clone/data/redis/data:/data
-      - ../sonix-clone/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - /root/docker/sonix-clone/data/redis/data:/data
+      - /root/docker/sonix-clone/redis/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - app-network
     extra_hosts:
@@ -299,7 +299,7 @@ services:
       - CELERY_BROKER_URL=redis://:s93s1nDwSOdlOna@redis_server/0   
       - FLOWER_BASIC_AUTH=admin:admin_password  # Basic auth
     volumes:
-      - ../sonix-clone:/usr/src/app/ 
+      - /root/docker/sonix-clone:/usr/src/app/ 
     extra_hosts:
       - "google.com:142.250.190.78"
 
