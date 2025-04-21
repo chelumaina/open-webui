@@ -86,9 +86,7 @@
 							}
 						}
 					}
-				} catch (error) {
-					
-				}
+				} catch (error) {}
 
 				scrollToBottom();
 			}

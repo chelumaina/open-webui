@@ -25,34 +25,34 @@ def convert_ollama_tool_call_to_openai(tool_calls: dict) -> dict:
 
 
 def convert_ollama_usage_to_openai(data: dict) -> dict:
-    prompt_token=(
-            round(
+    prompt_token = (
+        round(
+            (
                 (
-                    (
-                        data.get("prompt_eval_count", 0)
-                        / ((data.get("prompt_eval_duration", 0) / 10_000_000))
-                    )
-                    * 100
-                ),
-                2,
-            )
-            if data.get("prompt_eval_duration", 0) > 0
-            else "N/A"
+                    data.get("prompt_eval_count", 0)
+                    / ((data.get("prompt_eval_duration", 0) / 10_000_000))
+                )
+                * 100
+            ),
+            2,
         )
-    response_token=(
-            round(
+        if data.get("prompt_eval_duration", 0) > 0
+        else "N/A"
+    )
+    response_token = (
+        round(
+            (
                 (
-                    (
-                        data.get("eval_count", 0)
-                        / ((data.get("eval_duration", 0) / 10_000_000))
-                    )
-                    * 100
-                ),
-                2,
-            )
-            if data.get("eval_duration", 0) > 0
-            else "N/A"
+                    data.get("eval_count", 0)
+                    / ((data.get("eval_duration", 0) / 10_000_000))
+                )
+                * 100
+            ),
+            2,
         )
+        if data.get("eval_duration", 0) > 0
+        else "N/A"
+    )
     return {
         "response_token/s": response_token,
         "prompt_token/s": prompt_token,

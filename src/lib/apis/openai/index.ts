@@ -16,7 +16,6 @@ export const getOpenAIConfig = async (token: string = '') => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			if ('detail' in err) {
 				error = err.detail;
 			} else {
@@ -58,7 +57,6 @@ export const updateOpenAIConfig = async (token: string = '', config: OpenAIConfi
 			return res.json();
 		})
 		.catch((err) => {
-			
 			if ('detail' in err) {
 				error = err.detail;
 			} else {
@@ -90,7 +88,6 @@ export const getOpenAIUrls = async (token: string = '') => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			if ('detail' in err) {
 				error = err.detail;
 			} else {
@@ -125,7 +122,6 @@ export const updateOpenAIUrls = async (token: string = '', urls: string[]) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			if ('detail' in err) {
 				error = err.detail;
 			} else {
@@ -157,7 +153,6 @@ export const getOpenAIKeys = async (token: string = '') => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			if ('detail' in err) {
 				error = err.detail;
 			} else {
@@ -192,7 +187,6 @@ export const updateOpenAIKeys = async (token: string = '', keys: string[]) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			if ('detail' in err) {
 				error = err.detail;
 			} else {
@@ -346,7 +340,6 @@ export const chatCompletion = async (
 		},
 		body: JSON.stringify(body)
 	}).catch((err) => {
-		
 		error = err;
 		return null;
 	});
@@ -409,7 +402,6 @@ export const synthesizeOpenAISpeech = async (
 			voice: speaker
 		})
 	}).catch((err) => {
-		
 		error = err;
 		return null;
 	});

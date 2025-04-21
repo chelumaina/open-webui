@@ -54,7 +54,7 @@
 		pinned = await getChatPinnedStatusById(localStorage.token, chatId);
 	};
 
-	const getChatAsText = async (chat:any) => {
+	const getChatAsText = async (chat: any) => {
 		const history = chat.chat.history;
 		const messages = createMessagesList(history, history.currentId);
 		const chatText = messages.reduce((a, message, i, arr) => {

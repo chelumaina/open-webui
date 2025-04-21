@@ -618,7 +618,6 @@
 				wakeLock = await navigator.wakeLock.request('screen');
 			} catch (err) {
 				// The Wake Lock request has failed - usually system related, such as battery.
-				
 			}
 
 			if (wakeLock) {

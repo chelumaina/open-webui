@@ -155,7 +155,7 @@
 		}
 	});
 
-	console.log($config?.oauth?.providers?.google)
+	console.log($config?.oauth?.providers?.google);
 </script>
 
 <svelte:head>
@@ -192,7 +192,9 @@
 			</div>
 		</div>
 
-		<div class="fixed bg-transparent min-h-screen w-full flex justify-center font-primary z-50 text-black dark:text-white">
+		<div
+			class="fixed bg-transparent min-h-screen w-full flex justify-center font-primary z-50 text-black dark:text-white"
+		>
 			<div class="w-full sm:max-w-md px-10 min-h-screen flex flex-col text-center">
 				{#if ($config?.features.auth_trusted_header ?? false) || $config?.features.auth === false}
 					<div class=" my-auto pb-10 w-full">
@@ -248,7 +250,7 @@
 											<input
 												bind:value={name}
 												type="text"
-												class="my-0.5 w-full text-sm outline-hidden bg-transparent border  border-gray-300 dark:border-gray-600 p-2 rounded"
+												class="my-0.5 w-full text-sm outline-hidden bg-transparent border border-gray-300 dark:border-gray-600 p-2 rounded"
 												autocomplete="name"
 												placeholder={$i18n.t('Enter Your Full Name')}
 												required
@@ -275,7 +277,7 @@
 											<input
 												bind:value={email}
 												type="email"
-												class="my-0.5 w-full text-sm outline-hidden bg-transparent border  border-gray-300 dark:border-gray-600 p-2 rounded"
+												class="my-0.5 w-full text-sm outline-hidden bg-transparent border border-gray-300 dark:border-gray-600 p-2 rounded"
 												autocomplete="email"
 												name="email"
 												placeholder={$i18n.t('Enter Your Email')}
@@ -290,7 +292,7 @@
 										<input
 											bind:value={password}
 											type="password"
-											class="my-0.5 w-full text-sm outline-hidden bg-transparent border  border-gray-300 dark:border-gray-600 p-2 rounded"
+											class="my-0.5 w-full text-sm outline-hidden bg-transparent border border-gray-300 dark:border-gray-600 p-2 rounded"
 											placeholder={$i18n.t('Enter Your Password')}
 											autocomplete="current-password"
 											name="current-password"
@@ -303,7 +305,7 @@
 								{#if $config?.features.enable_login_form || $config?.features.enable_ldap}
 									{#if mode === 'ldap'}
 										<button
-											class="bg-gray-700/5 hover:bg-gray-700/10 dark:bg-gray-100/5 dark:hover:bg-gray-100/10 dark:text-gray-300 dark:hover:text-white transition w-full rounded-full font-medium text-sm py-2.5 border border-gray-300 dark:border-gray-600 "
+											class="bg-gray-700/5 hover:bg-gray-700/10 dark:bg-gray-100/5 dark:hover:bg-gray-100/10 dark:text-gray-300 dark:hover:text-white transition w-full rounded-full font-medium text-sm py-2.5 border border-gray-300 dark:border-gray-600"
 											type="submit"
 										>
 											{$i18n.t('Authenticate')}

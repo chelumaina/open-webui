@@ -368,7 +368,7 @@ WEBUI_SECRET_KEY = os.environ.get(
         "WEBUI_JWT_SECRET_KEY", "t0p-s3cr3t"
     ),  # DEPRECATED: remove at next major version
 )
-WEBUI_SECRET_KEY = "t0p-s3cr3t"#os.environ.get("WEBUI_SECRET_KEY", "t0p-s3cr3t")
+WEBUI_SECRET_KEY = "t0p-s3cr3t"  # os.environ.get("WEBUI_SECRET_KEY", "t0p-s3cr3t")
 
 WEBUI_SESSION_COOKIE_SAME_SITE = os.environ.get("WEBUI_SESSION_COOKIE_SAME_SITE", "lax")
 

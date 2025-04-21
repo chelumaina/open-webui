@@ -176,7 +176,7 @@ type AudioSettings = {
 };
 type TokenCost = {
 	promt_token?: number;
-	rsponse_tokn?: number; 
+	rsponse_tokn?: number;
 	cost?: number;
 };
 

@@ -136,7 +136,6 @@
 					let lines = value.split('\n');
 					// alert("Chat lines: " + lines);
 
-					
 					for (const line of lines) {
 						if (line !== '') {
 							console.log(line);
@@ -163,9 +162,7 @@
 							}
 						}
 					}
-				} catch (error) {
-					
-				}
+				} catch (error) {}
 
 				scrollToBottom();
 			}

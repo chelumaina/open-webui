@@ -80,7 +80,6 @@
 		webhookUrl = $settings?.notifications?.webhook_url ?? '';
 
 		APIKey = await getAPIKey(localStorage.token).catch((error) => {
-			
 			return '';
 		});
 	});

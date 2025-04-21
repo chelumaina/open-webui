@@ -159,7 +159,7 @@ def get_models_in_use():
 
 @sio.on("usage")
 async def usage(sid, data):
-   
+
     # user=get_current_user()
     model_id = data["model"]
     # Record the timestamp for the last update
@@ -221,7 +221,6 @@ async def user_join(sid, data):
     log.debug(f"{channels=}")
     for channel in channels:
         await sio.enter_room(sid, f"channel:{channel.id}")
-
 
     await sio.emit("user-list", {"user_ids": list(USER_POOL.keys())})
     return {"id": user.id, "name": user.name}

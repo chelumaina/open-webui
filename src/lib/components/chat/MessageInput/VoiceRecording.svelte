@@ -142,7 +142,6 @@
 		});
 
 		if (res) {
-			
 			dispatch('confirm', res);
 		}
 	};
@@ -217,7 +216,7 @@
 					clearTimeout(timeoutId);
 
 					// Handle recognized speech
-					
+
 					const transcript = event.results[Object.keys(event.results).length - 1][0].transcript;
 
 					transcription = `${transcription}${transcript}`;
@@ -245,7 +244,6 @@
 
 				// Event triggered when an error occurs
 				speechRecognition.onerror = function (event) {
-					
 					toast.error($i18n.t(`Speech recognition error: {{error}}`, { error: event.error }));
 					dispatch('cancel');
 

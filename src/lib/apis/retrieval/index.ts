@@ -15,7 +15,6 @@ export const getRAGConfig = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -77,7 +76,6 @@ export const updateRAGConfig = async (token: string, payload: RAGConfigForm) => 
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -104,7 +102,6 @@ export const getQuerySettings = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -140,7 +137,6 @@ export const updateQuerySettings = async (token: string, settings: QuerySettings
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -167,7 +163,6 @@ export const getEmbeddingConfig = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -209,7 +204,6 @@ export const updateEmbeddingConfig = async (token: string, payload: EmbeddingMod
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -236,7 +230,6 @@ export const getRerankingConfig = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -270,7 +263,6 @@ export const updateRerankingConfig = async (token: string, payload: RerankingMod
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -313,7 +305,7 @@ export const processFile = async (
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -344,7 +336,7 @@ export const processYoutubeVideo = async (token: string, url: string) => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -376,7 +368,7 @@ export const processWeb = async (token: string, collection_name: string, url: st
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -410,7 +402,6 @@ export const processWebSearch = async (
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});

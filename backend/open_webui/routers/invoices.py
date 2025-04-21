@@ -6,7 +6,12 @@ from open_webui.utils.auth import get_verified_user
 from open_webui.env import SRC_LOG_LEVELS
 from typing import Optional
 
-from open_webui.models.subscriptions import InvoiceModel, InvoiceForm, Invoices, InvoiceResponse
+from open_webui.models.subscriptions import (
+    InvoiceModel,
+    InvoiceForm,
+    Invoices,
+    InvoiceResponse,
+)
 from open_webui.constants import ERROR_MESSAGES
 
 log = logging.getLogger(__name__)
@@ -21,7 +26,7 @@ router = APIRouter()
 ############################
 @router.post("/")
 def create_plan(form_data: InvoiceForm, user=Depends(get_verified_user)):
-     
+
     try:
         plan = Invoices.insert_new_invoice(user.id, form_data)
         return plan
@@ -34,7 +39,6 @@ def create_plan(form_data: InvoiceForm, user=Depends(get_verified_user)):
         )
 
 
-
 ############################
 # Get Invoice
 ############################
@@ -42,16 +46,13 @@ def create_plan(form_data: InvoiceForm, user=Depends(get_verified_user)):
 async def get_user_invoice(user=Depends(get_verified_user)):
     invoices = Invoices.get_invoices(user.id)
     if invoices:
-        return [
-            InvoiceResponse(**invoice.model_dump())
-            for invoice in invoices
-        ]
+        return [InvoiceResponse(**invoice.model_dump()) for invoice in invoices]
     else:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=ERROR_MESSAGES.NOT_FOUND,
         )
-        
+
 
 ############################
 # Get Invoice By Id
@@ -68,7 +69,6 @@ async def get_invoice_by_id(id: str, user=Depends(get_verified_user)):
         )
 
 
-
 ############################
 # Update Invoice By Id
 ############################
@@ -79,9 +79,7 @@ async def update_invoice_by_id(
     invoice = Invoices.get_invoice_by_id(id)
     if invoice:
         try:
-            invoice = Invoices.update_invoice(
-                id, form_data
-            )
+            invoice = Invoices.update_invoice(id, form_data)
             if invoice:
                 return InvoiceResponse(**invoice.model_dump())
             else:

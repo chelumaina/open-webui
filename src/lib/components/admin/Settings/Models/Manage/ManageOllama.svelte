@@ -114,9 +114,7 @@
 								}
 							}
 						}
-					} catch (error) {
-						
-					}
+					} catch (error) {}
 				}
 			}
 		}
@@ -216,7 +214,6 @@
 						}
 					}
 				} catch (error) {
-					
 					if (typeof error !== 'string') {
 						error = error.message;
 					}
@@ -319,9 +316,7 @@
 							}
 						}
 					}
-				} catch (error) {
-					
-				}
+				} catch (error) {}
 			}
 		} else {
 			const error = await fileResponse?.json();
@@ -383,7 +378,6 @@
 							}
 						}
 					} catch (error) {
-						
 						toast.error(`${error}`);
 					}
 				}
@@ -515,7 +509,6 @@
 						}
 					}
 				} catch (error) {
-					
 					toast.error(`${error}`);
 				}
 			}

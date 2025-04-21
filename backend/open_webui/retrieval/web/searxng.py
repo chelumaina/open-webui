@@ -62,7 +62,6 @@ def search_searxng(
         # Strip all query parameters from the URL
         query_url = query_url.split("?")[0]
 
-
     response = requests.get(
         query_url,
         headers={

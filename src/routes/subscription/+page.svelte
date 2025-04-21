@@ -32,27 +32,39 @@
 	});
 
 	let plans = [
-	  { name: "Basic", price: "$10/mo", features: ["10K API Calls", "Basic Support"] },
-	  { name: "Pro", price: "$30/mo", features: ["50K API Calls", "Priority Support", "Analytics"] },
-	  { name: "Enterprise", price: "Custom", features: ["Unlimited API Calls", "Dedicated Support", "Advanced Features"] }
+		{ name: 'Basic', price: '$10/mo', features: ['10K API Calls', 'Basic Support'] },
+		{ name: 'Pro', price: '$30/mo', features: ['50K API Calls', 'Priority Support', 'Analytics'] },
+		{
+			name: 'Enterprise',
+			price: 'Custom',
+			features: ['Unlimited API Calls', 'Dedicated Support', 'Advanced Features']
+		}
 	];
-  
+
 	function subscribe(plan) {
-	  alert(`Subscribed to ${plan.name}!`);
+		alert(`Subscribed to ${plan.name}!`);
 	}
-  </script>
-  
-  <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+</script>
+
+<div class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
 	<div class="my-1 flex flex-col items-center justify-center md:mb-0 md:mt-0">
 		<div class="text-2xl font-semibold md:text-3xl">Upgrade your plan</div>
 	</div>
-	
+
 	<div class="flex-grow overflow-y-scroll">
 		<div>
 			<div class="relative grid grid-cols-[1fr_auto_1fr] px-6 py-4 md:pb-10 md:pt-[4.5rem]">
-			 
-				<button class="justify-self-end text-token-text-primary opacity-50 transition hover:opacity-75 md:absolute md:right-6 md:top-6">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-lg">
+				<button
+					class="justify-self-end text-token-text-primary opacity-50 transition hover:opacity-75 md:absolute md:right-6 md:top-6"
+				>
+					<svg
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						class="icon-lg"
+					>
 						<path
 							fill-rule="evenodd"
 							clip-rule="evenodd"
@@ -62,9 +74,10 @@
 					</svg>
 				</button>
 			</div>
-		
-			
-			<div class="flex flex-col justify-center gap-4 px-3 py-3 md:min-h-[30rem] md:flex-row md:gap-0 md:py-0">
+
+			<div
+				class="flex flex-col justify-center gap-4 px-3 py-3 md:min-h-[30rem] md:flex-row md:gap-0 md:py-0"
+			>
 				<div
 					class="text-sm relative flex-1 flex gap-5 flex-col border-t border-l border-r border-b rounded-xl md:min-h-[30rem] md:rounded-none md:border-r-0 md:last:border-r md:first:rounded-tl-xl md:first:rounded-bl-xl md:last:rounded-tr-xl md:last:rounded-br-xl md:max-w-96 justify-center px-6 pt-6 pb-10 md:pb-6"
 					data-testid="free-pricing-modal-column"
@@ -72,11 +85,16 @@
 					<div class="relative flex flex-col bg-token-main-surface-primary">
 						<div class="flex flex-col gap-1">
 							<p class="flex items-center gap-2 text-2xl font-semibold">Free</p>
-							<div class="ml-4 mt-2 flex items-baseline gap-1.5" data-testid="free-pricing-column-cost">
+							<div
+								class="ml-4 mt-2 flex items-baseline gap-1.5"
+								data-testid="free-pricing-column-cost"
+							>
 								<div class="relative">
 									<p class="absolute -left-4 -top-0 text-2xl text-token-text-secondary">$</p>
 									<div class="flex items-baseline gap-1.5">
-										<div class="text-5xl text-token-text-primary"><div class="text-5xl text-token-text-primary">0</div></div>
+										<div class="text-5xl text-token-text-primary">
+											<div class="text-5xl text-token-text-primary">0</div>
+										</div>
 										<div class="flex flex-col items-start justify-center">
 											<p class="absolute mb-6 text-xs text-token-text-tertiary">USD/</p>
 											<p class="text-xs text-token-text-tertiary">month</p>
@@ -84,7 +102,12 @@
 									</div>
 								</div>
 							</div>
-							<p class="mr-2 mt-2 text-base text-token-text-primary" data-testid="free-pricing-column-cost-summary">Explore how AI can help you with everyday tasks</p>
+							<p
+								class="mr-2 mt-2 text-base text-token-text-primary"
+								data-testid="free-pricing-column-cost-summary"
+							>
+								Explore how AI can help you with everyday tasks
+							</p>
 						</div>
 					</div>
 					<div class="relative flex flex-col bg-token-main-surface-primary">
@@ -98,7 +121,14 @@
 					<div class="flex flex-col flex-grow gap-2">
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -111,7 +141,14 @@
 						</div>
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -124,7 +161,14 @@
 						</div>
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -137,7 +181,14 @@
 						</div>
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -150,7 +201,14 @@
 						</div>
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -158,12 +216,21 @@
 										fill="currentColor"
 									></path>
 								</svg>
-								<span>Limited access to file uploads, advanced data analysis, and image generation</span>
+								<span
+									>Limited access to file uploads, advanced data analysis, and image generation</span
+								>
 							</div>
 						</div>
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -176,8 +243,16 @@
 						</div>
 					</div>
 					<div>
-						<div class="relative flex flex-col text-xs text-token-text-secondary bg-token-main-surface-primary">
-							<div>Have an existing plan? See <a class="underline" href="https://help.openai.com/en/collections/3943089-billing" target="_blank">billing help</a></div>
+						<div
+							class="relative flex flex-col text-xs text-token-text-secondary bg-token-main-surface-primary"
+						>
+							<div>
+								Have an existing plan? See <a
+									class="underline"
+									href="https://help.openai.com/en/collections/3943089-billing"
+									target="_blank">billing help</a
+								>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -187,12 +262,22 @@
 				>
 					<div class="relative flex flex-col mt-4">
 						<div class="flex flex-col gap-1">
-							<p class="flex items-center gap-2 text-2xl font-semibold">Plus<span class="ml-1 rounded border px-1 py-0 text-xs font-semibold border-green-600 text-green-600">POPULAR</span></p>
-							<div class="ml-4 mt-2 flex items-baseline gap-1.5" data-testid="plus-pricing-column-cost">
+							<p class="flex items-center gap-2 text-2xl font-semibold">
+								Plus<span
+									class="ml-1 rounded border px-1 py-0 text-xs font-semibold border-green-600 text-green-600"
+									>POPULAR</span
+								>
+							</p>
+							<div
+								class="ml-4 mt-2 flex items-baseline gap-1.5"
+								data-testid="plus-pricing-column-cost"
+							>
 								<div class="relative">
 									<p class="absolute -left-4 -top-0 text-2xl text-token-text-secondary">$</p>
 									<div class="flex items-baseline gap-1.5">
-										<div class="text-5xl text-token-text-primary"><div class="text-5xl text-token-text-primary">20</div></div>
+										<div class="text-5xl text-token-text-primary">
+											<div class="text-5xl text-token-text-primary">20</div>
+										</div>
 										<div class="flex flex-col items-start justify-center">
 											<p class="absolute mb-6 text-xs text-token-text-tertiary">USD/</p>
 											<p class="text-xs text-token-text-tertiary">month</p>
@@ -200,20 +285,36 @@
 									</div>
 								</div>
 							</div>
-							<p class="mr-2 mt-2 text-base text-token-text-primary" data-testid="plus-pricing-column-cost-summary">Level up productivity and creativity with expanded access</p>
+							<p
+								class="mr-2 mt-2 text-base text-token-text-primary"
+								data-testid="plus-pricing-column-cost-summary"
+							>
+								Level up productivity and creativity with expanded access
+							</p>
 						</div>
 					</div>
 					<div class="relative flex flex-col bg-token-main-surface-primary">
 						<div>
 							<div class="bg-green-600 bg-opacity-5">
-								<button class="btn relative btn-green btn-large w-full font-semibold border border-gray-300 dark:border-white" data-testid="select-plan-button-plus-upgrade"><div class="flex items-center justify-center">Get Plus</div></button>
+								<button
+									class="btn relative btn-green btn-large w-full font-semibold border border-gray-300 dark:border-white"
+									data-testid="select-plan-button-plus-upgrade"
+									><div class="flex items-center justify-center">Get Plus</div></button
+								>
 							</div>
 						</div>
 					</div>
 					<div class="flex flex-col flex-grow gap-2">
 						<div class="relative">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -226,7 +327,14 @@
 						</div>
 						<div class="relative">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -234,12 +342,22 @@
 										fill="currentColor"
 									></path>
 								</svg>
-								<span>Extended limits on messaging, file uploads, advanced data analysis, and image generation</span>
+								<span
+									>Extended limits on messaging, file uploads, advanced data analysis, and image
+									generation</span
+								>
 							</div>
 						</div>
 						<div class="relative">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -252,7 +370,14 @@
 						</div>
 						<div class="relative">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -260,12 +385,22 @@
 										fill="currentColor"
 									></path>
 								</svg>
-								<span>Access to deep research, multiple reasoning models (o3-mini, o3-mini-high, and o1), and a research preview of GPT-4.5</span>
+								<span
+									>Access to deep research, multiple reasoning models (o3-mini, o3-mini-high, and
+									o1), and a research preview of GPT-4.5</span
+								>
 							</div>
 						</div>
 						<div class="relative">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -278,7 +413,14 @@
 						</div>
 						<div class="relative">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -291,7 +433,14 @@
 						</div>
 						<div class="relative">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -304,7 +453,14 @@
 						</div>
 						<div class="relative">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -318,7 +474,13 @@
 					</div>
 					<div>
 						<div class="relative flex flex-col text-xs text-token-text-secondary">
-							<div><a class="px-2 underline" href="https://help.openai.com/en/articles/7864572-what-is-the-chatgpt-model-selector" target="_blank">Limits apply</a></div>
+							<div>
+								<a
+									class="px-2 underline"
+									href="https://help.openai.com/en/articles/7864572-what-is-the-chatgpt-model-selector"
+									target="_blank">Limits apply</a
+								>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -329,11 +491,16 @@
 					<div class="relative flex flex-col bg-token-main-surface-primary">
 						<div class="flex flex-col gap-1">
 							<p class="flex items-center gap-2 text-2xl font-semibold">Pro</p>
-							<div class="ml-4 mt-2 flex items-baseline gap-1.5" data-testid="pro-pricing-column-cost">
+							<div
+								class="ml-4 mt-2 flex items-baseline gap-1.5"
+								data-testid="pro-pricing-column-cost"
+							>
 								<div class="relative">
 									<p class="absolute -left-4 -top-0 text-2xl text-token-text-secondary">$</p>
 									<div class="flex items-baseline gap-1.5">
-										<div class="text-5xl text-token-text-primary"><div class="text-5xl text-token-text-primary">200</div></div>
+										<div class="text-5xl text-token-text-primary">
+											<div class="text-5xl text-token-text-primary">200</div>
+										</div>
 										<div class="flex flex-col items-start justify-center">
 											<p class="absolute mb-6 text-xs text-token-text-tertiary">USD/</p>
 											<p class="text-xs text-token-text-tertiary">month</p>
@@ -341,18 +508,34 @@
 									</div>
 								</div>
 							</div>
-							<p class="mr-2 mt-2 text-base text-token-text-primary" data-testid="pro-pricing-column-cost-summary">Get the best of OpenAI with the highest level of access</p>
+							<p
+								class="mr-2 mt-2 text-base text-token-text-primary"
+								data-testid="pro-pricing-column-cost-summary"
+							>
+								Get the best of OpenAI with the highest level of access
+							</p>
 						</div>
 					</div>
 					<div class="relative flex flex-col bg-token-main-surface-primary">
 						<div>
-							<button class="btn relative btn-primary btn-large w-full border border-gray-300 dark:border-white" data-testid="select-plan-button-pro-upgrade"><div class="flex items-center justify-center">Get Pro</div></button>
+							<button
+								class="btn relative btn-primary btn-large w-full border border-gray-300 dark:border-white"
+								data-testid="select-plan-button-pro-upgrade"
+								><div class="flex items-center justify-center">Get Pro</div></button
+							>
 						</div>
 					</div>
 					<div class="flex flex-col flex-grow gap-2">
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -365,7 +548,14 @@
 						</div>
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -378,7 +568,14 @@
 						</div>
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -391,7 +588,14 @@
 						</div>
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -399,12 +603,22 @@
 										fill="currentColor"
 									></path>
 								</svg>
-								<span>Extended access to deep research, which conducts multi-step online research for complex tasks</span>
+								<span
+									>Extended access to deep research, which conducts multi-step online research for
+									complex tasks</span
+								>
 							</div>
 						</div>
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -417,7 +631,14 @@
 						</div>
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -425,12 +646,22 @@
 										fill="currentColor"
 									></path>
 								</svg>
-								<span>Access to o1 pro mode, which uses more compute for the best answers to the hardest questions</span>
+								<span
+									>Access to o1 pro mode, which uses more compute for the best answers to the
+									hardest questions</span
+								>
 							</div>
 						</div>
 						<div class="relative bg-token-main-surface-primary">
 							<div class="text-l flex justify-start gap-2">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-4 w-4 shrink-0">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="mt-0.5 h-4 w-4 shrink-0"
+								>
 									<path
 										fill-rule="evenodd"
 										clip-rule="evenodd"
@@ -443,16 +674,21 @@
 						</div>
 					</div>
 					<div>
-						<div class="relative flex flex-col text-xs text-token-text-secondary bg-token-main-surface-primary px-2">
-							<div>Unlimited subject to abuse guardrails. <a class="underline" rel="noreferrer" href="https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro" target="_blank">Learn more</a></div>
+						<div
+							class="relative flex flex-col text-xs text-token-text-secondary bg-token-main-surface-primary px-2"
+						>
+							<div>
+								Unlimited subject to abuse guardrails. <a
+									class="underline"
+									rel="noreferrer"
+									href="https://help.openai.com/en/articles/9793128-what-is-chatgpt-pro"
+									target="_blank">Learn more</a
+								>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	 
 	</div>
-
-	
-  </div>
-  
+</div>

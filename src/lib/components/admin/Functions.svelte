@@ -85,7 +85,7 @@
 		window.addEventListener('message', messageHandler, false);
 	};
 
-	const cloneHandler = async (func:any) => {
+	const cloneHandler = async (func: any) => {
 		const _function = await getFunctionById(localStorage.token, func.id).catch((error) => {
 			toast.error(`${error}`);
 			return null;

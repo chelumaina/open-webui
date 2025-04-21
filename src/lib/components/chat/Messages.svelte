@@ -27,8 +27,6 @@
 	let showPercentage = false;
 	let showRelevance = true;
 
-
- 	
 	import ChatPlaceholder from './ChatPlaceholder.svelte';
 	import { t } from 'i18next';
 
@@ -40,11 +38,11 @@
 	export let user = $_user;
 
 	export let prompt;
-	export let history:any = [];
+	export let history: any = [];
 	export let selectedModels;
 	export let atSelectedModel;
 
-	let messages:any = [];
+	let messages: any = [];
 
 	export let sendPrompt: Function;
 	export let continueResponse: Function;
@@ -60,7 +58,7 @@
 
 	export let bottomPadding = false;
 	export let autoScroll: any;
-	export let userSettings={};
+	export let userSettings = {};
 
 	let messagesCount = 20;
 	let messagesLoading = false;
@@ -121,15 +119,15 @@
 		}
 	};
 
-	const gotoMessage = async (message:any, idx:any) => {
+	const gotoMessage = async (message: any, idx: any) => {
 		// Determine the correct sibling list (either parent's children or root messages)
 		let siblings;
 		if (message.parentId !== null) {
 			siblings = history.messages[message.parentId].childrenIds;
 		} else {
 			siblings = Object.values(history.messages)
-				.filter((msg:any) => msg.parentId === null)
-				.map((msg:any) => msg.id);
+				.filter((msg: any) => msg.parentId === null)
+				.map((msg: any) => msg.id);
 		}
 
 		// Clamp index to a valid range
@@ -162,7 +160,7 @@
 		}
 	};
 
-	const showPreviousMessage = async (message:any) => {
+	const showPreviousMessage = async (message: any) => {
 		if (message.parentId !== null) {
 			let messageId =
 				history.messages[message.parentId].childrenIds[
@@ -181,8 +179,8 @@
 			}
 		} else {
 			let childrenIds = Object.values(history.messages)
-				.filter((message:any) => message.parentId === null)
-				.map((message:any) => message.id);
+				.filter((message: any) => message.parentId === null)
+				.map((message: any) => message.id);
 			let messageId = childrenIds[Math.max(childrenIds.indexOf(message.id) - 1, 0)];
 
 			if (message.id !== messageId) {
@@ -209,7 +207,7 @@
 		}
 	};
 
-	const showNextMessage = async (message:any) => {
+	const showNextMessage = async (message: any) => {
 		if (message.parentId !== null) {
 			let messageId =
 				history.messages[message.parentId].childrenIds[
@@ -231,8 +229,8 @@
 			}
 		} else {
 			let childrenIds = Object.values(history.messages)
-				.filter((message:any) => message.parentId === null)
-				.map((message:any) => message.id);
+				.filter((message: any) => message.parentId === null)
+				.map((message: any) => message.id);
 			let messageId =
 				childrenIds[Math.min(childrenIds.indexOf(message.id) + 1, childrenIds.length - 1)];
 
@@ -260,8 +258,7 @@
 		}
 	};
 
-
-	const rateMessage = async (messageId:any, rating:any) => {
+	const rateMessage = async (messageId: any, rating: any) => {
 		history.messages[messageId].annotation = {
 			...history.messages[messageId].annotation,
 			rating: rating
@@ -270,7 +267,7 @@
 		await updateChat();
 	};
 
-	const editMessage = async (messageId:any, content:any, submit = true) => {
+	const editMessage = async (messageId: any, content: any, submit = true) => {
 		if (history.messages[messageId].role === 'user') {
 			if (submit) {
 				// New user message
@@ -345,23 +342,23 @@
 		}
 	};
 
-	const actionMessage = async (actionId:any, message:any, event = null) => {
+	const actionMessage = async (actionId: any, message: any, event = null) => {
 		await chatActionHandler(chatId, actionId, message.model, message.id, event);
 	};
 
-	const saveMessage = async (messageId:any, message:any) => {
+	const saveMessage = async (messageId: any, message: any) => {
 		history.messages[messageId] = message;
 		await updateChat();
 	};
 
-	const deleteMessage = async (messageId:any) => {
+	const deleteMessage = async (messageId: any) => {
 		const messageToDelete = history.messages[messageId];
 		const parentMessageId = messageToDelete.parentId;
 		const childMessageIds = messageToDelete.childrenIds ?? [];
 
 		// Collect all grandchildren
 		const grandchildrenIds = childMessageIds.flatMap(
-			(childId:any) => history.messages[childId]?.childrenIds ?? []
+			(childId: any) => history.messages[childId]?.childrenIds ?? []
 		);
 
 		// Update parent's children
@@ -373,7 +370,7 @@
 		}
 
 		// Update grandchildren's parent
-		grandchildrenIds.forEach((grandchildId:any) => {
+		grandchildrenIds.forEach((grandchildId: any) => {
 			if (history.messages[grandchildId]) {
 				history.messages[grandchildId].parentId = parentMessageId;
 			}
@@ -401,7 +398,6 @@
 			}, 100);
 		}
 	};
-	 
 </script>
 
 <SubscriptionModal
@@ -409,12 +405,9 @@
 	citation={selectedSubscription}
 	{showPercentage}
 	{showRelevance}
-	/>
+/>
 <div class={className}>
-
-	
 	{#if Object.keys(history?.messages ?? {}).length == 0}
-		
 		<ChatPlaceholder
 			modelIds={selectedModels}
 			{atSelectedModel}
@@ -435,9 +428,7 @@
 			}}
 		/>
 	{:else}
-	
 		<div class="w-full pt-2">
-			
 			{#key chatId}
 				<div class="w-full">
 					{#if messages.at(0)?.parentId !== null}
@@ -488,35 +479,54 @@
 						</div>
 					{/if}
 
-					{#if $token_cost.cost > 1 && $token_cost.is_user_subscription_valid==false} 
-						<div class="flex flex-col justify-between px-5 mb-3 w-full max-w-5xl mx-auto rounded-lg group">
-							<div class="relative h-full w-full border-1 rounded-2xl border-token-border-light bg-token-main-surface-primary text-token-text-primary dark:bg-token-main-surface-secondary">
-								<div class="flex flex-col gap-3.5 ">
+					{#if $token_cost.cost > 1 && $token_cost.is_user_subscription_valid == false}
+						<div
+							class="flex flex-col justify-between px-5 mb-3 w-full max-w-5xl mx-auto rounded-lg group"
+						>
+							<div
+								class="relative h-full w-full border-1 rounded-2xl border-token-border-light bg-token-main-surface-primary text-token-text-primary dark:bg-token-main-surface-secondary"
+							>
+								<div class="flex flex-col gap-3.5">
 									<div style="opacity: 1; transform: translateY(0px); will-change: auto;">
-										<div class="flex w-full items-start gap-4 rounded-3xl border py-4 pl-5 pr-3 text-sm [text-wrap:pretty] dark:border-transparent lg:mx-auto shadow-xxs md:items-center border-token-border-light bg-token-main-surface-primary text-token-text-primary dark:bg-token-main-surface-secondary">
+										<div
+											class="flex w-full items-start gap-4 rounded-3xl border py-4 pl-5 pr-3 text-sm [text-wrap:pretty] dark:border-transparent lg:mx-auto shadow-xxs md:items-center border-token-border-light bg-token-main-surface-primary text-token-text-primary dark:bg-token-main-surface-secondary"
+										>
 											<div class="flex h-full w-full items-start gap-3 md:items-center">
-												<div class="mt-1.5 flex grow items-start gap-4 md:mt-0 md:flex-row md:items-center md:justify-between md:gap-8 flex-col">
+												<div
+													class="mt-1.5 flex grow items-start gap-4 md:mt-0 md:flex-row md:items-center md:justify-between md:gap-8 flex-col"
+												>
 													<div class="flex max-w-none flex-col">
-														<div class="font-bold text-token-text-primary">You've reached your daily usage limit. You have spent <strong>USD ${$token_cost?.cost}</strong></div>
+														<div class="font-bold text-token-text-primary">
+															You've reached your daily usage limit. You have spent <strong
+																>USD ${$token_cost?.cost}</strong
+															>
+														</div>
 														<div class="text-token-text-secondary">
-															<div>Upgrade to the Plus plan  or try again tomorrow </div>
+															<div>Upgrade to the Plus plan or try again tomorrow</div>
 															<!-- <p>USD ${$token_cost?.cost}</p> -->
 														</div>
 													</div>
 													<div class="flex shrink-0 gap-2 pb-1 md:pb-0">
-														<button class="btn relative btn-primary shrink-0 border border-gray-300 dark:border-white">
+														<button
+															class="btn relative btn-primary shrink-0 border border-gray-300 dark:border-white"
+														>
 															<div class="flex items-center justify-center">
-																<button class="btn relative btn-primary shrink-0" on:click={() => {
-																showSubscriptionModal = true;showPercentage = true;showRelevance = true; showPercentage = true; selectedSubscription = 'plus';
-																}}
-															
-														>Subscribe to Plus and Get more wirh <strong>$15</strong></button></div>
+																<button
+																	class="btn relative btn-primary shrink-0"
+																	on:click={() => {
+																		showSubscriptionModal = true;
+																		showPercentage = true;
+																		showRelevance = true;
+																		showPercentage = true;
+																		selectedSubscription = 'plus';
+																	}}
+																	>Subscribe to Plus and Get more wirh <strong>$15</strong></button
+																>
+															</div>
 														</button>
 													</div>
 												</div>
-												<div class="flex shrink-0 items-center gap-2">
-													
-												</div>
+												<div class="flex shrink-0 items-center gap-2"></div>
 											</div>
 										</div>
 									</div>
@@ -525,13 +535,12 @@
 						</div>
 					{/if}
 				</div>
-				
+
 				<div class="pb-12" />
 				{#if bottomPadding}
 					<div class="  pb-6" />
 				{/if}
 			{/key}
-			 
 		</div>
 	{/if}
-</div> 
+</div>

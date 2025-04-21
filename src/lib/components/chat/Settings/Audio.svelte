@@ -66,7 +66,6 @@
 				});
 
 				if (res) {
-					
 					voices = res.voices;
 				}
 			}

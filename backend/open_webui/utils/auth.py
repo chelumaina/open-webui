@@ -159,7 +159,7 @@ def get_current_user(
     auth_token: HTTPAuthorizationCredentials = Depends(bearer_security),
 ):
     token = None
- 
+
     if auth_token is not None:
         token = auth_token.credentials
 

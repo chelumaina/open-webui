@@ -637,12 +637,9 @@
 															? createMessagesList(history, history.currentId)
 															: null
 													).catch((error) => {
-														
-
 														return null;
 													});
 
-													
 													return res;
 												}}
 												oncompositionstart={() => (isComposing = true)}

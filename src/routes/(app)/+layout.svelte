@@ -82,11 +82,11 @@
 				console.error(error);
 				return null;
 			});
-			console.log("userSettings.settings", userSettings.settings)
- 
+			console.log('userSettings.settings', userSettings.settings);
+
 			if (userSettings) {
-				settings.set(userSettings.settings); 
-				localStorage.setItem('settings', JSON.stringify(userSettings.settings))
+				settings.set(userSettings.settings);
+				localStorage.setItem('settings', JSON.stringify(userSettings.settings));
 				token_cost.set(userSettings.tokens);
 			} else {
 				let localStorageSettings = {} as Parameters<(typeof settings)['set']>[0];

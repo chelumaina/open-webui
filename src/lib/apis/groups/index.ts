@@ -20,7 +20,7 @@ export const createNewGroup = async (token: string, group: object) => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -51,7 +51,7 @@ export const getGroups = async (token: string = '') => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -83,7 +83,6 @@ export const getGroupById = async (token: string, id: string) => {
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 
@@ -118,7 +117,6 @@ export const updateGroupById = async (token: string, id: string, group: object) 
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 
@@ -150,7 +148,6 @@ export const deleteGroupById = async (token: string, id: string) => {
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 

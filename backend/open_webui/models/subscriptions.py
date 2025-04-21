@@ -1,4 +1,4 @@
-import logging 
+import logging
 from typing import Optional
 import uuid
 from sqlalchemy import not_
@@ -6,8 +6,15 @@ from sqlalchemy import not_
 from datetime import datetime
 from enum import Enum
 from sqlalchemy import (
-    Column, Integer, String, Boolean, ForeignKey,
-    Float, DateTime, JSON, Enum as SQLAlchemyEnum
+    Column,
+    Integer,
+    String,
+    Boolean,
+    ForeignKey,
+    Float,
+    DateTime,
+    JSON,
+    Enum as SQLAlchemyEnum,
 )
 from pydantic import BaseModel, ConfigDict
 
@@ -32,10 +39,12 @@ Base = declarative_base()
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
 
+
 class PaymentMethodType(str, Enum):
     CARD = "card"
     BANK_TRANSFER = "bank_transfer"
     PAYPAL = "paypal"
+
 
 class TransactionStatus(str, Enum):
     PENDING = "pending"
@@ -43,22 +52,22 @@ class TransactionStatus(str, Enum):
     FAILED = "failed"
     REFUNDED = "refunded"
 
+
 class SubscriptionStatus(str, Enum):
     ACTIVE = "active"
     CANCELED = "canceled"
     PAST_DUE = "past_due"
     UNPAID = "unpaid"
 
+
 class PlanInterval(str, Enum):
     MONTHLY = "monthly"
     YEARLY = "yearly"
-
 
     # # Relationships
     # subscriptions = relationship("Subscription", back_populates="user")
     # transactions = relationship("Transaction", back_populates="user")
     # payment_methods = relationship("PaymentMethod", back_populates="user")
-
 
 
 class DbBaseModel(Base):
@@ -67,10 +76,12 @@ class DbBaseModel(Base):
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
+
 class ResponseModel(PydanticBaseModel):
     id: uuid.UUID
     created_at: datetime
     updated_at: datetime
+
 
 class Plan(DbBaseModel):
     __tablename__ = "plans"
@@ -83,15 +94,14 @@ class Plan(DbBaseModel):
     billing_cycle = Column(String, nullable=False)
     status = Column(String, default="ACTIVE", nullable=False)
     # Relationship: one plan can have many subscriptions
-    # subscriptions = relationship("Subscription", back_populates="subscriptions") 
-    
-    
+    # subscriptions = relationship("Subscription", back_populates="subscriptions")
+
 
 class PlanModel(BaseModel):
     # model_config = ConfigDict(from_attributes=True)
     # id: PG_UUID
     id: uuid.UUID
-    paypal_plan_id:Optional[str]
+    paypal_plan_id: Optional[str]
     name: str
     description: Optional[str]
     price: float
@@ -100,26 +110,30 @@ class PlanModel(BaseModel):
     status: Optional[str]
     created_at: Optional[datetime]
     updated_at: Optional[datetime]
+
     # subscriptions: List[Subscription] = []
     # model_config = ConfigDict(from_attributes=True)  # ✅ Enables ORM conversion
     class Config:
         from_attributes = True
 
-    @classmethod 
+    @classmethod
     def from_orm(cls, obj):
-        return cls.model_validate({
-            "id": obj.id,  # Convert UUID to string
-            "name": obj.name,
-            "price": obj.price,
-            "paypal_plan_id": obj.paypal_plan_id,
-            "description": obj.description,
-            "currency": obj.currency,
-            "billing_cycle": obj.billing_cycle,
-            "created_at": obj.created_at,
-            "updated_at": obj.updated_at,
-            "status": obj.status
-        })
-        
+        return cls.model_validate(
+            {
+                "id": obj.id,  # Convert UUID to string
+                "name": obj.name,
+                "price": obj.price,
+                "paypal_plan_id": obj.paypal_plan_id,
+                "description": obj.description,
+                "currency": obj.currency,
+                "billing_cycle": obj.billing_cycle,
+                "created_at": obj.created_at,
+                "updated_at": obj.updated_at,
+                "status": obj.status,
+            }
+        )
+
+
 class PlanForm(BaseModel):
     name: str
     description: Optional[str]
@@ -130,7 +144,6 @@ class PlanForm(BaseModel):
     # model_config = ConfigDict(extra="allow")
 
 
-    
 class PlanResponse(ResponseModel):
     name: str
     description: Optional[str]
@@ -140,7 +153,7 @@ class PlanResponse(ResponseModel):
     status: str
     # model_config = ConfigDict(extra="allow")
 
-    
+
 class Subscription(DbBaseModel):
     __tablename__ = "subscriptions"
     customer_id = Column(PG_UUID(as_uuid=True), nullable=False)
@@ -164,21 +177,23 @@ class SubscriptionModel(BaseModel):
     updated_at: datetime
     model_config = ConfigDict(from_attributes=True)  # ✅ Enables ORM conversion
 
-    @classmethod 
+    @classmethod
     def from_orm(cls, obj):
-        return cls.model_validate({
-            "id": obj.id,  # Convert UUID to string
-            "customer_id": obj.customer_id,
-            "plan_id": obj.plan_id,
-            "status": obj.status,
-            "start_date": obj.start_date,
-            "end_date": obj.end_date,
-            "created_at": obj.created_at,
-            "updated_at": obj.updated_at,
-            "next_billing_date": obj.next_billing_date
-        })
-        
-    
+        return cls.model_validate(
+            {
+                "id": obj.id,  # Convert UUID to string
+                "customer_id": obj.customer_id,
+                "plan_id": obj.plan_id,
+                "status": obj.status,
+                "start_date": obj.start_date,
+                "end_date": obj.end_date,
+                "created_at": obj.created_at,
+                "updated_at": obj.updated_at,
+                "next_billing_date": obj.next_billing_date,
+            }
+        )
+
+
 class SubscriptionForm(BaseModel):
     customer_id: Optional[uuid.UUID]
     plan_id: Optional[uuid.UUID]
@@ -189,7 +204,7 @@ class SubscriptionForm(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    
+
 class SubscriptionResponse(ResponseModel):
     customer_id: uuid.UUID
     plan_id: uuid.UUID
@@ -197,11 +212,8 @@ class SubscriptionResponse(ResponseModel):
     start_date: Optional[datetime]
     end_date: Optional[datetime]
     next_billing_date: Optional[datetime]
- 
- 
- 
-    
-    
+
+
 class Invoice(DbBaseModel):
     __tablename__ = "invoices"
     # paypal_invoice_id = Column(PG_UUID(as_uuid=True), unique=True, nullable=False)
@@ -215,21 +227,24 @@ class Invoice(DbBaseModel):
     issue_date = Column(DateTime, nullable=False)
     due_date = Column(DateTime)
 
-    @classmethod 
+    @classmethod
     def from_orm(cls, obj):
-        return cls.model_validate({
-            "id": obj.id,  # Convert UUID to string
-            "subscription_id": obj.subscription_id,
-            'paypal_order_id':obj.paypal_order_id,
-            "amount": obj.amount,
-            "status": obj.status,
-            "currency": obj.currency,
-            "due_date": obj.due_date,
-            "issue_date": obj.issue_date,
-            'captured_json':obj.captured_json,
-            "created_at": obj.created_at,
-            "updated_at": obj.updated_at,
-        })
+        return cls.model_validate(
+            {
+                "id": obj.id,  # Convert UUID to string
+                "subscription_id": obj.subscription_id,
+                "paypal_order_id": obj.paypal_order_id,
+                "amount": obj.amount,
+                "status": obj.status,
+                "currency": obj.currency,
+                "due_date": obj.due_date,
+                "issue_date": obj.issue_date,
+                "captured_json": obj.captured_json,
+                "created_at": obj.created_at,
+                "updated_at": obj.updated_at,
+            }
+        )
+
 
 class InvoiceModel(BaseModel):
     # model_config = ConfigDict(from_attributes=True)
@@ -239,27 +254,27 @@ class InvoiceModel(BaseModel):
     paypal_order_id: Optional[str]
     currency: str
     status: str
-    captured_json: Optional[dict]={}
+    captured_json: Optional[dict] = {}
     issue_date: datetime
     due_date: datetime
     created_at: datetime
     updated_at: datetime
     model_config = ConfigDict(from_attributes=True)  # ✅ Enables ORM conversion
-    
-    
+
+
 class InvoiceForm(BaseModel):
     subscription_id: uuid.UUID
     amount: float
     paypal_order_id: Optional[str]
     currency: str
     status: str
-    captured_json: Optional[dict]={}
+    captured_json: Optional[dict] = {}
     issue_date: datetime
     due_date: datetime
     created_at: datetime
     updated_at: datetime
 
-    
+
 class InvoiceResponse(BaseModel):
     id: uuid.UUID
     subscription_id: uuid.UUID
@@ -267,74 +282,80 @@ class InvoiceResponse(BaseModel):
     paypal_order_id: Optional[str]
     currency: str
     status: str
-    captured_json: Optional[dict]={}
+    captured_json: Optional[dict] = {}
     issue_date: datetime
     due_date: datetime
     created_at: datetime
     updated_at: datetime
- 
 
 
 class Transaction(DbBaseModel):
     __tablename__ = "transactions"
-    subscription_id = Column(PG_UUID(as_uuid=True), ForeignKey("subscriptions.id"), nullable=False)
-    invoice_id = Column(PG_UUID(as_uuid=True), ForeignKey("invoices.id"), nullable=False)
+    subscription_id = Column(
+        PG_UUID(as_uuid=True), ForeignKey("subscriptions.id"), nullable=False
+    )
+    invoice_id = Column(
+        PG_UUID(as_uuid=True), ForeignKey("invoices.id"), nullable=False
+    )
     amount = Column(Float, nullable=False)
     currency = Column(String, default="USD", nullable=False)
     status = Column(String, nullable=False)
     transaction_date = Column(DateTime, nullable=False)
 
 
-
 class TransactionModel(BaseModel):
     # model_config = ConfigDict(from_attributes=True)
     id: uuid.UUID
-    subscription_id: Optional[uuid.UUID] 
-    invoice_id: Optional[uuid.UUID] 
+    subscription_id: Optional[uuid.UUID]
+    invoice_id: Optional[uuid.UUID]
     amount: float
     currency: str
     status: str
-    transaction_date: Optional[datetime] 
+    transaction_date: Optional[datetime]
     created_at: datetime
     updated_at: datetime
     model_config = ConfigDict(from_attributes=True)  # ✅ Enables ORM conversion
 
-    @classmethod 
+    @classmethod
     def from_orm(cls, obj):
-        return cls.model_validate({
-            "id": obj.id,  # Convert UUID to string
-            "subscription_id": obj.subscription_id,
-            "amount": obj.amount,
-            "status": obj.status,
-            "currency": obj.currency,
-            "transaction_date": obj.transaction_date,
-            "created_at": obj.created_at,
-            "updated_at": obj.updated_at,
-        })
-        
-    
-class TransactionForm(BaseModel):
-    subscription_id: Optional[uuid.UUID] 
-    invoice_id: Optional[uuid.UUID] 
-    amount: float
-    currency: str
-    status: str
-    transaction_date: Optional[datetime]  
+        return cls.model_validate(
+            {
+                "id": obj.id,  # Convert UUID to string
+                "subscription_id": obj.subscription_id,
+                "amount": obj.amount,
+                "status": obj.status,
+                "currency": obj.currency,
+                "transaction_date": obj.transaction_date,
+                "created_at": obj.created_at,
+                "updated_at": obj.updated_at,
+            }
+        )
 
-    
-class TransactionResponse(ResponseModel):
-    subscription_id: Optional[uuid.UUID] 
-    invoice_id: Optional[uuid.UUID] 
+
+class TransactionForm(BaseModel):
+    subscription_id: Optional[uuid.UUID]
+    invoice_id: Optional[uuid.UUID]
     amount: float
     currency: str
     status: str
-    transaction_date: Optional[datetime] 
- 
-    
+    transaction_date: Optional[datetime]
+
+
+class TransactionResponse(ResponseModel):
+    subscription_id: Optional[uuid.UUID]
+    invoice_id: Optional[uuid.UUID]
+    amount: float
+    currency: str
+    status: str
+    transaction_date: Optional[datetime]
+
+
 class CheckoutSession(DbBaseModel):
     __tablename__ = "checkout_sessions"
     paypal_session_id = Column(PG_UUID(as_uuid=True), unique=True, nullable=False)
-    customer_id = Column(PG_UUID(as_uuid=True), ForeignKey("customers.id"), nullable=False)
+    customer_id = Column(
+        PG_UUID(as_uuid=True), ForeignKey("customers.id"), nullable=False
+    )
     subscription_id = Column(PG_UUID(as_uuid=True), ForeignKey("subscriptions.id"))
     status = Column(String, nullable=False)
     amount = Column(Float, nullable=False)
@@ -346,7 +367,6 @@ class CustomerResponse(ResponseModel):
     email: str
     first_name: Optional[str]
     last_name: Optional[str]
-
 
 
 class Payer(Base):
@@ -419,27 +439,26 @@ class Item(Base):
     currency = Column(String)
 
     purchase_unit = relationship("PurchaseUnit", back_populates="items")
-    
-    
+
+
 class PlanTable:
-    def insert_new_plan(self, user_id: str, form_data:PlanForm) -> Optional[PlanModel]:
-        
+    def insert_new_plan(self, user_id: str, form_data: PlanForm) -> Optional[PlanModel]:
+
         with get_db() as db:
             id = str(uuid.uuid4())
             plan = PlanModel(
-                 **{
+                **{
                     **form_data.model_dump(),
-                    "paypal_plan_id":"None21",
-                    "created_at":datetime.now(),
-                    "updated_at":datetime.now(),
-                 }
+                    "paypal_plan_id": "None21",
+                    "created_at": datetime.now(),
+                    "updated_at": datetime.now(),
+                }
             )
-            
+
             # log.debug(f"chat => {**plan.model_dump()}")
 
-
             result = Plan(**plan.model_dump())
-            
+
             log.debug(f"result => {result}")
 
             db.add(result)
@@ -447,7 +466,11 @@ class PlanTable:
             db.refresh(result)
             return PlanModel.model_validate(result) if result else None
 
-    def update_plan(self, id: str, form_data:PlanForm,  ) -> Optional[PlanModel]:
+    def update_plan(
+        self,
+        id: str,
+        form_data: PlanForm,
+    ) -> Optional[PlanModel]:
         try:
             with get_db() as db:
                 plan_item = db.get(Plan, id)
@@ -463,33 +486,32 @@ class PlanTable:
                 plan_item.paypal_plan_id = form_data.paypal_plan_id
                 plan_item.updated_at = datetime.now()
                 db.commit()
-                db.refresh(plan_item) 
+                db.refresh(plan_item)
                 return PlanModel.model_validate(plan_item)
         except Exception as ex:
             return None
-         
+
     def get_plans(self) -> list[PlanModel]:
         with get_db() as db:
             query = db.query(Plan)
             query = query.order_by(Plan.updated_at.desc())
             all_plans = query.all()
             return [PlanModel.model_validate(p) for p in all_plans]
-         
+
     def get_plan_by_id(self, id: str) -> Optional[dict]:
         try:
             with get_db() as db:
-                plan_item = db.get(Plan, id) 
+                plan_item = db.get(Plan, id)
                 return PlanModel.model_validate(plan_item)
                 # return Plan(**plan_item.model_dump())
         except Exception as ex:
             return None
-        
+
         # plan = self.get_plan_by_id(id)
         # if plan is None:
         #     return None
         # return Plan(**plan.model_dump())
-  
-  
+
     def get_plan_by_user_id_and_name(
         self, user_id: str, name: str
     ) -> Optional[PlanModel]:
@@ -499,8 +521,7 @@ class PlanTable:
                 plan = (
                     db.query(Plan)
                     # .filter_by(parent_id=parent_id, user_id=user_id)
-                    .filter(Plan.name.ilike(name))
-                    .first()
+                    .filter(Plan.name.ilike(name)).first()
                 )
 
                 if not plan:
@@ -512,40 +533,32 @@ class PlanTable:
             return None
 
     def delete_plan_by_id(self, id: str) -> bool:
-        try: 
-            with get_db() as db: 
-                # plan_item = db.get(Plan, id) 
+        try:
+            with get_db() as db:
+                # plan_item = db.get(Plan, id)
                 db.query(Plan).filter_by(id=id).delete()
                 db.commit()
                 return True
         except Exception:
             return False
-        
+
+
 Plans = PlanTable()
 
 
-
-
-
-
-
 class SubscriptionTable:
-    def insert_new_subscription(self, user_id: str, form_data:SubscriptionForm) -> Optional[SubscriptionModel]:
-        
+    def insert_new_subscription(
+        self, user_id: str, form_data: SubscriptionForm
+    ) -> Optional[SubscriptionModel]:
+
         with get_db() as db:
             id = str(uuid.uuid4())
-            model = SubscriptionModel(
-                 **{
-                    **form_data.model_dump(), 
-                    'id':id
-                 }
-            )
-            
+            model = SubscriptionModel(**{**form_data.model_dump(), "id": id})
+
             log.debug(f"chat => {model.model_dump()}")
 
-
             result = Subscription(**model.model_dump())
-            
+
             log.debug(f"result => {result}")
 
             db.add(result)
@@ -553,11 +566,15 @@ class SubscriptionTable:
             db.refresh(result)
             return SubscriptionModel.model_validate(result) if result else None
 
-    def update_subscription(self, id: str, form_data:SubscriptionForm,  ) -> Optional[SubscriptionModel]:
+    def update_subscription(
+        self,
+        id: str,
+        form_data: SubscriptionForm,
+    ) -> Optional[SubscriptionModel]:
         try:
             with get_db() as db:
                 plan_item = db.get(Subscription, id)
-               
+
                 plan_item.customer_id = form_data.customer_id
                 plan_item.plan_id = form_data.plan_id
                 plan_item.status = form_data.status
@@ -567,22 +584,22 @@ class SubscriptionTable:
                 plan_item.next_billing_date = form_data.next_billing_date
                 plan_item.updated_at = datetime.now()
                 db.commit()
-                db.refresh(plan_item) 
+                db.refresh(plan_item)
                 return SubscriptionModel.model_validate(plan_item)
         except Exception as ex:
             return None
-         
-    def get_subscriptions(self, user_id:str) -> list[SubscriptionModel]:
+
+    def get_subscriptions(self, user_id: str) -> list[SubscriptionModel]:
         with get_db() as db:
             query = db.query(Subscription)
             query = query.order_by(Subscription.updated_at.desc())
             all_plans = query.all()
             return [SubscriptionModel.model_validate(p) for p in all_plans]
-         
+
     def get_subscription_by_id(self, id: str) -> Optional[dict]:
         try:
             with get_db() as db:
-                plan_item = db.get(Subscription, id) 
+                plan_item = db.get(Subscription, id)
                 return SubscriptionModel.model_validate(plan_item)
                 # return Plan(**plan_item.model_dump())
         except Exception as ex:
@@ -590,38 +607,38 @@ class SubscriptionTable:
             return None
 
     def delete_subscription_by_id(self, id: str) -> bool:
-        try: 
-            with get_db() as db: 
-                # plan_item = db.get(Plan, id) 
+        try:
+            with get_db() as db:
+                # plan_item = db.get(Plan, id)
                 db.query(Subscription).filter_by(id=id).delete()
                 db.commit()
                 return True
         except Exception:
             return False
-        
+
+
 Subscriptions = SubscriptionTable()
 
 
-
-
 class TransactionTable:
-    def insert_new_transaction(self, user_id: str, form_data:TransactionForm) -> Optional[TransactionModel]:
-        
+    def insert_new_transaction(
+        self, user_id: str, form_data: TransactionForm
+    ) -> Optional[TransactionModel]:
+
         with get_db() as db:
             id = str(uuid.uuid4())
             plan = TransactionModel(
-                 **{
-                    **form_data.model_dump(), 
-                    "created_at":datetime.now(),
-                    "updated_at":datetime.now(),
-                 }
+                **{
+                    **form_data.model_dump(),
+                    "created_at": datetime.now(),
+                    "updated_at": datetime.now(),
+                }
             )
-            
+
             log.debug(f"chat => {plan.model_dump()}")
 
-
             result = Transaction(**plan.model_dump())
-            
+
             log.debug(f"result => {result}")
 
             db.add(result)
@@ -629,34 +646,38 @@ class TransactionTable:
             db.refresh(result)
             return TransactionModel.model_validate(result) if result else None
 
-    def update_transaction(self, id: str, form_data:TransactionForm,  ) -> Optional[TransactionModel]:
+    def update_transaction(
+        self,
+        id: str,
+        form_data: TransactionForm,
+    ) -> Optional[TransactionModel]:
         try:
             with get_db() as db:
                 plan_item = db.get(Transaction, id)
-                  
+
                 plan_item.subscription_id = form_data.subscription_id
                 plan_item.amount = form_data.amount
                 plan_item.currency = form_data.currency
                 plan_item.status = form_data.status
-                plan_item.transaction_date = form_data.transaction_date 
+                plan_item.transaction_date = form_data.transaction_date
                 plan_item.updated_at = datetime.now()
                 db.commit()
-                db.refresh(plan_item) 
+                db.refresh(plan_item)
                 return TransactionModel.model_validate(plan_item)
         except Exception as ex:
             return None
-         
-    def get_transactions(self, user_id:str) -> list[TransactionModel]:
+
+    def get_transactions(self, user_id: str) -> list[TransactionModel]:
         with get_db() as db:
             query = db.query(Transaction)
             query = query.order_by(Transaction.updated_at.desc())
             all_plans = query.all()
             return [TransactionModel.model_validate(p) for p in all_plans]
-         
+
     def get_transaction_by_id(self, id: str) -> Optional[dict]:
         try:
             with get_db() as db:
-                plan_item = db.get(Transaction, id) 
+                plan_item = db.get(Transaction, id)
                 return TransactionModel.model_validate(plan_item)
                 # return Plan(**plan_item.model_dump())
         except Exception as ex:
@@ -664,39 +685,37 @@ class TransactionTable:
             return None
 
     def delete_transaction_by_id(self, id: str) -> bool:
-        try: 
-            with get_db() as db: 
-                # plan_item = db.get(Plan, id) 
+        try:
+            with get_db() as db:
+                # plan_item = db.get(Plan, id)
                 db.query(Transaction).filter_by(id=id).delete()
                 db.commit()
                 return True
         except Exception:
             return False
-        
+
+
 Transactions = TransactionTable()
 
 
-
-
-
-
 class InvoiceTable:
-    def insert_new_invoice(self, user_id: str, form_data:InvoiceForm) -> Optional[InvoiceModel]:
-        
+    def insert_new_invoice(
+        self, user_id: str, form_data: InvoiceForm
+    ) -> Optional[InvoiceModel]:
+
         with get_db() as db:
             id = str(uuid.uuid4())
             plan = InvoiceModel(
-                 **{
-                    **form_data.model_dump(), 
-                    "id":id,
-                 }
+                **{
+                    **form_data.model_dump(),
+                    "id": id,
+                }
             )
-            
+
             log.debug(f"chat => {plan.model_dump()}")
 
-
             result = Invoice(**plan.model_dump())
-            
+
             log.debug(f"result => {result}")
 
             db.add(result)
@@ -704,85 +723,89 @@ class InvoiceTable:
             db.refresh(result)
             return InvoiceModel.model_validate(result) if result else None
 
-    def update_invoice(self, id: str, form_data:InvoiceForm,  ) -> Optional[InvoiceModel]:
+    def update_invoice(
+        self,
+        id: str,
+        form_data: InvoiceForm,
+    ) -> Optional[InvoiceModel]:
         try:
             with get_db() as db:
                 plan_item = db.get(Invoice, id)
-                  
+
                 plan_item.subscription_id = form_data.subscription_id
                 plan_item.amount = form_data.amount
                 plan_item.currency = form_data.currency
                 plan_item.status = form_data.status
-                plan_item.invoice_date = form_data.invoice_date 
+                plan_item.invoice_date = form_data.invoice_date
                 plan_item.updated_at = datetime.now()
                 db.commit()
-                db.refresh(plan_item) 
+                db.refresh(plan_item)
                 return InvoiceModel.model_validate(plan_item)
         except Exception as ex:
             return None
-         
-    def get_invoices(self, user_id:str) -> list[InvoiceModel]:
+
+    def get_invoices(self, user_id: str) -> list[InvoiceModel]:
         with get_db() as db:
             query = db.query(Invoice)
             query = query.order_by(Invoice.updated_at.desc())
             all_plans = query.all()
             return [InvoiceModel.model_validate(p) for p in all_plans]
-         
+
     def get_invoice_by_id(self, id: str) -> Optional[dict]:
         try:
             with get_db() as db:
-                plan_item = db.get(Invoice, id) 
+                plan_item = db.get(Invoice, id)
                 return InvoiceModel.model_validate(plan_item)
                 # return Plan(**plan_item.model_dump())
         except Exception as ex:
             print(f"Error updating chat: {ex}")
             return None
-
 
     def get_invoice_by_name(self, id: str) -> Optional[dict]:
         try:
             with get_db() as db:
                 plan_item = db.query(Invoice).filter_by(id=id).delete()
 
-                # plan_item = db.get(Invoice, id) 
+                # plan_item = db.get(Invoice, id)
                 return InvoiceModel.model_validate(plan_item)
                 # return Plan(**plan_item.model_dump())
         except Exception as ex:
             print(f"Error updating chat: {ex}")
             return None
-        
+
     def delete_invoice_by_id(self, id: str) -> bool:
-        try: 
-            with get_db() as db: 
-                # plan_item = db.get(Plan, id) 
+        try:
+            with get_db() as db:
+                # plan_item = db.get(Plan, id)
                 db.query(Invoice).filter_by(id=id).delete()
                 db.commit()
                 return True
         except Exception:
             return False
-        
+
+
 Invoices = InvoiceTable()
 
 
-
 class TransactionTable:
-    def insert_new_transaction(self, user_id: str, form_data:TransactionForm) -> Optional[TransactionModel]:
-        
+    def insert_new_transaction(
+        self, user_id: str, form_data: TransactionForm
+    ) -> Optional[TransactionModel]:
+
         with get_db() as db:
             id = str(uuid.uuid4())
             plan = TransactionModel(
-                 **{
-                    **form_data.model_dump(), 
-                    "created_at":datetime.now(),
-                    "updated_at":datetime.now(),
-                 }
+                **{
+                    **form_data.model_dump(),
+                    "created_at": datetime.now(),
+                    "updated_at": datetime.now(),
+                }
             )
-            
+
             log.debug(f"chat => {plan.model_dump()}")
 
-
             result = Transaction(**plan.model_dump())
-            
+
             log.debug(f"result => {result}")
 
             db.add(result)
@@ -790,97 +813,104 @@ class TransactionTable:
             db.refresh(result)
             return TransactionModel.model_validate(result) if result else None
 
-    def update_transaction(self, id: str, form_data:TransactionForm,  ) -> Optional[TransactionModel]:
+    def update_transaction(
+        self,
+        id: str,
+        form_data: TransactionForm,
+    ) -> Optional[TransactionModel]:
         try:
             with get_db() as db:
                 plan_item = db.get(Transaction, id)
-                  
+
                 plan_item.subscription_id = form_data.subscription_id
                 plan_item.amount = form_data.amount
                 plan_item.currency = form_data.currency
                 plan_item.status = form_data.status
-                plan_item.transaction_date = form_data.transaction_date 
+                plan_item.transaction_date = form_data.transaction_date
                 plan_item.updated_at = datetime.now()
                 db.commit()
-                db.refresh(plan_item) 
+                db.refresh(plan_item)
                 return TransactionModel.model_validate(plan_item)
         except Exception as ex:
             return None
-         
-    def get_transactions(self, user_id:str) -> list[TransactionModel]:
+
+    def get_transactions(self, user_id: str) -> list[TransactionModel]:
         with get_db() as db:
             query = db.query(Transaction)
             query = query.order_by(Transaction.updated_at.desc())
             all_plans = query.all()
             return [TransactionModel.model_validate(p) for p in all_plans]
-         
+
     def get_transaction_by_id(self, id: str) -> Optional[dict]:
         try:
             with get_db() as db:
-                plan_item = db.get(Transaction, id) 
+                plan_item = db.get(Transaction, id)
                 return TransactionModel.model_validate(plan_item)
                 # return Plan(**plan_item.model_dump())
         except Exception as ex:
             return None
 
     def delete_transaction_by_id(self, id: str) -> bool:
-        try: 
-            with get_db() as db: 
-                # plan_item = db.get(Plan, id) 
+        try:
+            with get_db() as db:
+                # plan_item = db.get(Plan, id)
                 db.query(Transaction).filter_by(id=id).delete()
                 db.commit()
                 return True
         except Exception:
             return False
-        
-        
-            
-    async def save_paypal_response_to_db(self, order_id:str, data: dict):
-        try: 
+
+    async def save_paypal_response_to_db(self, order_id: str, data: dict):
+        try:
             from datetime import datetime
             from dateutil.relativedelta import relativedelta
 
-            with get_db() as db: 
-                invoice= db.query(Invoice).filter_by(paypal_order_id=order_id).filter(not_(Invoice.status != "COMPLETED")).first()
-                
-                subscription= db.get(Subscription, invoice.subscription_id)
+            with get_db() as db:
+                invoice = (
+                    db.query(Invoice)
+                    .filter_by(paypal_order_id=order_id)
+                    .filter(not_(Invoice.status != "COMPLETED"))
+                    .first()
+                )
+
+                subscription = db.get(Subscription, invoice.subscription_id)
                 if not invoice:
                     return False
                 if not subscription:
                     return False
-                
+
                 diff = subscription.end_date - subscription.start_date
                 days = diff.days
                 if days <= 0:
-                    days=0
-                    
+                    days = 0
+
                 # # Example end date
                 # end_date = datetime.strptime(subscription.end_date, "%Y-%m-%d")
-                one_month_later = datetime.now() + relativedelta(months=1)+days
-
+                one_month_later = datetime.now() + relativedelta(months=1) + days
 
                 # # Add 1 month
                 # new_end_date = end_date + relativedelta(months=1)
 
-
-                subscription.status = 'active'
+                subscription.status = "active"
                 # subscription.updated_at=data.get('update_time')
                 subscription.end_date = one_month_later
                 subscription.next_billing_date = one_month_later
-               
-                
+
                 db.commit()
                 db.refresh(subscription)
 
                 invoice.captured_json = data
                 invoice.status = data.get("status")
                 # invoice.updated_at=data.get('update_time')
-              
+
                 db.commit()
-                db.refresh(invoice) 
-                 
-                return {'invoice':InvoiceModel.model_validate(invoice),'subscription':SubscriptionModel.model_validate(subscription),} 
-                        
+                db.refresh(invoice)
+
+                return {
+                    "invoice": InvoiceModel.model_validate(invoice),
+                    "subscription": SubscriptionModel.model_validate(subscription),
+                }
+
                 # # Save payer
                 # payer_info = data["payer"]
                 # payer = Payer(
@@ -952,5 +982,5 @@ class TransactionTable:
         except Exception as e:
             return False
 
-Transactions = TransactionTable()
 
+Transactions = TransactionTable()

@@ -79,7 +79,7 @@ from open_webui.routers import (
     plans,
     subscriptions,
     invoices,
-    transactions
+    transactions,
 )
 
 from open_webui.routers.retrieval import (
@@ -960,10 +960,14 @@ app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
 app.include_router(channels.router, prefix="/api/v1/channels", tags=["channels"])
 app.include_router(chats.router, prefix="/api/v1/chats", tags=["chats"])
 app.include_router(plans.router, prefix="/api/v1/plans", tags=["plans"])
-app.include_router(subscriptions.router, prefix="/api/v1/subscriptions", tags=["subscriptions"])
+app.include_router(
+    subscriptions.router, prefix="/api/v1/subscriptions", tags=["subscriptions"]
+)
 app.include_router(invoices.router, prefix="/api/v1/invoices", tags=["invoices"])
 
-app.include_router(transactions.router, prefix="/api/v1/transactions", tags=["transactions"])
+app.include_router(
+    transactions.router, prefix="/api/v1/transactions", tags=["transactions"]
+)
 
 app.include_router(models.router, prefix="/api/v1/models", tags=["models"])
 app.include_router(knowledge.router, prefix="/api/v1/knowledge", tags=["knowledge"])
@@ -1095,7 +1099,7 @@ async def chat_completion(
 
             model = request.app.state.MODELS[model_id]
             model_info = Models.get_model_by_id(model_id)
-       
+
             # Check if user has access to the model
             if not BYPASS_MODEL_ACCESS_CONTROL and user.role == "user":
                 try:
@@ -1136,12 +1140,10 @@ async def chat_completion(
 
         request.state.metadata = metadata
         form_data["metadata"] = metadata
-        
 
         form_data, metadata, events = await process_chat_payload(
             request, form_data, user, metadata, model
         )
- 
 
     except Exception as e:
         log.debug(f"Error processing chat payload: {e}")
@@ -1435,7 +1437,7 @@ async def oauth_login(provider: str, request: Request):
 #    - Email addresses are considered unique, so we fail registration if the email address is already taken
 @app.get("/oauth/{provider}/callback")
 async def oauth_callback(provider: str, request: Request, response: Response):
-  
+
     return await oauth_manager.handle_callback(request, provider, response)
 
 

@@ -1,10 +1,7 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 import { getUserPosition } from '$lib/utils';
 
-import {
-	settings,
-	token_cost,
-} from '$lib/stores';
+import { settings, token_cost } from '$lib/stores';
 
 export const getUserGroups = async (token: string) => {
 	let error = null;
@@ -21,7 +18,6 @@ export const getUserGroups = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -48,7 +44,6 @@ export const getUserDefaultPermissions = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -78,7 +73,6 @@ export const updateUserDefaultPermissions = async (token: string, permissions: o
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -109,7 +103,6 @@ export const updateUserRole = async (token: string, id: string, role: string) =>
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -136,7 +129,6 @@ export const getUsers = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -157,15 +149,14 @@ export const getUserSettings = async (token: string) => {
 			Authorization: `Bearer ${token}`
 		}
 	})
-		.then(async (res:any) => {
+		.then(async (res: any) => {
 			if (!res.ok) throw await res.json();
-			let response=await res.json();
+			let response = await res.json();
 			token_cost.set(response.tokens);
 			// settings.set(response.settings);
 			return response;
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -195,7 +186,6 @@ export const updateUserSettings = async (token: string, settings: object) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -222,7 +212,6 @@ export const getUserById = async (token: string, userId: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -248,7 +237,6 @@ export const getUserInfo = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -278,7 +266,6 @@ export const updateUserInfo = async (token: string, info: object) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -292,7 +279,6 @@ export const updateUserInfo = async (token: string, info: object) => {
 
 export const getAndUpdateUserLocation = async (token: string) => {
 	const location = await getUserPosition().catch((err) => {
-		
 		return null;
 	});
 
@@ -320,7 +306,6 @@ export const deleteUserById = async (token: string, userId: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -360,7 +345,6 @@ export const updateUserById = async (token: string, userId: string, user: UserUp
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});

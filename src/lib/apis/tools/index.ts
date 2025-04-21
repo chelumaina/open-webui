@@ -20,7 +20,7 @@ export const createNewTool = async (token: string, tool: object) => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -51,7 +51,7 @@ export const getTools = async (token: string = '') => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -82,7 +82,7 @@ export const getToolList = async (token: string = '') => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -113,7 +113,7 @@ export const exportTools = async (token: string = '') => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -145,7 +145,6 @@ export const getToolById = async (token: string, id: string) => {
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 
@@ -180,7 +179,6 @@ export const updateToolById = async (token: string, id: string, tool: object) =>
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 
@@ -212,7 +210,6 @@ export const deleteToolById = async (token: string, id: string) => {
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 
@@ -244,7 +241,6 @@ export const getToolValvesById = async (token: string, id: string) => {
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 
@@ -276,7 +272,6 @@ export const getToolValvesSpecById = async (token: string, id: string) => {
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 
@@ -311,7 +306,6 @@ export const updateToolValvesById = async (token: string, id: string, valves: ob
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 
@@ -343,7 +337,6 @@ export const getUserValvesById = async (token: string, id: string) => {
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 
@@ -375,7 +368,6 @@ export const getUserValvesSpecById = async (token: string, id: string) => {
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 
@@ -410,7 +402,6 @@ export const updateUserValvesById = async (token: string, id: string, valves: ob
 		.catch((err) => {
 			error = err.detail;
 
-			
 			return null;
 		});
 

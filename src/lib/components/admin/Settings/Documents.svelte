@@ -91,7 +91,6 @@
 			return;
 		}
 
-
 		updateEmbeddingModelLoading = true;
 		const res = await updateEmbeddingConfig(localStorage.token, {
 			embedding_engine: embeddingEngine,

@@ -105,14 +105,14 @@
 	export let messageId;
 
 	let message: MessageType = JSON.parse(JSON.stringify(history.messages[messageId]));
-	console.log("message1", message);
+	console.log('message1', message);
 
 	$: if (history.messages) {
 		if (JSON.stringify(message) !== JSON.stringify(history.messages[messageId])) {
 			message = JSON.parse(JSON.stringify(history.messages[messageId]));
 		}
 	}
-	console.log("message2", message);
+	console.log('message2', message);
 
 	export let siblings;
 
@@ -157,7 +157,7 @@
 
 	let showRateComment = false;
 
-	const copyToClipboard = async (text:any) => {
+	const copyToClipboard = async (text: any) => {
 		text = removeAllDetails(text);
 
 		const res = await _copyToClipboard(text, $settings?.copyFormatted ?? false);
@@ -410,7 +410,6 @@
 		const res = await imageGenerations(localStorage.token, message.content).catch((error) => {
 			toast.error(`${error}`);
 		});
-		
 
 		if (res) {
 			const files = res.map((image: any) => ({
@@ -657,8 +656,6 @@
 														{status?.description}
 													{/if}
 												</div>
-
-
 											</div>
 										</WebSearchResults>
 									{:else if status?.action === 'knowledge_search'}
@@ -973,7 +970,6 @@
 								{#if !readOnly}
 									{#if $user?.role === 'user' ? ($user?.permissions?.chat?.edit ?? true) : true}
 										<Tooltip content={$i18n.t('Edit')} placement="bottom">
-											
 											<button
 												class="{isLastMessage
 													? 'visible'

@@ -264,7 +264,7 @@
 				'openai',
 				'users'
 			]
-		},
+		}
 		// {
 		// 	id: 'about',
 		// 	title: 'About',

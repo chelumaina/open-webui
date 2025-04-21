@@ -9,7 +9,17 @@ from open_webui.models.tags import TagModel, Tag, Tags
 from open_webui.env import SRC_LOG_LEVELS
 
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Boolean, Column, String, Text, JSON, Double, Float, Date
+from sqlalchemy import (
+    BigInteger,
+    Boolean,
+    Column,
+    String,
+    Text,
+    JSON,
+    Double,
+    Float,
+    Date,
+)
 from sqlalchemy import or_, func, select, and_, text
 from sqlalchemy.sql import exists
 
@@ -24,14 +34,16 @@ log.setLevel(SRC_LOG_LEVELS["MODELS"])
 
 from datetime import datetime, timedelta
 
+
 def get_today_range():
     dt = datetime.utcnow()
     timestamp = dt.timestamp()  # float
     timestamp_int = int(dt.timestamp())  # integer
-    
+
     start_of_day = datetime(now.year, now.month, now.day)
     end_of_day = start_of_day + timedelta(days=1)
     return start_of_day, end_of_day
+
 
 class Chat(Base):
     __tablename__ = "chat"
@@ -50,11 +62,12 @@ class Chat(Base):
 
     meta = Column(JSON, server_default="{}")
     folder_id = Column(Text, nullable=True)
-    
+
     response_token = Column(Float, default=0.0)
     prompt_token = Column(Float, default=0.0)
     cost_per_prompt_token = Column(Float, default=0.0)
     cost_per_response_token = Column(Float, default=0.0)
+
 
 class ChatModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -73,11 +86,13 @@ class ChatModel(BaseModel):
 
     meta: dict = {}
     folder_id: Optional[str] = None
-    response_token: Optional[float] = 0.00 
+    response_token: Optional[float] = 0.00
     prompt_token: Optional[float] = 0.00
-    
+
     cost_per_prompt_token: Optional[float] = os.environ.get("COST_PER_PROMPT_TOKEN", 0)
-    cost_per_response_token: Optional[float] = os.environ.get("COST_PER_RESPONSE_TOKEN", 0)
+    cost_per_response_token: Optional[float] = os.environ.get(
+        "COST_PER_RESPONSE_TOKEN", 0
+    )
 
 
 ####################
@@ -116,15 +131,15 @@ class ChatResponse(BaseModel):
     pinned: Optional[bool] = False
     meta: dict = {}
     folder_id: Optional[str] = None
-    response_token: Optional[float] = 0.00 
-    prompt_token: Optional[float] = 0.00 
-    
+    response_token: Optional[float] = 0.00
+    prompt_token: Optional[float] = 0.00
+
     cost_per_prompt_token: Optional[float] = os.environ.get("COST_PER_PROMPT_TOKEN", 0)
-    cost_per_response_token: Optional[float] = os.environ.get("COST_PER_RESPONSE_TOKEN", 0)
+    cost_per_response_token: Optional[float] = os.environ.get(
+        "COST_PER_RESPONSE_TOKEN", 0
+    )
     # data: Optional[dict] =[]
     model_config = ConfigDict(extra="allow")  # Allow extra fields dynamically
-
-
 
 
 class ChatTitleIdResponse(BaseModel):
@@ -202,22 +217,29 @@ class ChatTable:
         except Exception:
             return None
 
-    def update_chat(self, id: str, prompt_token: float, response_token: float, cost_per_prompt_token: float=os.environ.get("COST_PER_PROMPT_TOKEN", 0), cost_per_response_token: float=os.environ.get("COST_PER_RESPONSE_TOKEN", 0)) -> Optional[ChatModel]:
+    def update_chat(
+        self,
+        id: str,
+        prompt_token: float,
+        response_token: float,
+        cost_per_prompt_token: float = os.environ.get("COST_PER_PROMPT_TOKEN", 0),
+        cost_per_response_token: float = os.environ.get("COST_PER_RESPONSE_TOKEN", 0),
+    ) -> Optional[ChatModel]:
         try:
             with get_db() as db:
                 chat_item = db.get(Chat, id)
                 # chat_item.chat = chat
                 chat_item.prompt_token = prompt_token
-                chat_item.response_token = response_token 
+                chat_item.response_token = response_token
                 chat_item.cost_per_prompt_token = cost_per_prompt_token
                 chat_item.cost_per_response_token = cost_per_response_token
                 db.commit()
-                db.refresh(chat_item) 
+                db.refresh(chat_item)
                 return ChatModel.model_validate(chat_item)
         except Exception as ex:
             print(f"Error updating chat: {ex}")
             return None
-        
+
     def update_chat_title_by_id(self, id: str, title: str) -> Optional[ChatModel]:
         chat = self.get_chat_by_id(id)
         if chat is None:
@@ -539,20 +561,24 @@ class ChatTable:
             return None
 
     def get_chat_by_user_today(self, user_id: str) -> Optional[ChatModel]:
-      
-        with get_db() as db: 
+
+        with get_db() as db:
             now = datetime.utcnow()  # Or datetime.now() if you're using local time
-            start = int(datetime.combine(now.date(), datetime.min.time()).timestamp())  # 00:00 AM today
-            end = int(datetime.combine(now.date(), datetime.max.time()).timestamp()) # 23:59 AM tomorrow
-            
+            start = int(
+                datetime.combine(now.date(), datetime.min.time()).timestamp()
+            )  # 00:00 AM today
+            end = int(
+                datetime.combine(now.date(), datetime.max.time()).timestamp()
+            )  # 23:59 AM tomorrow
+
             all_chats = (
                 db.query(Chat)
                 .filter_by(user_id=user_id)
                 .filter(Chat.created_at >= start, Chat.created_at < end)
                 .all()
-            ) 
+            )
             return all_chats
-     
+
     def get_chats(self, skip: int = 0, limit: int = 50) -> list[ChatModel]:
         with get_db() as db:
             all_chats = (

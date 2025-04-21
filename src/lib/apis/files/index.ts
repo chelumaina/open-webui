@@ -19,7 +19,7 @@ export const uploadFile = async (token: string, file: File) => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -76,7 +76,7 @@ export const getFiles = async (token: string = '') => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -107,7 +107,7 @@ export const getFileById = async (token: string, id: string) => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -141,7 +141,7 @@ export const updateFileDataContentById = async (token: string, id: string, conte
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -168,7 +168,6 @@ export const getFileContentById = async (id: string) => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
 
 			return null;
 		});
@@ -200,7 +199,7 @@ export const deleteFileById = async (token: string, id: string) => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 
@@ -231,7 +230,7 @@ export const deleteAllFiles = async (token: string) => {
 		})
 		.catch((err) => {
 			error = err.detail;
-			
+
 			return null;
 		});
 

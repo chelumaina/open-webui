@@ -98,7 +98,7 @@
 	let controlPane;
 	let controlPaneComponent;
 
-	let userSettings={}
+	let userSettings = {};
 	let autoScroll = true;
 	let processing = '';
 	let messagesContainerElement: HTMLDivElement;
@@ -127,7 +127,7 @@
 
 	let chat = null;
 	let tags = [];
-	let model_config={}
+	let model_config = {};
 
 	let history = {
 		messages: {},
@@ -249,8 +249,6 @@
 	};
 
 	const chatEventHandler = async (event, cb) => {
-		
-
 		if (event.chat_id === $chatId) {
 			await tick();
 			let message = history.messages[event.message_id];
@@ -720,7 +718,7 @@
 			messages: {},
 			currentId: null
 		};
-		model_config={}
+		model_config = {};
 
 		chatFiles = [];
 		params = {};
@@ -770,7 +768,7 @@
 			$models.map((m) => m.id).includes(modelId) ? modelId : ''
 		);
 
-		 userSettings = await getUserSettings(localStorage.token);
+		userSettings = await getUserSettings(localStorage.token);
 
 		if (userSettings) {
 			settings.set(userSettings.ui);
@@ -796,7 +794,7 @@
 			});
 
 			const chatContent = chat.chat;
-			console.log("chatContent", chat.model_config);
+			console.log('chatContent', chat.model_config);
 			if (chatContent) {
 				// console.log(chatContent);
 
@@ -808,15 +806,13 @@
 					(chatContent?.history ?? undefined) !== undefined
 						? chatContent.history
 						: convertMessagesToHistory(chatContent.messages);
-						
-				// console.log("chatContent", chatContent);
-				model_config = (chat?.model_config ?? undefined) !== undefined
-						? chat.model_config
-						: {};
-				chatTitle.set(chatContent.title);
-				console.log("model_config", model_config);
 
-				 userSettings = await getUserSettings(localStorage.token);
+				// console.log("chatContent", chatContent);
+				model_config = (chat?.model_config ?? undefined) !== undefined ? chat.model_config : {};
+				chatTitle.set(chatContent.title);
+				console.log('model_config', model_config);
+
+				userSettings = await getUserSettings(localStorage.token);
 
 				if (userSettings) {
 					await settings.set(userSettings.ui);
@@ -884,7 +880,6 @@
 
 			return null;
 		});
-		 
 
 		if (res !== null && res.messages) {
 			// Update chat history with the new messages
@@ -1883,7 +1878,7 @@
 		}
 	};
 
-	console.log("settings",$settings);
+	console.log('settings', $settings);
 	const initChatHandler = async (history) => {
 		let _chatId = $chatId;
 
@@ -2034,7 +2029,7 @@
 									{chatActionHandler}
 									{addMessages}
 									bottomPadding={files.length > 0}
-								/> 
+								/>
 								<!-- <div class=" bottom-10 text-xs text-white-500 text-center line-clamp-1 right-0 left-0">
 									{$i18n.t('LLMs can make mistakes. Verify important information.')} 
 								</div> -->

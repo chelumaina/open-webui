@@ -437,7 +437,8 @@
 	}}
 />
 
-<SubscriptionModal bind:show={$showSubscriptionModal} 
+<SubscriptionModal
+	bind:show={$showSubscriptionModal}
 	on:change={async () => {
 		await initChatList();
 	}}
@@ -904,7 +905,7 @@
 					<UserMenu
 						role={$user?.role}
 						on:show={(e) => {
-							alert
+							alert;
 							if (e.detail === 'archived-chat') {
 								showArchivedChats.set(true);
 							}

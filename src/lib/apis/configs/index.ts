@@ -19,7 +19,6 @@ export const importConfig = async (token: string, config) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -46,7 +45,6 @@ export const exportConfig = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -73,7 +71,6 @@ export const getDirectConnectionsConfig = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -103,7 +100,6 @@ export const setDirectConnectionsConfig = async (token: string, config: object) 
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -130,7 +126,6 @@ export const getToolServerConnections = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -160,7 +155,6 @@ export const setToolServerConnections = async (token: string, connections: objec
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -190,7 +184,6 @@ export const verifyToolServerConnection = async (token: string, connection: obje
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -217,7 +210,6 @@ export const getCodeExecutionConfig = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -247,7 +239,6 @@ export const setCodeExecutionConfig = async (token: string, config: object) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -274,7 +265,6 @@ export const getModelsConfig = async (token: string) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -304,7 +294,6 @@ export const setModelsConfig = async (token: string, config: object) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -334,7 +323,6 @@ export const setDefaultPromptSuggestions = async (token: string, promptSuggestio
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -361,7 +349,6 @@ export const getBanners = async (token: string): Promise<Banner[]> => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});
@@ -391,7 +378,6 @@ export const setBanners = async (token: string, banners: Banner[]) => {
 			return res.json();
 		})
 		.catch((err) => {
-			
 			error = err.detail;
 			return null;
 		});

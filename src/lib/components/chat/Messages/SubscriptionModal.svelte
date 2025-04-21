@@ -1,53 +1,63 @@
 <script lang="ts">
 	import { getContext, onMount, tick, createEventDispatcher } from 'svelte';
 	import Modal from '$lib/components/common/Modal.svelte';
-    import { loadScript } from "@paypal/paypal-js";
+	import { loadScript } from '@paypal/paypal-js';
 	import { WEBUI_BASE_URL } from '$lib/constants';
 
-    let paypal;
-    let orderID:string;
+	let paypal;
+	let orderID: string;
 	const i18n = getContext('i18n');
 	export let show = false;
- 
+
 	let mergedDocuments = [];
 
-	let loadData=async () => {
-		paypal = await loadScript({ "client-id": "ATFgapo5n9uD3glfQ1tcwDHelvL8Wkj-0MFQIx02789MSS_41tCFOEsmnacByzNFfi9PQ2HZi75Nb4_y" });
+	let loadData = async () => {
+		paypal = await loadScript({
+			'client-id':
+				'ATFgapo5n9uD3glfQ1tcwDHelvL8Wkj-0MFQIx02789MSS_41tCFOEsmnacByzNFfi9PQ2HZi75Nb4_y'
+		});
 
 		if (!paypal) {
-			console.error("PayPal SDK failed to load.");
+			console.error('PayPal SDK failed to load.');
 			return;
 		}
 
-		
-		paypal.Buttons({
-			createOrder: async function () {
-				const response = await fetch(`${WEBUI_BASE_URL}/api/v1/subscriptions/create-payment?amount=15`, {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ amount: 15.00 }),
-				});
-				const data = await response.json();
-				orderID = data.order_id;
-				return data.order_id;
-			},
-			onApprove: async function (data) {
-				const response = await fetch(`${WEBUI_BASE_URL}/api/v1/subscriptions/capture-payment/${orderID}`, {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-				});
-				const result = await response.json();
-				alert("Payment Successful");
-				window.location.reload();
-			}
-		}).render("#paypal-button-container");
-  }
-  const dispatch = createEventDispatcher();
+		paypal
+			.Buttons({
+				createOrder: async function () {
+					const response = await fetch(
+						`${WEBUI_BASE_URL}/api/v1/subscriptions/create-payment?amount=15`,
+						{
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({ amount: 15.0 })
+						}
+					);
+					const data = await response.json();
+					orderID = data.order_id;
+					return data.order_id;
+				},
+				onApprove: async function (data) {
+					const response = await fetch(
+						`${WEBUI_BASE_URL}/api/v1/subscriptions/capture-payment/${orderID}`,
+						{
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' }
+						}
+					);
+					const result = await response.json();
+					alert('Payment Successful');
+					window.location.reload();
+				}
+			})
+			.render('#paypal-button-container');
+	};
+	const dispatch = createEventDispatcher();
 
 	// Detect when modal is shown
 	$: if (show) {
 		dispatch('show');
-		 loadData();
+		loadData();
 	} else {
 		dispatch('close');
 	}
@@ -58,14 +68,12 @@
 	}
 
 	onMount(async () => {
-        // await loadData();
-		
-		await tick();
-    });
+		// await loadData();
 
-	
+		await tick();
+	});
+
 	//  loadData();
- 
 </script>
 
 <Modal size="full" bind:show>
@@ -74,7 +82,12 @@
 			<div class=" text-lg font-medium self-center capitalize">
 				{$i18n.t('Subscription')}
 			</div>
-			<button class="self-center" on:click={() => { show = false;}}>
+			<button
+				class="self-center"
+				on:click={() => {
+					show = false;
+				}}
+			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 20 20"
@@ -90,18 +103,23 @@
 
 		<div class="flex flex-col md:flex-row w-full px-6 pb-5 md:space-x-4">
 			<div class="flex flex-col w-full dark:text-gray-200 overflow-y-scroll">
-
 				<section class="bg-white dark:bg-gray-900">
 					<div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
 						<div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
 							<!-- <h4 class="mb-5 font-light text-white-500 sm:text-xl dark:text-black-400">Upgrade your plan</h4> -->
-							<h2 class="mb-4 text-3xl font-semibold text-white-800 dark:text-black-800">Upgrade your plan</h2>
+							<h2 class="mb-4 text-3xl font-semibold text-white-800 dark:text-black-800">
+								Upgrade your plan
+							</h2>
 						</div>
 						<div class="space-y-4 lg:grid lg:grid-cols-2 sm:gap-1 xl:gap-1 lg:space-y-0">
 							<!-- Pricing Card -->
-							<div class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
+							<div
+								class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white"
+							>
 								<h3 class="mb-4 text-2xl font-semibold">Free Plan</h3>
-								<p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">Explore how AI can help you with basic daily tasks</p>
+								<p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">
+									Explore how AI can help you with basic daily tasks
+								</p>
 								<div class="flex justify-center items-baseline my-8">
 									<span class="mr-2 text-5xl font-extrabold">$0.00</span>
 									<span class="text-gray-500 dark:text-gray-400">/month</span>
@@ -112,44 +130,115 @@
 									Check out with PayPal
 								</button> -->
 
-								<ul role="list" class="mb-8 space-y-4 text-left"> 
+								<ul role="list" class="mb-8 space-y-4 text-left">
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
 										<span>Access to GPT-4o mini and reasoning</span>
 									</li>
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
 										<span>Standard voice mode</span>
 									</li>
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-										<span>Real-time data from the web with <span class="font-semibold">search</span></span>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
+										<span
+											>Real-time data from the web with <span class="font-semibold">search</span
+											></span
+										>
 									</li>
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-										<span>Limited access to  <span class="font-semibold">GPT-4o</span></span>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
+										<span>Limited access to <span class="font-semibold">GPT-4o</span></span>
 									</li>
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
 										<span>Use custom GPTs<span class="font-semibold">1000 tokens</span></span>
 									</li>
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-										<span>Limited access to file uploads, advanced data analysis, and image generation <span class="font-semibold">1000 tokens</span></span>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
+										<span
+											>Limited access to file uploads, advanced data analysis, and image generation <span
+												class="font-semibold">1000 tokens</span
+											></span
+										>
 									</li>
 								</ul>
-							</div> 
+							</div>
 
 							<!-- Pricing Card -->
-							<div class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
+							<div
+								class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white"
+							>
 								<h3 class="mb-4 text-2xl font-semibold">Plus Plan</h3>
-								<p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">Level up productivity and creativity .</p>
+								<p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">
+									Level up productivity and creativity .
+								</p>
 								<div class="flex justify-center items-baseline my-8">
 									<span class="mr-2 text-5xl font-extrabold">$15.00</span>
 									<span class="text-gray-500 dark:text-gray-400">/month</span>
@@ -163,50 +252,112 @@
 								<ul role="list" class="mb-8 space-y-4 text-left">
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
 										<span>Everything in Free</span>
 									</li>
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-										<span>Extended limits on messaging, file uploads, advanced data analysis, and image generation</span>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
+										<span
+											>Extended limits on messaging, file uploads, advanced data analysis, and image
+											generation</span
+										>
 									</li>
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
 										<span>Standard and advanced voice mode</span>
 									</li>
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-										<span>Access to deep research, multiple reasoning models (o3-mini, o3-mini-high, and o1), and a research preview of GPT-4.5</span>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
+										<span
+											>Access to deep research, multiple reasoning models (o3-mini, o3-mini-high,
+											and o1), and a research preview of GPT-4.5</span
+										>
 									</li>
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
 										<span>More space for memories</span>
 									</li>
 									<li class="flex items-center space-x-3">
 										<!-- Icon -->
-										<svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+										<svg
+											class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+											xmlns="http://www.w3.org/2000/svg"
+											><path
+												fill-rule="evenodd"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											></path></svg
+										>
 										<span>Create and use tasks, projects, and custom GPTs</span>
-									</li> 
-											
+									</li>
 								</ul>
 
 								<div class="mx-8 max-w-screen-md text-center mb-8 lg:mb-12">
 									<!-- <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">Here at Flowbite we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.</p> -->
 									<div class="space-y-4 lg:grid lg:grid-cols-1 sm:gap-1 xl:gap-1 lg:space-y-0">
 										<div id="paypal-button-container"></div>
-									</div> 
+									</div>
 								</div>
-							</div> 
+							</div>
 						</div>
-						
-						
 					</div>
 				</section>
-
 			</div>
 		</div>
 	</div>
