@@ -4,7 +4,7 @@ services:
     container_name: nginx
     ports:
       - "80:80"   # Expose port 80 for HTTP
-      - "443:443" # Expose port 443 for HTTPS
+      # - "443:443" # Expose port 443 for HTTPS
     networks:
       - app-network
     volumes:
