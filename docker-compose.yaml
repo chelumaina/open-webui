@@ -179,8 +179,8 @@ services:
     ports:
       - 8009:8000
     build:
-      context: .
-      dockerfile: ../sonix-clone/Dockerfile.web 
+      context: ./sonix-clone
+      dockerfile: Dockerfile.web 
     image: web_server:latest
     command: 
       # sh -c "python3 manage.py collectstatic --noinput && python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
@@ -208,8 +208,8 @@ services:
     hostname: 'celery_server'
     restart: always
     build:
-      context: .
-      dockerfile: ../sonix-clone/Dockerfile.celery 
+      context: ./sonix-clone
+      dockerfile: Dockerfile.celery 
     image: celery_server:latest 
     # mem_limit: 2g  # Set the memory limit to 2 GB (adjust as needed)
     command: sh -c "celery -A snx worker --concurrency=2 -l INFO" 

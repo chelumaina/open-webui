@@ -1,0 +1,56 @@
+django
+psycopg2 
+djangorestframework
+djangorestframework-xml
+djangorestframework-simplejwt
+requests
+flower
+celery
+redis
+django-celery-results
+django-celery-beat 
+django-allauth
+oauthlib
+pyjwt
+cryptography
+social-auth-app-django
+pydub
+mutagen
+django-auditlog
+Pillow
+python-docx
+reportlab
+python-memcached
+django-extensions
+channels
+pytz
+ffmpeg-python
+django-tinymce
+whisperx
+demucs
+rake-nltk
+torch
+torchvision
+torchaudio
+# scikit-learn
+# nltk
+# spacy
+transformers
+# tensorflow
+# # googletrans==4.0.0-rc1
+# sentencepiece
+python-magic
+tf_keras
+# beautifulsoup4
+django-ckeditor-5
+whitenoise
+# gensim
+pytesseract 
+PyPDF2
+unidecode
+geoip2
+# django_check_seo 
+pdf2image
+numpy==1.26.4
+pytubefix
+gevent
