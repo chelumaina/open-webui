@@ -16,9 +16,11 @@ services:
       - ./static:/usr/src/static
     restart: always
     depends_on:
-     - open-webui
+     - open-webui 
+     - web_server
     links:
      - open-webui
+     - web_server
     extra_hosts:
       - "google.com:142.250.190.78"
 
