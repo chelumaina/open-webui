@@ -179,7 +179,7 @@ services:
     ports:
       - 8009:8000
     build:
-      context: .
+      context: ../sonix-clone
       dockerfile: Dockerfile.web 
     image: web_server:latest
     command: 
@@ -208,7 +208,7 @@ services:
     hostname: 'celery_server'
     restart: always
     build:
-      context: .
+      context: ../sonix-clone
       dockerfile: Dockerfile.celery 
     image: celery_server:latest 
     # mem_limit: 2g  # Set the memory limit to 2 GB (adjust as needed)
@@ -283,7 +283,7 @@ services:
     container_name: flower_server
     hostname: flower_server
     restart: always
-    image: web_server:latest 
+    image: web_server:latest
     command: sh -c "celery -A snx --broker=redis://:s93s1nDwSOdlOna@redis_server/0 flower --port=5555"
     networks:
       - app-network
@@ -292,7 +292,7 @@ services:
       - web_server
     links:
       - redis_server
-      - web_server 
+      - web_server
     ports:
       - "5556:5555" 
     environment:
@@ -302,9 +302,6 @@ services:
     #   - ../sonix-clone:/usr/src/app/ 
     extra_hosts:
       - "google.com:142.250.190.78"
-
-
-
 
 
 networks:
