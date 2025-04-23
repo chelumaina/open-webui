@@ -16,14 +16,14 @@ from open_webui.constants import ERROR_MESSAGES
 ####################################
 
 OPEN_WEBUI_DIR = Path(__file__).parent  # the path containing this file
-print(OPEN_WEBUI_DIR)
+# print(OPEN_WEBUI_DIR)
 
 BACKEND_DIR = OPEN_WEBUI_DIR.parent  # the path containing this file
 BASE_DIR = BACKEND_DIR.parent  # the path containing the backend/
 
-print(BACKEND_DIR)
-print(BASE_DIR)
-print(str(BASE_DIR / ".env"))
+# print(BACKEND_DIR)
+# print(BASE_DIR)
+# print(str(BASE_DIR / ".env"))
 
 try:
     from dotenv import find_dotenv, load_dotenv
@@ -460,8 +460,8 @@ AUDIT_LOGS_FILE_PATH = f"{DATA_DIR}/audit.log"
 AUDIT_LOG_FILE_ROTATION_SIZE = os.getenv("AUDIT_LOG_FILE_ROTATION_SIZE", "10MB")
 # METADATA | REQUEST | REQUEST_RESPONSE
 AUDIT_LOG_LEVEL = os.getenv("AUDIT_LOG_LEVEL", "NONE").upper()
-print(f"AUDIT_LOG_LEVEL: {AUDIT_LOG_LEVEL}")
-print(f"AUDIT_LOGS_FILE_PATH: {AUDIT_LOGS_FILE_PATH}")
+# print(f"AUDIT_LOG_LEVEL: {AUDIT_LOG_LEVEL}")
+# print(f"AUDIT_LOGS_FILE_PATH: {AUDIT_LOGS_FILE_PATH}")
 try:
     MAX_BODY_LOG_SIZE = int(os.environ.get("MAX_BODY_LOG_SIZE") or 2048)
 except ValueError:
@@ -473,6 +473,7 @@ AUDIT_EXCLUDED_PATHS = os.getenv("AUDIT_EXCLUDED_PATHS", "/chats,/chat,/folders"
 )
 AUDIT_EXCLUDED_PATHS = [path.strip() for path in AUDIT_EXCLUDED_PATHS]
 AUDIT_EXCLUDED_PATHS = [path.lstrip("/") for path in AUDIT_EXCLUDED_PATHS]
+print(f"AUDIT_EXCLUDED_PATHS: {AUDIT_EXCLUDED_PATHS}")
 
 ####################################
 # OPENTELEMETRY
