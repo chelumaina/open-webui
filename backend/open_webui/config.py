@@ -342,7 +342,7 @@ ENABLE_OAUTH_SIGNUP = PersistentConfig(
     os.environ.get("ENABLE_OAUTH_SIGNUP", "False").lower() == "true",
 )
 
-
+print(f"ENABLE_OAUTH_SIGNUP: {ENABLE_OAUTH_SIGNUP.value=}")
 OAUTH_MERGE_ACCOUNTS_BY_EMAIL = PersistentConfig(
     "OAUTH_MERGE_ACCOUNTS_BY_EMAIL",
     "oauth.merge_accounts_by_email",
@@ -597,7 +597,8 @@ def load_oauth_providers():
                 client_kwargs={"scope": GITHUB_CLIENT_SCOPE.value},
                 redirect_uri=GITHUB_CLIENT_REDIRECT_URI.value,
             )
-
+        print(f"{GITHUB_CLIENT_REDIRECT_URI.value=}")
+        
         OAUTH_PROVIDERS["github"] = {
             "redirect_uri": GITHUB_CLIENT_REDIRECT_URI.value,
             "register": github_oauth_register,
