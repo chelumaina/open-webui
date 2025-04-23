@@ -1426,6 +1426,8 @@ if len(OAUTH_PROVIDERS) > 0:
 
 @app.get("/oauth/{provider}/login")
 async def oauth_login(provider: str, request: Request):
+    log.debug(f"OAuth Login for provider: {provider}")
+
     return await oauth_manager.handle_login(request, provider)
 
 

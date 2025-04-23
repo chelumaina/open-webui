@@ -553,7 +553,7 @@ def load_oauth_providers():
                 client_kwargs={"scope": GOOGLE_OAUTH_SCOPE.value},
                 redirect_uri=GOOGLE_REDIRECT_URI.value,
             )
-
+        print(f"{GOOGLE_REDIRECT_URI.value=}")
         OAUTH_PROVIDERS["google"] = {
             "redirect_uri": GOOGLE_REDIRECT_URI.value,
             "register": google_oauth_register,
