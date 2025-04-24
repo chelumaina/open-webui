@@ -127,6 +127,11 @@ services:
     #   - "14251:14250"  # gRPC
     #   - "14269:14268"  # HTTP thrift
     #   - "9412:9411"    # Zipkin compatible
+    expose:
+      - 14250
+      - 16686
+      - 14268
+      - 9411
     networks:
       - app-network
     restart: always 
