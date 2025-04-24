@@ -432,7 +432,11 @@
 		}
 	};
 
+
+
 	onMount(async () => {
+		// alert('NeuroHog is in beta. Please report any bugs to the developers.');
+		// alert('NeuroHog is not affiliated with OpenAI. Please do not use it for any illegal activities.');
 		if (typeof window !== 'undefined' && window.applyTheme) {
 			window.applyTheme();
 		}

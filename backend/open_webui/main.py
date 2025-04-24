@@ -1243,11 +1243,22 @@ async def list_tasks_by_chat_id_endpoint(chat_id: str, user=Depends(get_verified
     return {"task_ids": task_ids}
 
 
+
 ##################################
 #
 # Config Endpoints
 #
 ##################################
+
+
+
+
+##################################
+#
+# Config Endpoints
+#
+##################################
+
 
 
 @app.get("/api/config")
@@ -1381,6 +1392,96 @@ async def get_app_version():
     }
 
 
+from fastapi import FastAPI, Request
+from pydantic import BaseModel
+from typing import Dict, Optional
+from datetime import datetime
+import csv
+import os
+
+class Screen(BaseModel):
+    width: int
+    height: int
+
+class Viewport(BaseModel):
+    width: int
+    height: int
+class TrackingData(BaseModel):
+    path: Optional[str] = None
+    full_url: Optional[str] = None
+    query: Optional[Dict[str, str]] = {}
+    route_params: Optional[Dict[str, str]] = {}
+    timestamp: Optional[datetime] = datetime.now()
+    user_agent: Optional[str] = None
+    section_id: Optional[str] = None
+    language: Optional[str] = None
+    referrer: Optional[str] = None
+    screen: Optional[Screen] = {}
+    viewport: Optional[Viewport] = {}
+    
+CSV_FILE = "data/impressions.csv"
+
+# Write headers if file doesn't exist
+if not os.path.exists(CSV_FILE):
+    with open(CSV_FILE, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["IP","city","country","latitude","longitude", "path","full_url","query","route_params", "timestamp", "screen",  "viewport",  "user_agent", "ip", "section_id", "language", "referrer"])
+
+@app.post("/api/track-impression")
+async def tracking_user_impression(data: TrackingData, request: Request):
+    client_ip = request.client.host
+
+    import geoip2.database
+    geoip_reader = geoip2.database.Reader('data/geoip/GeoLite2-City.mmdb')
+    try:
+        response = geoip_reader.city(client_ip)
+        with open(CSV_FILE, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([
+            client_ip,
+            response.city.name,
+            response.country.name,
+            response.location.latitude,
+            response.location.longitude, 
+            data.path,
+            data.full_url,
+            data.query,
+            data.route_params,
+            data.timestamp,
+            data.screen,
+            data.viewport,
+            data.user_agent,
+            client_ip,
+            data.section_id, 
+            data.language, 
+            data.referrer
+            ])
+        
+        return {"status": "ok"}
+    except geoip2.errors.AddressNotFoundError:
+        return {"error": "IP address not found in database"}
+
+    # client_host = request.client.host
+    # print("Visitor Tracking:")
+    # with open(CSV_FILE, mode='a', newline='') as file:
+    #     writer = csv.writer(file)
+    #     writer.writerow([
+    #         data.path,
+    #         data.full_url,
+    #         data.query,
+    #         data.route_params,
+    #         data.timestamp,
+    #         data.screen,
+    #         data.viewport,
+    #         data.user_agent,
+    #         client_host,
+    #         data.section_id, 
+    #         data.language, 
+    #         data.referrer
+    #     ]) 
+    # return {"status": "ok"}
+ 
+
 @app.get("/api/version/updates")
 async def get_app_latest_release_version(user=Depends(get_verified_user)):
     if OFFLINE_MODE:
@@ -1491,6 +1592,7 @@ async def get_opensearch_xml():
 @app.get("/health")
 async def healthcheck():
     return {"status": True}
+
 
 
 @app.get("/health/db")

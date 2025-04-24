@@ -9,6 +9,12 @@
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png" />
 		<meta name="apple-mobile-web-app-title" content="NeuroHog" />
 
+
+		<meta name="description" content="ChatGPT helps you get answers, find inspiration and be more productive. It is free to use and easy to try. Just ask and ChatGPT can help with writing, learning, brainstorming and more."/>
+		<meta name="keyword" content="ai chat,ai,chap gpt,chat gbt,chat gpt 3,chat gpt login,chat gpt website,chat gpt,chat gtp,chat openai,chat,chatai,chatbot gpt,chatg,chatgpt login,chatgpt,gpt chat,open ai,openai chat,openai chatgpt,openai"/>
+		<meta property="og:description" content="A conversational AI system that listens, learns, and challenges"/><meta property="og:title" content="ChatGPT"/>
+		<!-- <meta property="og:image" content="https://cdn.oaistatic.com/assets/chatgpt-share-og-u7j5uyao.webp"/> -->
+
 		<link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
 		<meta
 			name="viewport"
@@ -30,6 +36,16 @@
 				obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
 			}
 		</script>
+
+		<!-- Replace G-XXXXXXXXXX with your actual GA4 ID -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'G-XXXXXXXXXX');
+		</script>
+
 
 		<script>
 			// On page load or when changing themes, best to add inline in `head` to avoid FOUC

@@ -6,6 +6,7 @@
 	import ShortcutsModal from '../chat/ShortcutsModal.svelte';
 	import Tooltip from '../common/Tooltip.svelte';
 	import HelpMenu from './Help/HelpMenu.svelte';
+	import ImpressionTracker from '../ImpressionTracker.svelte';
 
 	let showShortcuts = false;
 </script>
@@ -36,5 +37,6 @@
 		</Tooltip>
 	</HelpMenu>
 </div>
-
-<ShortcutsModal bind:show={showShortcuts} />
+<ImpressionTracker sectionId="shortcutsmodal-section">
+	<ShortcutsModal bind:show={showShortcuts} />
+</ImpressionTracker>
