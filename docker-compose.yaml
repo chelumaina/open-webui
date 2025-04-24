@@ -122,11 +122,11 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:latest
     container_name: jaeger
-    ports:
-      - "16686:16686"  # Web UI
-      - "14251:14250"  # gRPC
-      - "14269:14268"  # HTTP thrift
-      - "9412:9411"    # Zipkin compatible
+    # ports:
+    #   - "16686:16686"  # Web UI
+    #   - "14251:14250"  # gRPC
+    #   - "14269:14268"  # HTTP thrift
+    #   - "9412:9411"    # Zipkin compatible
     expose:
       - 14250
       - 16686
