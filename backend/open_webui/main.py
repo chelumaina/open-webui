@@ -1432,7 +1432,7 @@ async def tracking_user_impression(data: TrackingData, request: Request):
     client_ip = request.client.host
 
     import geoip2.database
-    geoip_reader = geoip2.database.Reader('data/geoip/GeoLite2-City.mmdb')
+    geoip_reader = geoip2.database.Reader('geoip/GeoLite2-City.mmdb')
     try:
         response = geoip_reader.city(client_ip)
         with open(CSV_FILE, mode='a', newline='') as file:
