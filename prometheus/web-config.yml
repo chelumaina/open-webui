@@ -1,0 +1,3 @@
+basic_auth_users:
+  # admin: $2y$05$HwoUJQOAp0A9UV0zgnGj8eTj/dzPmPqzkGnUqZ61USWqf8k5m5DUq  # password: "supersecure123"
+  admin: $2b$12$PrdtFe8M9/tq6BJEUsy.7.KZ8WayGg5w64yqri0Vmdte4te42bthK

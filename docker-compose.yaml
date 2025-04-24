@@ -75,59 +75,111 @@ services:
       # - "host.docker.internal:redis-master"
       - "google.com:142.250.190.78"
   
-  # litellm:
-  #   image: ghcr.io/berriai/litellm:latest
-  #   container_name: litellm
-  #   ports:
-  #     - 4000:4000
-  #   environment:
-  #     - LITELLM_PORT=4000
-  #     # Example routing config: use this if you want to redirect to OpenAI or Ollama
-  #     - LITELLM_MODEL_ALIAS=openai/gpt-3.5-turbo
-  #     - LITELLM_API_KEY=your_openai_key_here  # only needed if using OpenAI
- 
-  #   volumes:
-  #     - ./litellm_config.yaml:/app/litellm_config.yaml
-  #   # command: proxy --config /app/litellm_config.yaml
-  #   command: litellm --config /app/litellm_config.yaml
+  otel-collector:
+    container_name: otel-collector
+    hostname: otel-collector
+    image: otel/opentelemetry-collector:0.60.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    # user: root # required for reading docker container logs
+    volumes:
+      - ./otel-collector-config-app.yaml:/etc/otel-collector-config.yaml
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=host.name=otel-host,os.type=linux
+    ports:
+      # - "1777:1777"     # pprof extension
+      - "4317:4317"     # OTLP gRPC receiver
+      - "4318:4318"     # OTLP HTTP receiver
+      - "8888:8888"     # OtelCollector internal metrics
+      - "8889:8889"     # signoz spanmetrics exposed by the agent
+      # - "9411:9411"     # Zipkin port
+      - "13133:13133"   # health check extension
+      - "14250:14250"   # Jaeger gRPC
+      - "14268:14268"   # Jaeger thrift HTTP
+      # - "55678:55678"   # OpenCensus receiver
+      # - "55679:55679"   # zPages extension
+    restart: on-failure
+    networks:
+      - app-network
 
+
+  # jaeger:
+  #   image: jaegertracing/jaeger:2.3.0
+  #   container_name: jaeger
+  #   ports:
+  #     # - "16686:16686" # Jaeger UI - uses Caddy reverse proxy
+  #     - "14317:4317" # OTLP gRPC
+  #     - "14318:4318" # OTLP HTTP
+  #   volumes:
+  #     # - ./jaeger:/jaeger/jaeger_badger_store # Mount the volume for BadgerDB data
+  #     # - ./jaeger:/jaeger/jaeger_badger_store_archive # Mount the volume for BadgerDB archive data
+  #     # - ./prometheus/web-config.yml:/jaeger # Mount the jaeger directory to make the config files available
+  #     - ./otel-collector-config-app.yaml:/etc/otel-collector-config.yaml
+  #   command: --config /etc/otel-collector-config.yaml
   #   networks:
   #     - app-network
-  #   expose:
-  #     - 4000
-  #   restart: unless-stopped
-  
-  
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:latest
-    container_name: otel-collector
-    command: ["--config=/etc/otel-collector-config.yaml"]
-    volumes:
-      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
-    ports:
-      - "4317:4317"    # OTLP gRPC
-      - "4318:4318"    # OTLP HTTP
-      - "8888:8888"    # Prometheus metrics
-      - "55679:55679"  # zPages
+  #   restart: always 
 
   jaeger:
     image: jaegertracing/all-in-one:latest
     container_name: jaeger
-    ports:
-      - "16686:16686"  # Jaeger UI
-      - "14317:4317"    # OTLP gRPC endpoint (same port!)
-      - "14318:4318"    # OTLP HTTP endpoint
-      - "14268:14268"
-      - "14250:14250"
-      - "6831:6831/udp"
+    # ports:
+    #   - "16686:16686"  # Web UI
+    #   - "14251:14250"  # gRPC
+    #   - "14269:14268"  # HTTP thrift
+    #   - "9412:9411"    # Zipkin compatible
+    networks:
+      - app-network
+    restart: always 
+    links:
+      - otel-collector
+    depends_on:
+      - otel-collector
+
 
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
+    hostname: prometheus
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/web-config.yml:/etc/prometheus/auth/web-config.yml:ro
     ports:
       - "9090:9090"
+    depends_on:
+      - otel-collector
+      - jaeger
+    links:
+      - otel-collector
+      - jaeger
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.config.file=/etc/prometheus/auth/web-config.yml'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+    networks:
+      - app-network
+
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    hostname: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=supersecure123
+    volumes:
+      - ./data/grafana-storage:/var/lib/grafana
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+    networks:
+      - app-network
+    depends_on:
+      - pg_db
+    links:
+      - pg_db 
 
 
 
@@ -152,20 +204,22 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: always
+    networks:
+      - app-network
     environment:
       - MODEL_PROVIDER=llmlite
       - LLMLITE_API_URL=http://llmlite:11434
       - OLLAMA_API_URL=http://ollama:11435
-    networks:
-      - app-network
     links:
       - pg_db
       - redis-sentinel
       - ollama
+      - otel-collector
     depends_on:
       - pg_db
       - redis-sentinel
       - ollama 
+      - otel-collector
 
  
   pg_db:
@@ -177,8 +231,8 @@ services:
       POSTGRES_USER: transcription
       POSTGRES_PASSWORD: "62Y2xXcDojJ52054"
       POSTGRES_DB: smart_ai_latest
-    # ports:
-    #   - "5509:5432"
+    ports:
+      - "5509:5432"
     expose:
       - 5432
     volumes:

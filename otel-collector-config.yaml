@@ -1,3 +1,19 @@
+# receivers:
+#   otlp:
+#     protocols:
+#       grpc:
+#       http:
+
+# exporters:
+#   prometheus:
+#     endpoint: "otel-collector:8889"
+
+# service:
+#   pipelines:
+#     metrics:
+#       receivers: [otlp]
+#       exporters: [prometheus]
+
 receivers:
   otlp:
     protocols:
@@ -5,27 +21,15 @@ receivers:
       http:
 
 exporters:
-  otlp:
-    endpoint: jaeger:4317  # OTLP gRPC exporter to Jaeger
-    tls:
-      insecure: true
-
   prometheus:
     endpoint: "0.0.0.0:9090"
 
-  debug:
-    verbosity: detailed
-
 service:
   pipelines:
-    traces:
-      receivers: [otlp]
-      exporters: [otlp, debug]
-
     metrics:
       receivers: [otlp]
-      exporters: [prometheus, debug]
+      exporters: [prometheus]
 
-  telemetry:
-    metrics:
-      address: "0.0.0.0:9090"
+    # traces:
+    #   receivers: [otlp]
+    #   exporters: []
