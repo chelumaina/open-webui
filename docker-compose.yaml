@@ -1,3 +1,8 @@
+x-db-credentials: &db-credentials                             # Use the default POSTGRES_ credentials if they're available or simply default to "listmonk"
+  POSTGRES_USER: &db-user listmonk_user                            # for database user, password, and database name
+  POSTGRES_PASSWORD: &db-password listM0nk$$8
+  POSTGRES_DB: &db-name listmonk_db
+
 services:
   # nginx:
   #   image: nginx:latest
@@ -471,11 +476,7 @@ services:
                                                               # --upgrade automatically runs any DB migrations when a new image is pulled.
 
     environment:                                              # The same params as in config.toml are passed as env vars here.
-      LISTMONK_app__address: 0.0.0.0:9000
-      LISTMONK_db__user: *db-user
-      LISTMONK_db__password: *db-password
-      LISTMONK_db__database: *db-name
-      LISTMONK_db__host: listmonk_db
+      LISTMONK_db__host: pg_db
       LISTMONK_db__port: 5432
       LISTMONK_db__ssl_mode: disable
       LISTMONK_db__max_open: 25
