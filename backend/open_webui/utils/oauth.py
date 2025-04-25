@@ -237,6 +237,7 @@ class OAuthManager:
             log.info(f"handle_callback {token=}")
         except Exception as e:
             log.warning(f"OAuth callback error: {e}")
+            log.info(f"OAuth callback error: {e}")
             raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
         user_data: UserInfo = token.get("userinfo")
         log.info(f"user_data: {user_data}")
@@ -390,7 +391,7 @@ class OAuthManager:
                     profile_image_url=picture_url,
                     role=role,
                     oauth_sub=provider_sub, 
-                    settings='{"ui": {"speechAutoSend": false}}',
+                    settings={"ui": {"speechAutoSend": False}},
                 )
 
                 if auth_manager_config.WEBHOOK_URL:

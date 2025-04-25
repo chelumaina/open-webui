@@ -103,7 +103,7 @@ class AuthsTable:
         profile_image_url: str = "/user.png",
         role: str = "pending",
         oauth_sub: Optional[str] = None,
-        settings: Optional[str] = '{"ui": {"speechAutoSend": false}}',
+        settings: Optional[dict] = {"ui": {"speechAutoSend": False}},
     ) -> Optional[UserModel]:
         with get_db() as db:
             log.info("insert_new_auth")
