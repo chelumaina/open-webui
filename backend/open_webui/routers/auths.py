@@ -543,7 +543,7 @@ async def signout(request: Request, response: Response):
         oauth_id_token = request.cookies.get("oauth_id_token")
         print(f"{oauth_id_token=}")
         if oauth_id_token:
-            try:
+            # try:
                 async with ClientSession() as session:
                     async with session.get(OPENID_PROVIDER_URL.value) as resp:
                         print(f"{resp.status=}")
@@ -565,12 +565,12 @@ async def signout(request: Request, response: Response):
                                 status_code=resp.status,
                                 detail="Failed to fetch OpenID configuration",
                             )
-            except Exception as e:
-                log.error(f"OpenID signout error: {str(e)}")
-                raise HTTPException(
-                    status_code=500,
-                    detail="Failed to sign out from the OpenID provider.",
-                )
+            # except Exception as e:
+            #     log.error(f"OpenID signout error: {str(e)}")
+            #     raise HTTPException(
+            #         status_code=500,
+            #         detail="Failed to sign out from the OpenID provider.",
+            #     )
 
     return {"status": True}
 
