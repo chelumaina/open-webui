@@ -541,13 +541,19 @@ async def signout(request: Request, response: Response):
 
     if ENABLE_OAUTH_SIGNUP.value:
         oauth_id_token = request.cookies.get("oauth_id_token")
+        print(f"{oauth_id_token=}")
         if oauth_id_token:
             try:
                 async with ClientSession() as session:
                     async with session.get(OPENID_PROVIDER_URL.value) as resp:
+                        print(f"{resp.status=}")
+                        print(f"{resp.json()=}")
+
                         if resp.status == 200:
                             openid_data = await resp.json()
                             logout_url = openid_data.get("end_session_endpoint")
+                            print(f"{logout_url=}")
+
                             if logout_url:
                                 response.delete_cookie("oauth_id_token")
                                 return RedirectResponse(
