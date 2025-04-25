@@ -191,8 +191,8 @@ services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
     container_name: open-webui
-    ports:
-      - "3005:8080"
+    # ports:
+    #   - "3005:8080"
     expose:
       - 8080
     # command: sh -c "pip3 install geoip2 && sh start.sh"
