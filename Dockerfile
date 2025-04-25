@@ -144,7 +144,7 @@ RUN pip3 install  uv && \
     fi; \
     chown -R $UID:$GID /app/backend/data/
 
-RUN pip3 install hf_xet
+RUN pip3 install hf_xet geoip2
 
 # # copy embedding weight from build
 # # RUN mkdir -p /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2
