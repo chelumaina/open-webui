@@ -55,10 +55,25 @@ services:
       - OLLAMA_NUM_THREADS=8
       - OLLAMA_BATCH_SIZE=32
       - OLLAMA_MEMORY_GB=12
+      - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_PORT=11434
+      - OLLAMA_AUTH_TOKEN=Uyet70364583hdrejsgGGd
+      - OLLAMA_LOG_LEVEL=info
+      - OLLAMA_MAX_CONCURRENT=5
+      - OLLAMA_LIMITS_CPU=6
+      - OLLAMA_LIMITS_MEMORY=12GiB
+      - OLLAMA_MODEL_TTL_DAYS=30 
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     deploy:
       resources:
         limits:
           memory: 14G
+          cpus: '6.0'
         reservations:
           memory: 12G
     mem_limit: 14g
