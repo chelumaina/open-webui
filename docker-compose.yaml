@@ -456,8 +456,9 @@ services:
     # image: listmonk/listmonk:latest 
     build:
       context: ../listmonk
-      dockerfile: Dockerfile
-
+      dockerfile: ../listmonk/Dockerfile
+    env_file:
+      - .env
     container_name: listmonk_app
     hostname: "listmonk_app"
     restart: unless-stopped
