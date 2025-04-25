@@ -120,6 +120,7 @@ class UsersTable:
                     "settings": settings,#UserSettings.model_validate(settings),
                 }
             )
+            
             result = User(**user.model_dump())
             db.add(result)
             db.commit()
