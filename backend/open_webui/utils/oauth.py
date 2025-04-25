@@ -231,6 +231,7 @@ class OAuthManager:
         if provider not in OAUTH_PROVIDERS:
             raise HTTPException(404)
         client = self.get_client(provider)
+        log.info(f"client: {client}")
         try:
             token = await client.authorize_access_token(request)
             log.info(f"handle_callback {token=}")
@@ -238,6 +239,7 @@ class OAuthManager:
             log.warning(f"OAuth callback error: {e}")
             raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
         user_data: UserInfo = token.get("userinfo")
+        log.info(f"user_data: {user_data}")
         if not user_data or auth_manager_config.OAUTH_EMAIL_CLAIM not in user_data:
             user_data: UserInfo = await client.userinfo(token=token)
             log.info(f"handle_callback {user_data=}")
@@ -384,10 +386,11 @@ class OAuthManager:
                     password=get_password_hash(
                         str(uuid.uuid4())
                     ),  # Random password, not used
-                    name=name,
+                    name=name, 
                     profile_image_url=picture_url,
                     role=role,
-                    oauth_sub=provider_sub,
+                    oauth_sub=provider_sub, 
+                    settings='{"ui": {"speechAutoSend": false}}',
                 )
 
                 if auth_manager_config.WEBHOOK_URL:

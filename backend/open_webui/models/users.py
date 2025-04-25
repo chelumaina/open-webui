@@ -103,6 +103,7 @@ class UsersTable:
         profile_image_url: str = "/user.png",
         role: str = "pending",
         oauth_sub: Optional[str] = None,
+        settings: Optional[str] = '{"ui": {"speechAutoSend": false}}',
     ) -> Optional[UserModel]:
         with get_db() as db:
             user = UserModel(
@@ -116,6 +117,7 @@ class UsersTable:
                     "created_at": int(time.time()),
                     "updated_at": int(time.time()),
                     "oauth_sub": oauth_sub,
+                    "settings": UserSettings.model_validate(settings),
                 }
             )
             result = User(**user.model_dump())
