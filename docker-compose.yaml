@@ -1,4 +1,48 @@
+networks:
+  app-network:
+    driver: bridge
+    external: true
+
 services:
+  pg_db:
+    image: postgres:latest
+    container_name: pg_db
+    hostname: pg_db
+    environment:
+      - POSTGRES_USER=transcription
+      - POSTGRES_PASSWORD=62Y?2E£ojJ5
+      - POSTGRES_DB=openwebui
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U transcription -d openwebui"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    hostname: grafana
+    ports:
+      - "3008:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=supersecure123
+    volumes:
+      - ./data/grafana-storage:/var/lib/grafana
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+    networks:
+      - app-network
+ 
+
+
   ollama:
     volumes:
       - ollama:/root/.ollama
@@ -7,6 +51,8 @@ services:
     tty: true
     restart: unless-stopped
     image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
+    networks:
+      - app-network
 
   open-webui:
     build:
@@ -16,19 +62,46 @@ services:
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui
+    # volumes:
+    #   - open-webui:/app/backend/data
     volumes:
-      - open-webui:/app/backend/data
+      - ./open-webui-data:/app/backend/data
+      # - ./backend:/app/backend 
+      # - ./build:/app/build
+      # - ./CHANGELOG.md:/app/CHANGELOG.md
+      # - ./package.json:/app/package.json
+      # - ./.env:/app/.env
+
     depends_on:
       - ollama
+      - pg_db
     ports:
       - ${OPEN_WEBUI_PORT-3000}:8080
     environment:
-      - 'OLLAMA_BASE_URL=http://ollama:11434'
+      - 'ENV=dev'
+      - 'WEBUI_URL=http://localhost:${OPEN_WEBUI_PORT-3000}'         # or http://localhost:3000 for local
+      - 'ENABLE_OAUTH_PERSISTENT_CONFIG=false'     # so env changes apply during testing
+
+      - 'OLLAMA_BASE_URL=https://ollama.com'
+      - 'OLLAMA_API_KEY=f30ba07b95e9435bac1d929200d9ae72.PbzvbNWUr_QA8tHe55xP-mXj'  #
       - 'WEBUI_SECRET_KEY='
+
+      - 'ENABLE_OTEL_METRICS=false'
+      - 'OTEL_EXPORTER_OTLP_INSECURE=true' # Use insecure connection for OTLP, remove in production
+      - 'OTEL_EXPORTER_OTLP_ENDPOINT=http://grafana:4317'
+      - 'OTEL_SERVICE_NAME=open-webui'
+      - 'DATABASE_URL=postgresql://transcription:62Y%3F2E£ojJ5@pg_db/openwebui'
+      # - 'VECTOR_DB=pgvector'
+
+      - USER_AGENT=${USER_AGENT-Open WebUI (https://openwebui.ai)}
+
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
+    networks:
+      - app-network
 
 volumes:
   ollama: {}
   open-webui: {}
+  pgdata: {}
