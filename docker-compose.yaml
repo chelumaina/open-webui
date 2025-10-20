@@ -4,10 +4,10 @@ networks:
     external: true
 
 services:
-  pg_db:
+  pg_db_ai:
     image: postgres:latest
-    container_name: pg_db
-    hostname: pg_db
+    container_name: pg_db_ai
+    hostname: pg_db_ai
     environment:
       - POSTGRES_USER=transcription
       - POSTGRES_PASSWORD=62Y?2E£ojJ5
@@ -74,7 +74,7 @@ services:
 
     depends_on:
       - ollama
-      - pg_db
+      - pg_db_ai
     ports:
       - ${OPEN_WEBUI_PORT-3000}:8080
     environment:
@@ -90,7 +90,7 @@ services:
       - 'OTEL_EXPORTER_OTLP_INSECURE=true' # Use insecure connection for OTLP, remove in production
       - 'OTEL_EXPORTER_OTLP_ENDPOINT=http://grafana:4317'
       - 'OTEL_SERVICE_NAME=open-webui'
-      - 'DATABASE_URL=postgresql://transcription:62Y%3F2E£ojJ5@pg_db/openwebui'
+      - 'DATABASE_URL=postgresql://transcription:62Y%3F2E£ojJ5@pg_db_ai/openwebui'
       # - 'VECTOR_DB=pgvector'
 
       - USER_AGENT=${USER_AGENT-Open WebUI (https://openwebui.ai)}
