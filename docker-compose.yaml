@@ -89,6 +89,7 @@ services:
       - "${WEBUI_PORT:-8080}:8080"
     environment:
       - 'ENV=dev'
+      - 'WEBUI_NAME=${WEBUI_NAME-AI Legal Assistant}'
       - 'WEBUI_PORT=${WEBUI_PORT:-8080}'
       - 'CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN-http://localhost:${WEBUI_PORT:-8080}}'
 
@@ -103,7 +104,7 @@ services:
       # - 'OTEL_EXPORTER_OTLP_INSECURE=true' # Use insecure connection for OTLP, remove in production
       # - 'OTEL_EXPORTER_OTLP_ENDPOINT=http://grafana:4317'
       # - 'OTEL_SERVICE_NAME=open-webui'
-      - 'DATABASE_URL=postgresql://transcription:62Y%3F2E£ojJ5@pg_db_ai/openwebui'
+      - 'DATABASE_URL=${DATABASE_URL:-postgresql://transcription:62Y%3F2E£ojJ5@pg_db_ai/openwebui}'
       # - 'VECTOR_DB=pgvector'
 
       - USER_AGENT=${USER_AGENT-Open WebUI (https://openwebui.ai)}
@@ -111,9 +112,22 @@ services:
       - WEBSOCKET_MANAGER="redis"
       - WEBSOCKET_REDIS_URL="redis://redis:6379/1"
       - REDIS_KEY_PREFIX="open-webui"
+      - ENABLE_OAUTH_SIGNUP=${ENABLE_OAUTH_SIGNUP-True}
+      - ENABLE_SIGNUP_PASSWORD_CONFIRMATION=${ENABLE_SIGNUP_PASSWORD_CONFIRMATION-True}
+      - ENABLE_CHANNELS=${ENABLE_CHANNELS-True}
+      - ENABLE_AUDIT_LOGGING=${ENABLE_AUDIT_LOGGING-True}
+      - DEFAULT_PROMPT_SUGGESTIONS=${DEFAULT_PROMPT_SUGGESTIONS-"[]"}
+      - WEBUI_BANNERS=${WEBUI_BANNERS-'[]'}
+      - ENABLE_VERSION_UPDATE_CHECK=${ENABLE_VERSION_UPDATE_CHECK-True} 
+      - ENABLE_COMMUNITY_SHARING=${ENABLE_COMMUNITY_SHARING-True}
 
-      - ENABLE_COMMUNITY_SHARING=False
-
+      - GLOBAL_LOG_LEVEL=${GLOBAL_LOG_LEVEL-DEBUG}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5  
+  
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
