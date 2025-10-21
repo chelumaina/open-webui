@@ -102,7 +102,7 @@ services:
       # - 'OTEL_EXPORTER_OTLP_INSECURE=true' # Use insecure connection for OTLP, remove in production
       # - 'OTEL_EXPORTER_OTLP_ENDPOINT=http://grafana:4317'
       # - 'OTEL_SERVICE_NAME=open-webui'
-      - 'DATABASE_URL=${DATABASE_URL:-postgresql://transcription:62Y%3F2E£ojJ5@pg_db_ai/openwebui}'
+      - 'DATABASE_URL=postgresql://transcription:62Y%3F2E£ojJ5@pg_db_ai/openwebui'
       # - 'VECTOR_DB=pgvector'
 
       - USER_AGENT=${USER_AGENT:-Open WebUI (https://openwebui.ai)}
@@ -112,6 +112,7 @@ services:
       - REDIS_KEY_PREFIX="open-webui"
       - ENABLE_OAUTH_SIGNUP=${ENABLE_OAUTH_SIGNUP:-True}
       - ENABLE_SIGNUP_PASSWORD_CONFIRMATION=${ENABLE_SIGNUP_PASSWORD_CONFIRMATION:-True}
+      - ENABLE_SIGNUP=True
       - ENABLE_CHANNELS=${ENABLE_CHANNELS:-True}
       - ENABLE_AUDIT_LOGGING=${ENABLE_AUDIT_LOGGING:-True}
       - DEFAULT_PROMPT_SUGGESTIONS=${DEFAULT_PROMPT_SUGGESTIONS:-[]}
