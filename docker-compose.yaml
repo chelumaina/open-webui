@@ -66,10 +66,10 @@ services:
       - .env
     volumes:
       - .:/app # <— edit locally, container runs your code
-      - ./webui-data:/app/backend/data      # persistent app data (users, settings, etc.)
+      # - ./webui-data:/app/backend/data      # persistent app data (users, settings, etc.)
       - ./webui-cache:/root/.cache          # optional cache (models, etc.)
     # # volumes:
-    # #   - open-webui:/app/backend/data
+      - open-webui:/app/backend/data
     # volumes:
     #   - ./open-webui-data:/app/backend/data
     #   - ./backend:/app/backend 
@@ -89,13 +89,11 @@ services:
       - "${WEBUI_PORT:-8080}:8080"
     environment:
       - 'ENV=dev'
-      - 'WEBUI_NAME=${WEBUI_NAME-AI Legal Assistant}'
+      - 'WEBUI_NAME=${WEBUI_NAME:-AI Legal Assistant}'
       - 'WEBUI_PORT=${WEBUI_PORT:-8080}'
-      - 'CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN-http://localhost:${WEBUI_PORT:-8080}}'
-
-      - 'WEBUI_URL=http://localhost:${OPEN_WEBUI_PORT:-3000}'         # or http://localhost:3000 for local
+      - 'CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN:-http://localhost:${WEBUI_PORT:-8080}}'
+      - 'WEBUI_URL=${WEBUI_URL}'        # or http://localhost:3000 for local
       - 'ENABLE_OAUTH_PERSISTENT_CONFIG=false'     # so env changes apply during testing
-
       - 'OLLAMA_BASE_URL=https://ollama.com'
       - 'OLLAMA_API_KEY=f30ba07b95e9435bac1d929200d9ae72.PbzvbNWUr_QA8tHe55xP-mXj'  #
       - 'WEBUI_SECRET_KEY=${SECRET_KEY}'  # set in .env file
@@ -107,21 +105,20 @@ services:
       - 'DATABASE_URL=${DATABASE_URL:-postgresql://transcription:62Y%3F2E£ojJ5@pg_db_ai/openwebui}'
       # - 'VECTOR_DB=pgvector'
 
-      - USER_AGENT=${USER_AGENT-Open WebUI (https://openwebui.ai)}
+      - USER_AGENT=${USER_AGENT:-Open WebUI (https://openwebui.ai)}
       - ENABLE_WEBSOCKET_SUPPORT="true"
       - WEBSOCKET_MANAGER="redis"
       - WEBSOCKET_REDIS_URL="redis://redis:6379/1"
       - REDIS_KEY_PREFIX="open-webui"
-      - ENABLE_OAUTH_SIGNUP=${ENABLE_OAUTH_SIGNUP-True}
-      - ENABLE_SIGNUP_PASSWORD_CONFIRMATION=${ENABLE_SIGNUP_PASSWORD_CONFIRMATION-True}
-      - ENABLE_CHANNELS=${ENABLE_CHANNELS-True}
-      - ENABLE_AUDIT_LOGGING=${ENABLE_AUDIT_LOGGING-True}
-      - DEFAULT_PROMPT_SUGGESTIONS=${DEFAULT_PROMPT_SUGGESTIONS-"[]"}
-      - WEBUI_BANNERS=${WEBUI_BANNERS-'[]'}
-      - ENABLE_VERSION_UPDATE_CHECK=${ENABLE_VERSION_UPDATE_CHECK-True} 
-      - ENABLE_COMMUNITY_SHARING=${ENABLE_COMMUNITY_SHARING-True}
-
-      - GLOBAL_LOG_LEVEL=${GLOBAL_LOG_LEVEL-DEBUG}
+      - ENABLE_OAUTH_SIGNUP=${ENABLE_OAUTH_SIGNUP:-True}
+      - ENABLE_SIGNUP_PASSWORD_CONFIRMATION=${ENABLE_SIGNUP_PASSWORD_CONFIRMATION:-True}
+      - ENABLE_CHANNELS=${ENABLE_CHANNELS:-True}
+      - ENABLE_AUDIT_LOGGING=${ENABLE_AUDIT_LOGGING:-True}
+      - DEFAULT_PROMPT_SUGGESTIONS=${DEFAULT_PROMPT_SUGGESTIONS:-"[]"}
+      - WEBUI_BANNERS=${WEBUI_BANNERS:-'[]'}
+      - ENABLE_VERSION_UPDATE_CHECK=${ENABLE_VERSION_UPDATE_CHECK:-True} 
+      - ENABLE_COMMUNITY_SHARING=${ENABLE_COMMUNITY_SHARING:-True}
+      - GLOBAL_LOG_LEVEL=${GLOBAL_LOG_LEVEL:-DEBUG}
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
       interval: 30s
