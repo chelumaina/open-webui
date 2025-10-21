@@ -223,8 +223,7 @@
 					</div>
 				{:else}
 					<div class="my-auto flex flex-col justify-center items-center">
-						<div class=" sm:max-w-md my-auto pb-10 w-full dark:text-gray-100">
-							{#if $config?.metadata?.auth_logo_position === 'center'}
+						<div class=" sm:max-w-md my-auto pb-10 w-full dark:text-gray-100"> 
 								<div class="flex justify-center mb-6">
 									<img
 										id="logo"
@@ -233,8 +232,7 @@
 										class="size-24 rounded-full"
 										alt=""
 									/>
-								</div>
-							{/if}
+								</div> 
 							<form
 								class=" flex flex-col justify-center"
 								on:submit={(e) => {

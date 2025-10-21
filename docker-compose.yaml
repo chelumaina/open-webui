@@ -47,7 +47,7 @@ services:
     volumes:
       - ollama:/root/.ollama
     container_name: ollama
-    pull_policy: always
+    # pull_policy: always
     tty: true
     restart: unless-stopped
     image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
@@ -62,38 +62,57 @@ services:
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui
-    # volumes:
-    #   - open-webui:/app/backend/data
+    env_file:
+      - .env
     volumes:
-      - ./open-webui-data:/app/backend/data
-      # - ./backend:/app/backend 
-      # - ./build:/app/build
-      # - ./CHANGELOG.md:/app/CHANGELOG.md
-      # - ./package.json:/app/package.json
-      # - ./.env:/app/.env
+      - .:/app # <— edit locally, container runs your code
+      - ./webui-data:/app/backend/data      # persistent app data (users, settings, etc.)
+      - ./webui-cache:/root/.cache          # optional cache (models, etc.)
+    # # volumes:
+    # #   - open-webui:/app/backend/data
+    # volumes:
+    #   - ./open-webui-data:/app/backend/data
+    #   - ./backend:/app/backend 
+    #   - ./build:/app/build
+    #   - ./CHANGELOG.md:/app/CHANGELOG.md
+    #   # - ./package.jso/n:/app/package.json
+    #   # - ./.env:/app/.env
+      - ./static/static:/app/build/static
+    #   # - ./:/app/
 
     depends_on:
       - ollama
       - pg_db_ai
+      - redis
     ports:
-      - ${OPEN_WEBUI_PORT-3000}:8080
+      # - ${OPEN_WEBUI_PORT-3000}:8080
+      - "${WEBUI_PORT:-8080}:8080"
     environment:
       - 'ENV=dev'
-      - 'WEBUI_URL=http://localhost:${OPEN_WEBUI_PORT-3000}'         # or http://localhost:3000 for local
+      - 'WEBUI_PORT=${WEBUI_PORT:-8080}'
+      - 'CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN-http://localhost:${WEBUI_PORT:-8080}}'
+
+      - 'WEBUI_URL=http://localhost:${OPEN_WEBUI_PORT:-3000}'         # or http://localhost:3000 for local
       - 'ENABLE_OAUTH_PERSISTENT_CONFIG=false'     # so env changes apply during testing
 
       - 'OLLAMA_BASE_URL=https://ollama.com'
       - 'OLLAMA_API_KEY=f30ba07b95e9435bac1d929200d9ae72.PbzvbNWUr_QA8tHe55xP-mXj'  #
-      - 'WEBUI_SECRET_KEY='
+      - 'WEBUI_SECRET_KEY=${SECRET_KEY}'  # set in .env file
 
       # - 'ENABLE_OTEL_METRICS=false'
       # - 'OTEL_EXPORTER_OTLP_INSECURE=true' # Use insecure connection for OTLP, remove in production
       # - 'OTEL_EXPORTER_OTLP_ENDPOINT=http://grafana:4317'
       # - 'OTEL_SERVICE_NAME=open-webui'
-      # - 'DATABASE_URL=postgresql://transcription:62Y%3F2E£ojJ5@pg_db_ai/openwebui'
+      - 'DATABASE_URL=postgresql://transcription:62Y%3F2E£ojJ5@pg_db_ai/openwebui'
       # - 'VECTOR_DB=pgvector'
 
       - USER_AGENT=${USER_AGENT-Open WebUI (https://openwebui.ai)}
+      - ENABLE_WEBSOCKET_SUPPORT="true"
+      - WEBSOCKET_MANAGER="redis"
+      - WEBSOCKET_REDIS_URL="redis://redis:6379/1"
+      - REDIS_KEY_PREFIX="open-webui"
+
+      - ENABLE_COMMUNITY_SHARING=False
 
     extra_hosts:
       - host.docker.internal:host-gateway
@@ -101,7 +120,36 @@ services:
     networks:
       - app-network
 
+  redis:
+    image: valkey/valkey:9.0-alpine3.22
+    container_name: redis-valkey
+    hostname: redis-valkey
+    volumes:
+      - redis-data:/data
+    command: "valkey-server --save 30 1"
+    healthcheck:
+      test: "[ $$(valkey-cli ping) = 'PONG' ]"
+      start_period: 5s
+      interval: 1s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    networks:
+      - app-network
+
 volumes:
   ollama: {}
   open-webui: {}
   pgdata: {}
+  redis-data: {}

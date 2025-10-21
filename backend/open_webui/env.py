@@ -109,10 +109,10 @@ for source in log_sources:
     log.info(f"{log_env_var}: {SRC_LOG_LEVELS[source]}")
 
 log.setLevel(SRC_LOG_LEVELS["CONFIG"])
-
 WEBUI_NAME = os.environ.get("WEBUI_NAME", "Open WebUI")
-if WEBUI_NAME != "Open WebUI":
-    WEBUI_NAME += " (Open WebUI)"
+print(f"Logging initialized {WEBUI_NAME}.")
+# if WEBUI_NAME != "Open WebUI":
+#     WEBUI_NAME += " (Open WebUI)"
 
 WEBUI_FAVICON_URL = "https://openwebui.com/favicon.png"
 
