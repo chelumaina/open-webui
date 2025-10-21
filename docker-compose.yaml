@@ -91,7 +91,7 @@ services:
       - 'ENV=dev'
       - 'WEBUI_NAME=${WEBUI_NAME:-AI Legal Assistant}'
       - 'WEBUI_PORT=${WEBUI_PORT}'
-      - 'BASE_URL=${ß}}'  # or http://localhost:3000 for local
+      - 'BASE_URL=${WEBUI_URL}'  # or http://localhost:3000 for local
       - 'CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}'
       - 'WEBUI_URL=${WEBUI_URL}'        # or http://localhost:3000 for local
       - 'ENABLE_OAUTH_PERSISTENT_CONFIG=false'     # so env changes apply during testing
