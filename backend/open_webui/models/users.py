@@ -1,5 +1,6 @@
 import time
-from typing import Optional
+from typing import Literal, Optional
+from zoneinfo import ZoneInfo
 
 from open_webui.internal.db import Base, JSONField, get_db
 
@@ -8,13 +9,23 @@ from open_webui.env import DATABASE_USER_ACTIVE_STATUS_UPDATE_INTERVAL
 from open_webui.models.chats import Chats
 from open_webui.models.groups import Groups
 from open_webui.utils.misc import throttle
+from fastapi import FastAPI, Depends, HTTPException
 
 
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import BigInteger, Column, String, Text, Date
 from sqlalchemy import or_
+from datetime import datetime, timedelta, date, timezone
 
-import datetime
+from sqlalchemy import (
+    create_engine, select, func, String, DateTime, Enum, Index
+)
+from open_webui.models.payments import PaymentTransaction, UserSubscription
+from uuid import UUID 
+TZ_LOCAL = ZoneInfo("Africa/Nairobi")
+
+UTC = timezone.utc
+# import datetime
 
 ####################
 # User DB Schema
@@ -49,6 +60,7 @@ class User(Base):
     created_at = Column(BigInteger)
 
 
+
 class UserSettings(BaseModel):
     ui: Optional[dict] = {}
     model_config = ConfigDict(extra="allow")
@@ -67,7 +79,7 @@ class UserModel(BaseModel):
 
     bio: Optional[str] = None
     gender: Optional[str] = None
-    date_of_birth: Optional[datetime.date] = None
+    date_of_birth: Optional[date] = None
 
     info: Optional[dict] = None
     settings: Optional[UserSettings] = None
@@ -92,7 +104,7 @@ class UpdateProfileForm(BaseModel):
     name: str
     bio: Optional[str] = None
     gender: Optional[str] = None
-    date_of_birth: Optional[datetime.date] = None
+    date_of_birth: Optional[date] = None
 
 
 class UserListResponse(BaseModel):
@@ -148,7 +160,14 @@ class UserUpdateForm(BaseModel):
     email: str
     profile_image_url: str
     password: Optional[str] = None
-
+class ValidityResponse(BaseModel):
+    user_id: UUID
+    valid: bool
+    source: Optional[Literal["subscription", "payment"]] = None
+    now_utc: datetime
+    valid_until_utc: Optional[datetime] = None
+    valid_until_nairobi: Optional[datetime] = None
+    grace_days: int
 
 class UsersTable:
     def insert_new_user(
@@ -190,6 +209,116 @@ class UsersTable:
                 return UserModel.model_validate(user)
         except Exception:
             return None
+    
+    def is_user_subscription_valid(self, user_id: str, ) -> Optional[bool]:
+        try:
+            # with get_db() as db:
+            #     # user = db.query(User).filter_by(id=id).first()
+            #     # return UserModel.model_validate(user)
+            #     sub = (
+            #         db.query(Subscription)
+            #         .filter(
+            #             Subscription.customer_id == user_id,
+            #             Subscription.status == "active",
+            #             Subscription.end_date >= datetime.utcnow(),
+            #         )
+            #         .first()
+            #     )
+            #     return sub is not None
+            return True 
+
+        except Exception:
+            return False
+    def _now_utc(self) -> datetime:
+        return datetime.now(UTC)
+
+    def is_valid_monthly_subscription(
+        self,
+        user_id: UUID,
+        grace_days: int = 0
+    ):
+        if grace_days < 0 or grace_days > 14:
+            raise HTTPException(400, detail="grace_days must be between 0 and 14")
+
+        valid, valid_until_utc, source = self.check_valid_monthly(user_id, grace_days=grace_days)
+        return valid
+        # now = self._now_utc()
+       
+        # valid_until_local = valid_until_utc.astimezone(TZ_LOCAL) if valid_until_utc else None
+
+        # return ValidityResponse(
+        #     user_id=user_id,
+        #     valid=bool(valid),
+        #     source=source,
+        #     now_utc=now,
+        #     valid_until_utc=valid_until_utc,
+        #     valid_until_nairobi=valid_until_local,
+        #     grace_days=grace_days,
+        # )
+        
+        
+    def check_valid_monthly(self, user_id: str, grace_days: int = 0) -> tuple[bool, Optional[datetime], Optional[str]]:
+        """
+        Returns: (is_valid, valid_until_utc, source)
+        source = 'subscription' | 'payment' | None
+        """
+        with get_db() as db:
+            VALID_STATUSES = ["active", "trialing"]
+            now = self._now_utc()
+
+            # 1) Try user_subscriptions (trial_end or current_period_end)
+            valid_until_expr = func.coalesce(UserSubscription.trial_end, UserSubscription.current_period_end).label("valid_until")
+            row = db.execute(
+                select(valid_until_expr)
+                .where(
+                    UserSubscription.user_id == user_id,
+                    UserSubscription.billing_cycle == "monthly",
+                    UserSubscription.status.in_(VALID_STATUSES),
+                    valid_until_expr.is_not(None),
+                )
+                .order_by(valid_until_expr.desc())
+                .limit(1)
+            ).first()
+
+            if row and row[0]:
+                # Ensure timezone consistency for comparison
+                db_datetime = row[0]
+                if db_datetime.tzinfo is None:
+                    # If database datetime is naive, assume it's UTC
+                    db_datetime = db_datetime.replace(tzinfo=UTC)
+                valid_until = db_datetime + timedelta(days=grace_days)
+                return (now <= valid_until, db_datetime, "subscription")
+
+            # 2) Fallback to latest successful monthly payment -> paid_at + 1 month (Python-side calculation)
+            row2 = db.execute(
+                select(PaymentTransaction.paid_at)
+                .where(
+                    PaymentTransaction.user_id == user_id,
+                    PaymentTransaction.status == "success",
+                    PaymentTransaction.billing_cycle == "monthly",
+                    PaymentTransaction.paid_at.is_not(None),
+                )
+                .order_by(PaymentTransaction.paid_at.desc())
+                .limit(1)
+            ).first()
+
+            if row2 and row2[0]:
+                # Add 1 month to the payment date using Python datetime arithmetic
+                paid_at = row2[0]
+                # Ensure timezone consistency for paid_at
+                if paid_at.tzinfo is None:
+                    # If database datetime is naive, assume it's UTC
+                    paid_at = paid_at.replace(tzinfo=UTC)
+                
+                if paid_at.month == 12:
+                    valid_until_base = paid_at.replace(year=paid_at.year + 1, month=1)
+                else:
+                    valid_until_base = paid_at.replace(month=paid_at.month + 1)
+                
+                valid_until = valid_until_base + timedelta(days=grace_days)
+                return (now <= valid_until, valid_until_base, "payment")
+
+        return (False, None, None)
 
     def get_user_by_api_key(self, api_key: str) -> Optional[UserModel]:
         try:

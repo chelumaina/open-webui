@@ -10,6 +10,7 @@ import emojiShortCodes from '$lib/emoji-shortcodes.json';
 export const WEBUI_NAME = writable(APP_NAME);
 export const config: Writable<Config | undefined> = writable(undefined);
 export const user: Writable<SessionUser | undefined> = writable(undefined);
+export const token_cost: Writable<TokenCost> = writable({});
 
 // Electron App
 export const isApp = writable(false);
@@ -230,6 +231,13 @@ type Prompt = {
 	title: string;
 	content: string;
 	timestamp: number;
+};
+
+type TokenCost = {
+	prompt_token?: number;
+	response_token?: number;
+	cost?: number;
+	is_user_subscription_valid?: boolean;
 };
 
 type Document = {

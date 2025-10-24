@@ -23,7 +23,8 @@
 		user as _user,
 		showControls,
 		TTSWorker,
-		temporaryChatEnabled
+		temporaryChatEnabled, 
+		token_cost
 	} from '$lib/stores';
 
 	import {
@@ -955,6 +956,31 @@
 />
 
 {#if loaded}
+<!-- {$token_cost?.is_user_subscription_valid} -->
+	{#if $token_cost?.is_user_subscription_valid!== true}
+	<div class="w-full font-primary">
+		<div class=" mx-auto inset-x-0 bg-transparent flex justify-center">
+			<div
+				class="flex flex-col px-3 {($settings?.widescreenMode ?? null)
+					? 'max-w-full'
+					: 'max-w-6xl'} w-full">
+				<div class="relative text-center bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-4 md:items-center md:justify-between gap-4">
+					<div class="font-bold text-token-text-primary mr-1.5 mpb-1.5">
+						You've reached your daily usage limit. Upgrade to the Plus plan or try again tomorrow
+						<!-- <p>USD ${$token_cost?.cost}</p> -->
+					</div>
+					<div class="flex shrink-0 gap-2 pb-1 md:pb-0">
+						<a href="/subscription" class="bg-gray-700/5 hover:bg-gray-700/10 dark:bg-gray-100/5 dark:hover:bg-gray-100/10 dark:text-gray-300 dark:hover:text-white transition w-full rounded-full font-medium text-sm py-2.5">
+							<div class="flex items-center justify-center "> Subscribe to Plus and Get more wirh <strong> $15</strong> </div>
+						</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	{/if}
+ 
 	<div class="w-full font-primary">
 		<div class=" mx-auto inset-x-0 bg-transparent flex justify-center">
 			<div

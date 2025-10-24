@@ -231,8 +231,29 @@ async def update_default_user_permissions(
 @router.get("/user/settings", response_model=Optional[UserSettings])
 async def get_user_settings_by_session_user(user=Depends(get_verified_user)):
     user = Users.get_user_by_id(user.id)
+    # is_user_subscription_valid = Users.is_user_subscription_valid(user.id) 
+    is_user_subscription_valid= Users.is_valid_monthly_subscription(user.id, 10) 
+    # print("is_user_subscription_valid:", is_user_subscription_valid)
+    # print("is_valid_monthly_subscription:", is_valid_monthly_subscription)
+
+    # chats = Chats.get_chat_by_user_today(user.id)
+    
+    response_token = 0
+    prompt_token = 0
+    # for ch in chats:
+    #     response_token += ch.response_token * ch.cost_per_response_token
+    #     prompt_token += ch.prompt_token * ch.cost_per_prompt_token
     if user:
-        return user.settings
+        return {
+            "settings": user.settings,
+            "tokens": {
+                "prompt_token": round(prompt_token, 2),
+                "response_token": round(response_token, 2),
+                "cost": round(response_token + prompt_token, 2),
+                "is_user_subscription_valid": is_user_subscription_valid,
+            },
+        }
+        # return user.settings
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

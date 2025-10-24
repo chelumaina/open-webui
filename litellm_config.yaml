@@ -1,0 +1,64 @@
+# litellm_config.yaml  — Ollama-only, Free vs Pro plans
+
+general_settings:
+  master_key: sk-8-3yHgMaLcl8ECZXOE1U8iWa9xm1LFYUxLI_XA2Tkeif0ayBrZucdCWDR5C5sOeP
+  database_url: postgresql://transcription:62Y%3F2E£ojJ5@pg_db_ai/litellm
+  store_prompts_in_spend_logs: true
+
+router_settings:
+  num_retries: 2
+  timeout: 60
+
+litellm_settings:
+  # Any /key/generate without overrides becomes a Free key
+  default_key_generate_params:
+    models: ["free-models"]          # <- access group
+    max_budget: 0.50                 # USD / 30d for Free
+    budget_duration: "30d"
+    rpm_limit: 3
+    tpm_limit: 15000
+    tags: ["plan:free"]
+  # Guardrails on key generation
+  upperbound_key_generate_params:
+    max_budget: 200
+    budget_duration: "90d"
+    rpm_limit: 600
+    tpm_limit: 1000000
+
+model_list:
+  ########################################################
+  # FREE PLAN (fast, light local models)
+  ########################################################
+  - model_name: free-chat
+    litellm_params:
+      # Use Ollama's chat endpoint (recommended)
+      model: ollama/smolLM:135m
+      api_base: http://ollama:11434       # if Ollama is a Docker service
+      keep_alive: "8m"
+    model_info:
+      access_groups: ["free-models", "Admin"]
+
+  # - model_name: qwen2.5:7b-instruct   # expose the raw name too (optional)
+  #   litellm_params:
+  #     model: ollama/qwen2.5:7b-instruct
+  #     api_base: http://ollama:11434
+  #   model_info:
+  #     access_groups: ["free-models", "Admin"]
+
+  ########################################################
+  # PRO PLAN (bigger local models)
+  ########################################################
+  - model_name: pro-chat
+    litellm_params:
+      model: ollama/smolLM:135m
+      api_base: http://ollama:11434
+      keep_alive: "8m"
+    model_info:
+      access_groups: ["pro-models", "Admin"]
+
+  # - model_name: mixtral:8x7b-instruct  # optional: another pro-only local
+  #   litellm_params:
+  #     model: ollama/mixtral:8x7b-instruct
+  #     api_base: http://ollama:11434
+  #   model_info:
+  #     access_groups: ["pro-models", "Admin"]
