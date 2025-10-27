@@ -8,8 +8,8 @@
 	export let type = 'text';
 	export let required = true;
 	export let readOnly = false;
-	export let outerClassName = 'flex flex-1 bg-transparent';
-	export let inputClassName = 'w-full text-sm py-0.5 bg-transparent';
+	export let outerClassName = 'flex flex-1 bg-transparent px-4 py-3   bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500';
+	export let inputClassName = 'w-full text-sm py-0.5 bg-transparent ';
 	export let showButtonClassName = 'pl-1.5  transition bg-transparent';
 
 	let show = false;

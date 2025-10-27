@@ -956,7 +956,7 @@
 />
 
 {#if loaded}
-<!-- {$token_cost?.is_user_subscription_valid} -->
+	{$token_cost?.is_user_subscription_valid}
 	{#if $token_cost?.is_user_subscription_valid!== true}
 	<div class="w-full font-primary">
 		<div class=" mx-auto inset-x-0 bg-transparent flex justify-center">

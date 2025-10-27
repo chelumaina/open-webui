@@ -9,6 +9,7 @@ import hashlib
 import hmac
 from datetime import datetime, timedelta
 from typing import Optional
+from dateutil.relativedelta import relativedelta
 
 import requests
 from fastapi import APIRouter, Depends, HTTPException, Request, status
@@ -181,7 +182,7 @@ async def initialize_payment(
                 ]
             }
         }
-        print(paystack_payload)
+        # print(paystack_payload)
         
         # Initialize payment with Paystack
         headers = {
@@ -223,10 +224,10 @@ async def initialize_payment(
                 group_id=request.group_id,
                 gateway_response_data="",
                 gateway_response="", 
-                status="pending"
+                status="pending",
+                billing_cycle="monthly",
             )
-            print(f"{transaction=}")
-            
+             
             db.add(transaction)
             db.commit()
         
@@ -308,7 +309,7 @@ async def verify_payment(
             payment_status = paystack_data.get("status")
 
             group_id = transaction.group_id
-            print(f"Payment group_id: {group_id}")
+            # print(f"Payment group_id: {group_id}")
             # print(f"Payment paystack_response: {paystack_data.get('metadata').get('custom_fields')[0].get('group_id')}")
 
             
@@ -337,8 +338,9 @@ async def verify_payment(
                     existing_subscription.transaction_reference = reference
                     existing_subscription.updated_at = datetime.utcnow() 
                     existing_subscription.billing_cycle = transaction.billing_cycle
-                    existing_subscription.expires_at = existing_subscription.expires_at + timedelta(days=30)
-                    existing_subscription.trial_end = existing_subscription.expires_at + timedelta(days=30)
+                    
+                    existing_subscription.expires_at = existing_subscription.trial_end + relativedelta(months=1)
+                    existing_subscription.current_period_end = existing_subscription.current_period_end + relativedelta(months=1)
                 else:
                     # Create new subscription
                     subscription = UserSubscription(
@@ -349,10 +351,11 @@ async def verify_payment(
                         currency=transaction.currency,
                         transaction_reference=reference,
                         billing_cycle=transaction.billing_cycle,
-                        expires_at=datetime.utcnow() + timedelta(days=30),
-                        trial_end=datetime.utcnow() + timedelta(days=30),
-                        
-                        # transaction_reference=reference
+                        status="active",
+                        trial_end=datetime.utcnow() + relativedelta(months=1),
+                        expires_at=datetime.utcnow() + relativedelta(months=1),
+                        started_at=datetime.utcnow(),
+                        current_period_end=datetime.utcnow() + relativedelta(months=1), 
                     )
                     db.add(subscription)
             else:

@@ -437,6 +437,23 @@
 		dropZone?.removeEventListener('dragleave', onDragLeave);
 	});
 
+	const subscriptionHandler = async () => {
+			selectedChatId = null;
+			selectedFolder.set(null);
+
+			if ($user?.role !== 'admin' && $user?.permissions?.chat?.temporary_enforced) {
+				await temporaryChatEnabled.set(true);
+			} else {
+				await temporaryChatEnabled.set(false);
+			}
+
+			setTimeout(() => {
+				if ($mobile) {
+					showSidebar.set(false);
+				}
+			}, 0);
+		};
+
 	const newChatHandler = async () => {
 		selectedChatId = null;
 		selectedFolder.set(null);
@@ -822,6 +839,26 @@
 							</div>
 						</button>
 					</div>
+
+					<div class="px-[7px] flex justify-center text-gray-800 dark:text-gray-200">
+						<a
+							id="sidebar-new-chat-button"
+							class="grow flex items-center space-x-3 rounded-2xl px-2.5 py-2 hover:bg-gray-100 dark:hover:bg-gray-900 transition outline-none"
+							href="/subscription"
+							draggable="false"
+							on:click={subscriptionHandler}
+							aria-label={$i18n.t('Subscription')}
+						>
+							<div class="self-center">
+								<PencilSquare className=" size-4.5" strokeWidth="2" />
+							</div>
+
+							<div class="flex self-center translate-y-[0.5px]">
+								<div class=" self-center text-sm font-primary">{$i18n.t('Subscription')}</div>
+							</div>
+						</a>
+					</div>
+
 
 					{#if ($config?.features?.enable_notes ?? false) && ($user?.role === 'admin' || ($user?.permissions?.features?.notes ?? true))}
 						<div class="px-[7px] flex justify-center text-gray-800 dark:text-gray-200">

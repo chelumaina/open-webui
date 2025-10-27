@@ -210,33 +210,17 @@ class UsersTable:
         except Exception:
             return None
     
-    def is_user_subscription_valid(self, user_id: str, ) -> Optional[bool]:
-        try:
-            # with get_db() as db:
-            #     # user = db.query(User).filter_by(id=id).first()
-            #     # return UserModel.model_validate(user)
-            #     sub = (
-            #         db.query(Subscription)
-            #         .filter(
-            #             Subscription.customer_id == user_id,
-            #             Subscription.status == "active",
-            #             Subscription.end_date >= datetime.utcnow(),
-            #         )
-            #         .first()
-            #     )
-            #     return sub is not None
-            return True 
-
-        except Exception:
-            return False
     def _now_utc(self) -> datetime:
         return datetime.now(UTC)
 
     def is_valid_monthly_subscription(
         self,
         user_id: UUID,
-        grace_days: int = 0
+        grace_days: int = 0,
+        user: User = None
     ):
+        if user is not None and user.role == "admin":
+            return True
         if grace_days < 0 or grace_days > 14:
             raise HTTPException(400, detail="grace_days must be between 0 and 14")
 

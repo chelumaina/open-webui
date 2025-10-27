@@ -211,7 +211,7 @@ export function createPaystackPayment(publicKey: string, options?: Partial<Payst
 export const SUBSCRIPTION_PLANS = {
 	basic: {
 		name: 'Basic Plan',
-		amount: 10, // $10
+		amount: 5, // $10
 		currency: 'USD',
 		plan_code: 'basic_plan',
 		group_id: '6e475052-cd95-4d8b-8d9e-b0c5b9b3ae98',
@@ -235,7 +235,7 @@ export const SUBSCRIPTION_PLANS = {
 	},
 	enterprise: {
 		name: 'Enterprise Plan',
-		amount: 20, // $20
+		amount: 10, // $20
 		currency: 'USD',
 		plan_code: 'enterprise_plan',
 		interval: 'monthly',
@@ -254,11 +254,11 @@ export const SUBSCRIPTION_PLANS = {
 			'Expanded memory and context',
 		]
 	},
-	enterprise2: {
-		name: 'Enterprise Plan',
+	enterprise_plus: {
+		name: 'Enterprise Plus Plan',
 		amount: 20, // $20
 		currency: 'USD',
-		plan_code: 'enterprise_plan',
+		plan_code: 'enterprise_plus_plan',
 		interval: 'monthly',
 		group_id: '8ca4c096-2b16-4e19-9586-4a162448fd63',
 		features: [

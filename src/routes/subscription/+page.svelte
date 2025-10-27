@@ -1,20 +1,3 @@
-<!-- <script>
-	import { goto } from '$app/navigation';
-	import { WEBUI_NAME, config } from '$lib/stores';
-	import { onMount, getContext } from 'svelte';
-
-	const i18n = getContext('i18n');
-
-	let loaded = false;
-
-	onMount(async () => {
-		if ($config) {
-			await goto('/');
-		}
-		loaded = true;
-	});
-</script> -->
-
 <script>
 	import { goto } from '$app/navigation';
 	import ImpressionTracker from '$lib/components/ImpressionTracker.svelte';
@@ -26,14 +9,12 @@
 	const i18n = getContext('i18n');
 
 	let loaded = false;
+	let selectedPlan = null;
 	
 	// Paystack configuration - Replace with your actual public key
 	const PAYSTACK_PUBLIC_KEY = 'pk_test_your_paystack_public_key_here';
 
 	onMount(async () => {
-		if ($config) {
-			// await goto('/');
-		}
 		loaded = true;
 	});
 
@@ -44,18 +25,7 @@
 		const { transaction, plan, planData } = event.detail;
 		console.log('Payment successful:', { transaction, plan, planData });
 		
-		// Here you would typically:
-		// 1. Send the transaction details to your backend
-		// 2. Update the user's subscription status
-		// 3. Redirect to a success page
-		
 		toast.success($i18n.t('Subscription activated successfully!'));
-		
-		// Example API call to your backend:
-		// updateUserSubscription($user.id, plan, transaction.reference);
-		
-		// Redirect to dashboard or success page
-		// goto('/dashboard');
 	}
 
 	/**
@@ -66,242 +36,312 @@
 		console.log('Payment cancelled for plan:', plan);
 		toast.info($i18n.t('Payment was cancelled. You can try again anytime.'));
 	}
-
+// "6e475052-cd95-4d8b-8d9e-b0c5b9b3ae98"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Basic Plan"
+// "8ca4c096-2b16-4e19-9586-4a162448fd63"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Enterprise Plan"
+// "d78c232a-7eef-4a41-bb01-2ba44983c9c3"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Enterprise Pro"
 let plans = [
   {
     id: 'basic',
-    name: 'Basic Plan',
-    price: ' $10/mo',
-    amount: 10,
+    name: 'Basic',
+    tagline: 'Perfect for getting started',
+    price: '$5',
+    period: 'month',
+    amount: 5,
     currency: 'USD',
     group_id: '6e475052-cd95-4d8b-8d9e-b0c5b9b3ae98',
+    highlighted: false,
+    badge: null,
     features: [
-      // Coverage & content
       'Coverage: Basic statutes + case law',
-      'Jurisdiction-ready citations with paragraph anchors',
+      'Jurisdiction-ready citations',
       'Expanded messaging and uploads',
-      'Expanded and faster image creation',
       'Longer memory and context',
       'Limited deep research',
-
-      // Usage & limits
-      '10K API Calls / month',
+      // '10K API Calls / month',
       'Up to 8K context tokens / request',
-      '20 requests / minute rate limit',
-      'Up to 2GB knowledge index (RAG) storage',
-      'Upload: 10MB per file, 2GB total',
-      // Capabilities
-      'Q&A with inline citations',
-      'Basic semantic search over laws & cases',
-      'PDF/Word ingestion (OCR optional)',
-    //   'Simple chat UI + API (JS/Python SDKs)',
-      // Governance & support
-    //   'Project roles: Owner, Editor, Viewer',
-    //   'Data retention: 14 days (toggleable)',
-    //   'Email support (48h SLA)',
-      // Analytics
-    //   'Basic usage analytics (calls, latency, errors)'
+      'Access to custom prompts',
+      // '20 requests / minute rate limit',
+      // 'Up to 2GB knowledge index storage',
+      // 'Upload: 10MB per file, 2GB total',
+      // 'Q&A with inline citations',
+      // 'Basic semantic search',
+      // 'PDF/Word ingestion',
     ]
   },
-//   {
-//     name: 'Pro',
-//     price: '$15/mo',
-//     features: [
-//       // Coverage & content
-//       'Coverage: Statutes + case law + court decisions (trial/appellate/supreme where available)',
-//       'Improved precedent mapping & cross-references',
-//       // Usage & limits
-//       '50K API Calls / month',
-//       'Up to 32K context tokens / request',
-//       '60 requests / minute rate limit',
-//       'Up to 10GB knowledge index (RAG) storage',
-//       'Upload: 250MB per file, 10GB total',
-//       // Capabilities
-//       'Advanced semantic search (filters, facets, date range)',
-//       'Batch document analysis & summarization',
-//       'Embeddings + RAG API included',
-//       'Webhooks for async jobs',
-//       'Model routing & fallback (high-availability)',
-//       // Governance & support
-//       'Audit log (exportable), API keys per project',
-//       'Granular RBAC (Org, Project, Key)',
-//       'Data retention controls: 30–90 days',
-//       'Priority support (24h SLA)',
-//       // Analytics
-//       'Dashboard: usage by key, endpoint, project',
-//       'CSV export & per-key rate limit tuning'
-//     ]
-//   },
   {
     id: 'enterprise',
-    name: 'Enterprise Plan',
-    price: '$20/mo',
-    amount: 20,
+    name: 'Enterprise',
+    tagline: 'Advanced features for professionals',
+    price: '$10',
+    period: 'month',
+    amount: 10,
     currency: 'USD',
     group_id: '8ca4c096-2b16-4e19-9586-4a162448fd63',
+    highlighted: true,
+    badge: 'Most Popular',
     features: [
-      // Coverage & content
-      "Everything in Basic",
-      'Coverage: Comprehensive acts, laws, court decisions, gazette notices, and cases',
-      'Daily content updates & versioned knowledge base',
-      'Citations with source-location deep links',
-      // Usage & limits
-      'Unlimited API Calls (fair use; custom SLAs)',
-      'Up to 200K context tokens / request (long-context endpoints)',
-      'Custom per-minute/second rate limits',
-      'Scalable knowledge index (100GB+; dedicated vector store)',
-      // Capabilities
-	  'Expanded messaging and uploads',
-      'Expanded and faster image creation',
+      'Everything in Basic',
+      'Comprehensive legal coverage',
+      'Includes legal sources and gazettes issues',
+      'Enhanced research capabilities',
+      'Daily content updates',
+      'Citations with deep links',
+      // 'Unlimited API Calls',
+      // 'Up to 200K context tokens',
+      // 'Custom rate limits',
+      // 'Scalable knowledge index (100GB+)',
+      // 'Expanded messaging and uploads',
+      // 'Expanded and faster image creation',
       'Expanded memory and context',
-    //   'Expanded deep research and agent mode',
-
-    //   'Custom connectors (SharePoint, Google Drive, S3)',
-    //   'Fine-tuning & domain adapters (by request)',
-    //   'On-prem/VPC/hybrid deployment options',
-    //   'PII redaction + policy-driven retention',
-    //   'Advanced evals & quality gates before deploy',
-      // Governance & compliance
-    //   'SSO (SAML/OIDC), SCIM user provisioning',
-    //   'Granular audit trails & immutable logs',
-    //   'DPA & compliance alignment (ISO 27001/GDPR-ready)',
-      // Support & reliability
-    //   '99.9% uptime SLA, 24/7 incident response',
-    //   'Dedicated solutions engineer & quarterly reviews',
-      // Analytics
-    //   'Organization-wide analytics, cost attribution, and alerts'
     ]
   },
   {
-    id: 'enterprise2',
-    name: 'Enterprise Plan2',
-    price: '$20/mo',
+    id: 'enterprise_plus',
+    name: 'Enterprise Plus',
+    tagline: 'Premium solution for teams',
+    price: '$20',
+    period: 'month',
     amount: 20,
     currency: 'USD',
-    group_id: '8ca4c096-2b16-4e19-9586-4a162448fd63',
+    group_id: 'd78c232a-7eef-4a41-bb01-2ba44983c9c3',
+    highlighted: false,
+    badge: 'Best Value',
     features: [
-      // Coverage & content
-      "Everything in Basic",
-      'Coverage: Comprehensive acts, laws, court decisions, gazette notices, and cases',
-      'Daily content updates & versioned knowledge base',
-      'Citations with source-location deep links',
-      // Usage & limits
-      'Unlimited API Calls (fair use; custom SLAs)',
-      'Up to 200K context tokens / request (long-context endpoints)',
-      'Custom per-minute/second rate limits',
-      'Scalable knowledge index (100GB+; dedicated vector store)',
-      // Capabilities
-	  'Expanded messaging and uploads',
-      'Expanded and faster image creation',
-      'Expanded memory and context',
-    //   'Expanded deep research and agent mode',
-
-    //   'Custom connectors (SharePoint, Google Drive, S3)',
-    //   'Fine-tuning & domain adapters (by request)',
-    //   'On-prem/VPC/hybrid deployment options',
-    //   'PII redaction + policy-driven retention',
-    //   'Advanced evals & quality gates before deploy',
-      // Governance & compliance
-    //   'SSO (SAML/OIDC), SCIM user provisioning',
-    //   'Granular audit trails & immutable logs',
-    //   'DPA & compliance alignment (ISO 27001/GDPR-ready)',
-      // Support & reliability
-    //   '99.9% uptime SLA, 24/7 incident response',
-    //   'Dedicated solutions engineer & quarterly reviews',
-      // Analytics
-    //   'Organization-wide analytics, cost attribution, and alerts'
-    ]
-  },
-  {
-    id: 'enterprise3',
-    name: 'Enterprise Plan3',
-    price: '$20/mo',
-    amount: 20,
-    currency: 'USD',
-    group_id: '8ca4c096-2b16-4e19-9586-4a162448fd63',
-    features: [
-      // Coverage & content
-      "Everything in Basic",
-      'Coverage: Comprehensive acts, laws, court decisions, gazette notices, and cases',
-      'Daily content updates & versioned knowledge base',
-      'Citations with source-location deep links',
-      // Usage & limits
-      'Unlimited API Calls (fair use; custom SLAs)',
-      'Up to 200K context tokens / request (long-context endpoints)',
-      'Custom per-minute/second rate limits',
-      'Scalable knowledge index (100GB+; dedicated vector store)',
-      // Capabilities
-	  'Expanded messaging and uploads',
-      'Expanded and faster image creation',
-      'Expanded memory and context',
-    //   'Expanded deep research and agent mode',
-
-    //   'Custom connectors (SharePoint, Google Drive, S3)',
-    //   'Fine-tuning & domain adapters (by request)',
-    //   'On-prem/VPC/hybrid deployment options',
-    //   'PII redaction + policy-driven retention',
-    //   'Advanced evals & quality gates before deploy',
-      // Governance & compliance
-    //   'SSO (SAML/OIDC), SCIM user provisioning',
-    //   'Granular audit trails & immutable logs',
-    //   'DPA & compliance alignment (ISO 27001/GDPR-ready)',
-      // Support & reliability
-    //   '99.9% uptime SLA, 24/7 incident response',
-    //   'Dedicated solutions engineer & quarterly reviews',
-      // Analytics
-    //   'Organization-wide analytics, cost attribution, and alerts'
+      'Everything in Enterprise Plan',
+      'Enhanced Models trained with Legal datasets',
+      'Models trained with court decisions',
+      'Priority support 24/7',
+      'includes Gazette issues, legal sources and Court Decisions',
+      
+      // 'Dedicated account manager',
+      // 'Custom integrations',
+      // 'Advanced analytics',
+      // 'Team collaboration tools',
+      // 'SSO & SAML support',
+      // '99.9% uptime SLA',
+      // 'Custom deployment options',
+      // 'Quarterly business reviews',
     ]
   }
-
 ];
-
 
 </script>
 
-<div class="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100  min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
-	<div class="my-1 flex flex-col items-center justify-center md:mb-0 md:mt-0">
-		<div class="text-2xl font-semibold md:text-3xl">Upgrade your plan</div>
+<!-- Modern Pricing Page -->
+<div class="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-950 dark:to-purple-950">
+	<!-- Decorative background elements -->
+	<div class="absolute inset-0 overflow-hidden pointer-events-none">
+		<div class="absolute top-0 right-0 w-96 h-96 bg-purple-300 dark:bg-purple-600 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob"></div>
+		<div class="absolute bottom-0 left-0 w-96 h-96 bg-blue-300 dark:bg-blue-600 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+		<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-300 dark:bg-indigo-600 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
 	</div>
 
-	<div class="flex-grow overflow-y-scroll">
+	<div class="relative z-10 container mx-auto px-4 py-16">
+		<!-- Header Section -->
+		<div class="text-center mb-16">
+			<div class="inline-flex items-center justify-center px-4 py-2 mb-6 rounded-full bg-purple-100 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800">
+				<svg class="w-5 h-5 mr-2 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+				</svg>
+				<span class="text-sm font-semibold text-purple-700 dark:text-purple-300">Flexible Pricing Plans</span>
+			</div>
+			
+			<h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4">
+				Choose Your <span class="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Perfect Plan</span>
+			</h1>
+			
+			<p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+				Unlock powerful features and scale your productivity with our comprehensive subscription plans
+			</p>
+		</div>
+
+		<!-- Pricing Cards -->
 		<ImpressionTracker sectionId="subscription-section">
-			<div class="mt-8 grid gap-6 md:grid-cols-3">
-				{#each plans as plan}
-					<div class="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-6 rounded-lg shadow-md w-100">
-						<h2 class="text-xl font-semibold mb-4">{plan.name} <strong>{plan.price}</strong></h2>
-						
-						<!-- Paystack Checkout Component -->
-						<PaystackCheckout
-							planId={plan.id}
-							paystackPublicKey={PAYSTACK_PUBLIC_KEY}
-							disabled={!$user}
-							on:paymentSuccess={handlePaymentSuccess}
-							on:paymentCancel={handlePaymentCancel}
-						/>
-						
-						{#if !$user}
-							<p class="text-sm text-gray-500 dark:text-gray-400 text-center mb-3">
-								{$i18n.t('Please log in to subscribe')}
-							</p>
+			<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+				{#each plans as plan, index}
+					<div 
+						class="relative group"
+						role="article"
+						on:mouseenter={() => selectedPlan = plan.id}
+						on:mouseleave={() => selectedPlan = null}
+					>
+						<!-- Highlighted plan glow effect -->
+						{#if plan.highlighted}
+							<div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
 						{/if}
 						
-						<ul class="mb-6">
-							{#each plan.features as feature}
-								<li class="mb-2">
-									<div class="text-l flex cursor-default justify-start gap-3.5">
-										<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" color="primary"><path d="M16.335 10C16.335 9.96334 16.3033 9.90797 16.2314 9.89746C14.3872 9.6308 12.9635 9.10033 11.9385 8.08105C10.9772 7.1251 10.4472 5.81895 10.1621 4.14453L10.1084 3.80469C10.0948 3.71183 10.0216 3.66505 9.96484 3.66504C9.92381 3.66504 9.87863 3.68787 9.85156 3.73047L9.83203 3.7793C9.40877 5.60247 8.88454 7.02131 7.92871 8.04297C7.01515 9.0193 5.78211 9.55662 4.11035 9.84277L3.77051 9.89648C3.69699 9.90725 3.66504 9.96384 3.66504 10C3.66504 10.0362 3.69699 10.0927 3.77051 10.1035L4.11035 10.1572C5.78211 10.4434 7.01515 10.9807 7.92871 11.957C8.88454 12.9787 9.40877 14.3975 9.83203 16.2207C9.8491 16.2942 9.91023 16.335 9.96484 16.335C10.0216 16.335 10.0948 16.2882 10.1084 16.1953C10.3785 14.3567 10.9131 12.9386 11.9385 11.9189C12.9635 10.8997 14.3872 10.3692 16.2314 10.1025L16.2773 10.0879C16.317 10.0662 16.335 10.0277 16.335 10ZM17.665 10C17.665 10.6877 17.1785 11.2454 16.5488 11.3945L16.4219 11.4189C14.7098 11.6665 13.6129 12.1305 12.877 12.8623C12.1414 13.5938 11.6742 14.6843 11.4238 16.3887C11.3197 17.0973 10.7182 17.665 9.96484 17.665C9.27085 17.665 8.68836 17.1772 8.53613 16.5215C8.12392 14.7459 7.6623 13.619 6.95703 12.8652C6.31314 12.1772 5.39414 11.7268 3.88672 11.4688L3.57715 11.4199C2.88869 11.319 2.33496 10.734 2.33496 10C2.33496 9.26603 2.88869 8.681 3.57715 8.58008L3.88672 8.53125C5.39414 8.27321 6.31314 7.82277 6.95703 7.13477C7.6623 6.38104 8.12392 5.25413 8.53613 3.47852L8.56934 3.35742C8.76133 2.76356 9.31424 2.33496 9.96484 2.33496C10.7182 2.33497 11.3197 2.9027 11.4238 3.61133L11.5283 4.22266C11.7954 5.58295 12.2334 6.49773 12.877 7.1377C13.6129 7.86952 14.7098 8.33351 16.4219 8.58105C17.1119 8.68101 17.665 9.26667 17.665 10Z"></path></svg>
+						<div 
+							class="relative h-full bg-white dark:bg-gray-800 rounded-3xl shadow-xl {plan.highlighted ? 'ring-2 ring-purple-500 dark:ring-purple-400' : 'border border-gray-200 dark:border-gray-700'} transition-all duration-300 hover:shadow-2xl hover:scale-105"
+						>
+							<!-- Badge for highlighted plans -->
+							{#if plan.badge}
+								<div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+									<span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg">
+										<svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+											<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+										</svg>
+										{plan.badge}
+									</span>
+								</div>
+							{/if}
 
-										<div class="flex flex-1 items-start gap-2">
-											<span class="min-w-0 font-normal text-token-text-primary">{feature}</span>
-										</div>
+							<div class="p-8">
+								<!-- Plan Header -->
+								<div class="mb-8">
+									<h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+										{plan.name}
+									</h3>
+									<p class="text-sm text-gray-600 dark:text-gray-400">
+										{plan.tagline}
+									</p>
+								</div>
+
+								<!-- Price -->
+								<div class="mb-8">
+									<div class="flex items-baseline">
+										<span class="text-5xl font-extrabold text-gray-900 dark:text-white">
+											{plan.price}
+										</span>
+										<span class="text-xl text-gray-600 dark:text-gray-400 ml-2">
+											/{plan.period}
+										</span>
 									</div>
-								</li>
-							{/each}
-						</ul>
+								</div>
+
+								<!-- CTA Button -->
+								<div class="mb-8">
+									{#if !$user}
+										<div class="text-center mb-4">
+											<p class="text-sm text-gray-500 dark:text-gray-400 mb-3">
+												{$i18n.t('Please log in to subscribe')}
+											</p>
+											<button
+												on:click={() => goto('/auth')}
+												class="w-full py-3.5 px-6 rounded-xl font-semibold text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transform transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-lg"
+											>
+												<span class="flex items-center justify-center">
+													<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+													</svg>
+													Sign In to Subscribe
+												</span>
+											</button>
+										</div>
+									{:else}
+										<PaystackCheckout
+											planId={plan.id}
+											paystackPublicKey={PAYSTACK_PUBLIC_KEY}
+											disabled={false}
+											on:paymentSuccess={handlePaymentSuccess}
+											on:paymentCancel={handlePaymentCancel}
+										/>
+									{/if}
+								</div>
+
+								<!-- Features List -->
+								<div class="border-t border-gray-200 dark:border-gray-700 pt-8">
+									<h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-4 uppercase tracking-wide">
+										What's included
+									</h4>
+									<ul class="space-y-3">
+										{#each plan.features.slice(0, 8) as feature}
+											<li class="flex items-start">
+												<svg class="w-5 h-5 text-purple-600 dark:text-purple-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+												</svg>
+												<span class="text-sm text-gray-700 dark:text-gray-300">
+													{feature}
+												</span>
+											</li>
+										{/each}
+										{#if plan.features.length > 8}
+											<li class="flex items-start text-sm text-purple-600 dark:text-purple-400 font-medium">
+												<svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+												</svg>
+												And {plan.features.length - 8} more features
+											</li>
+										{/if}
+									</ul>
+								</div>
+							</div>
+						</div>
 					</div>
 				{/each}
 			</div>
 		</ImpressionTracker>
-		
+
+		<!-- FAQ or Additional Info Section -->
+		<div class="mt-20 text-center">
+			<div class="max-w-4xl mx-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-3xl shadow-xl p-8 md:p-12 border border-gray-200 dark:border-gray-700">
+				<h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+					Need a Custom Solution?
+				</h2>
+				<p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
+					Have unique requirements? Let's discuss a tailored plan that fits your specific needs.
+				</p>
+				<button
+					class="inline-flex items-center px-8 py-4 rounded-xl font-semibold text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 dark:hover:bg-purple-900/50 border-2 border-purple-200 dark:border-purple-800 transition-all duration-200 hover:scale-105 shadow-lg"
+				>
+					<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+					</svg>
+					Contact Sales
+				</button>
+			</div>
+		</div>
+
+		<!-- Trust Indicators -->
+		<div class="mt-16 text-center">
+			<div class="flex flex-wrap justify-center items-center gap-8 opacity-60">
+				<div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+					<svg class="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+						<path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+					</svg>
+					Secure Payments
+				</div>
+				<div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+					<svg class="w-5 h-5 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+						<path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+					</svg>
+					Instant Activation
+				</div>
+				<div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+					<svg class="w-5 h-5 mr-2 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+						<path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+					</svg>
+					Cancel Anytime
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
+
+<style>
+	@keyframes blob {
+		0% {
+			transform: translate(0px, 0px) scale(1);
+		}
+		33% {
+			transform: translate(30px, -50px) scale(1.1);
+		}
+		66% {
+			transform: translate(-20px, 20px) scale(0.9);
+		}
+		100% {
+			transform: translate(0px, 0px) scale(1);
+		}
+	}
+
+	:global(.animate-blob) {
+		animation: blob 7s infinite;
+	}
+
+	:global(.animation-delay-2000) {
+		animation-delay: 2s;
+	}
+
+	:global(.animation-delay-4000) {
+		animation-delay: 4s;
+	}
+</style>
