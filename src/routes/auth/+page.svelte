@@ -25,7 +25,7 @@
 	const i18n = getContext('i18n');
 
 	let loaded = false;
-
+	let isVisible = false;
 	let mode = $config?.features.enable_ldap ? 'ldap' : 'signin';
 
 	let form = null;
@@ -155,6 +155,7 @@
 	}
 
 	onMount(async () => {
+		isVisible = true;
 		const redirectPath = $page.url.searchParams.get('redirect');
 		if ($user !== undefined) {
 			goto(redirectPath || '/');
@@ -204,9 +205,49 @@
 	{#if loaded}
 		<div class="grid lg:grid-cols-3 grid-cols-1 gap-1 h-full relative z-10">
 			<div class="lg:col-span-2 hidden lg:block">
-				<main class="container mx-auto px-4 py-0 flex-grow">
-					<LandingComponent />
-				</main>
+					<!-- Hero Section -->
+					<section class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-800 dark:via-purple-800 dark:to-pink-800">
+						<!-- Animated background elements -->
+						<div class="absolute inset-0 opacity-20">
+							<div class="absolute top-20 left-10 w-72 h-72 bg-white rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+							<div class="absolute top-40 right-10 w-72 h-72 bg-yellow-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
+							<div class="absolute -bottom-8 left-40 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
+						</div>
+						
+						<div class="relative container mx-auto px-4 py-24 md:py-34 text-center">
+							<div class="transition-all duration-1000 transform {isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}">
+								<h1 class="text-5xl md:text-7xl font-extrabold mb-6 text-white leading-tight">
+									Intelligent Chat.<br/>
+									<span class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 to-pink-200">
+										for Everyone
+									</span>
+								</h1>
+								<p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto text-gray-100 font-light">
+									AI-powered instant Chat with Gazette Notices, Laws/Legislations & Court.
+								</p>
+								<p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-gray-100 font-light">
+									Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction. Ask in plain language, get grounded answers with paragraph-level citations to Gazette Notices, Acts (and subsidiary legislation), and authoritative case law—powered by secure RAG and optional firm-specific fine-tuning.
+								<div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+									<a href="/auth" class="group relative bg-white text-indigo-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
+										<span class="relative z-10">Get Started Free</span>
+										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
+									</a>
+									<a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform">
+										Learn More
+										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+									</a>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Wave separator -->
+						<div class="absolute bottom-0 left-0 right-0">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
+								<path fill="currentColor" class="text-gray-50 dark:text-gray-900" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+							</svg>
+						</div>
+					</section>
+				
 			</div>
 			<div class="lg:col-span-1 relative min-h-screen w-full font-primary z-50 backdrop-blur-sm" id="auth-container">
 				<!-- Decorative elements -->
@@ -643,6 +684,11 @@
 					</div>
 				{/if} -->
 			</div>
+		</div>
+		<div class="flex justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-md">
+			<main class="container mx-auto px-4 py-0 flex-grow">
+				<LandingComponent />
+			</main>
 		</div>
 	{/if}
 </div>
