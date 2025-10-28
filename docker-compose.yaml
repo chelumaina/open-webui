@@ -14,8 +14,8 @@ services:
       - POSTGRES_DB=openwebui
     volumes:
       - ./data/pgdata:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
+    # ports:
+    #   - "5433:5432"
     networks:
       - app-network
     healthcheck:
