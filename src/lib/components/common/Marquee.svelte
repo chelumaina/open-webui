@@ -22,8 +22,9 @@
 <div class={className}>
 	<div>
 		{#key idx}
-			<div class=" marquee-item" in:fly={{ y: '30%', duration: 1000 }}>
-				{words.at(idx)}
+			<hr />
+			<div class=" marquee-item py-5" in:fly={{ y: '30%', duration: 1000 }}>
+				<h4 class="text-2xl md:text-3xl font-extrabold mb-6 text-white leading-tight s-1epn7BoarYrf">{words.at(idx)}</h4>
 			</div>
 		{/key}
 	</div>

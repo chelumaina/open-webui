@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=fK7-SEqRwMsSREpAHBnU
       - POSTGRES_DB=openwebui
     volumes:
-      - ./data/pgdata:/var/lib/postgresql/data
+      - ./data/pgdata:/var/lib/postgresql
     ports:
       - "5433:5432"
     networks:
@@ -69,7 +69,7 @@ services:
       # - ./webui-data:/app/backend/data      # persistent app data (users, settings, etc.)
       - ./webui-cache:/root/.cache          # optional cache (models, etc.)
     # # volumes:
-      - ./data/open-webui:/app/backend/data
+      - open-webui:/app/backend/data
     # volumes:
     #   - ./open-webui-data:/app/backend/data
     #   - ./backend:/app/backend 
@@ -160,3 +160,5 @@ services:
     networks:
       - app-network
 
+volumes:
+  open-webui: {}

@@ -22,6 +22,11 @@
 	import SensitiveInput from '$lib/components/common/SensitiveInput.svelte';
 	import { redirect } from '@sveltejs/kit';
 
+
+	import Marquee from '$lib/components/common/Marquee.svelte';
+	// import SlideShow from '$lib/common/SlideShow.svelte';
+	// import ArrowRightCircle from '$lib/icons/ArrowRightCircle.svelte';
+
 	const i18n = getContext('i18n');
 
 	let loaded = false;
@@ -179,7 +184,7 @@
 		if (($config?.features.auth_trusted_header ?? false) || $config?.features.auth === false) {
 			await signInHandler();
 		} else {
-			onboarding = $config?.onboarding ?? false;
+			onboarding = false;//$config?.onboarding ?? false;
 		}
 	});
 </script>
@@ -215,6 +220,8 @@
 						</div>
 						
 						<div class="relative container mx-auto px-4 py-24 md:py-34 text-center">
+							
+							
 							<div class="transition-all duration-1000 transform {isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}">
 								<h1 class="text-5xl md:text-7xl font-extrabold mb-6 text-white leading-tight">
 									Intelligent Chat.<br/>
@@ -222,6 +229,23 @@
 										for Everyone
 									</span>
 								</h1>
+
+								<Marquee
+									duration={5000}
+									words={[
+										$i18n.t('Explore the cosmos of AI in Legal Research'),
+										$i18n.t('Unlock mysteries with AI Legal Research Assistant'),
+										$i18n.t('Chat with thousands of legal documents using AI'),
+										$i18n.t('Dive into knowledge full of AI into the gazette notices, laws & court decisions'),
+										$i18n.t('Discover wonders with AI document chatbot'),
+										$i18n.t('Ignite curiosity and creativity with AI'),
+										$i18n.t('Forge new paths with AI backed insights'),
+										$i18n.t('Unravel secrets using Legal research with AI'),
+										$i18n.t('Pioneer insights with AI technology in the field of Legal Research'),
+										$i18n.t('Embark on adventures with AI Regulatory Assisted Generation'),
+									]}
+								/>
+
 								<p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto text-gray-100 font-light">
 									AI-powered instant Chat with Gazette Notices, Laws/Legislations & Court.
 								</p>
