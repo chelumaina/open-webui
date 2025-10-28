@@ -315,3 +315,4 @@ open-webui-data/
 webui-cache/
 webui-data/
 .env*
+data/

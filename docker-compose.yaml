@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=fK7-SEqRwMsSREpAHBnU
       - POSTGRES_DB=openwebui
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./data/pgdata:/var/lib/postgresql/data
     ports:
       - "5433:5432"
     networks:
@@ -45,7 +45,7 @@ services:
 
   ollama:
     volumes:
-      - ollama:/root/.ollama
+      - ./data/ollama:/root/.ollama
     container_name: ollama
     # pull_policy: always
     tty: true
@@ -69,7 +69,7 @@ services:
       # - ./webui-data:/app/backend/data      # persistent app data (users, settings, etc.)
       - ./webui-cache:/root/.cache          # optional cache (models, etc.)
     # # volumes:
-      - open-webui:/app/backend/data
+      - ./data/open-webui:/app/backend/data
     # volumes:
     #   - ./open-webui-data:/app/backend/data
     #   - ./backend:/app/backend 
@@ -137,7 +137,7 @@ services:
     container_name: redis-valkey
     hostname: redis-valkey
     volumes:
-      - redis-data:/data
+      - ./data/redis-data:/data
     command: "valkey-server --save 30 1"
     healthcheck:
       test: "[ $$(valkey-cli ping) = 'PONG' ]"
@@ -160,8 +160,3 @@ services:
     networks:
       - app-network
 
-volumes:
-  ollama: {}
-  open-webui: {}
-  pgdata: {}
-  redis-data: {}
