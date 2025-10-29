@@ -214,7 +214,7 @@ export const SUBSCRIPTION_PLANS = {
 		amount: 5, // $10
 		currency: 'USD',
 		plan_code: 'basic_plan',
-		group_id: '6e475052-cd95-4d8b-8d9e-b0c5b9b3ae98',
+		group_id: '7601634e-5d97-4d2f-81dc-4ff609df3530',
 		interval: 'monthly',
 		features: [
 			'Coverage: Basic statutes + case law',
@@ -239,7 +239,7 @@ export const SUBSCRIPTION_PLANS = {
 		currency: 'USD',
 		plan_code: 'enterprise_plan',
 		interval: 'monthly',
-		group_id: '8ca4c096-2b16-4e19-9586-4a162448fd63',
+		group_id: 'eebfa470-8f68-4030-b0ad-f0b345e5f06a',
 		features: [
 			"Everything in Basic",
 			'Coverage: Comprehensive acts, laws, court decisions, gazette notices, and cases',
@@ -260,7 +260,7 @@ export const SUBSCRIPTION_PLANS = {
 		currency: 'USD',
 		plan_code: 'enterprise_plus_plan',
 		interval: 'monthly',
-		group_id: '8ca4c096-2b16-4e19-9586-4a162448fd63',
+		group_id: 'e6a862c6-a6f7-41a1-9614-62a41623f9d8',
 		features: [
 			"Everything in Basic",
 			'Coverage: Comprehensive acts, laws, court decisions, gazette notices, and cases',
@@ -281,7 +281,7 @@ export const SUBSCRIPTION_PLANS = {
 		currency: 'USD',
 		plan_code: 'enterprise_plan',
 		interval: 'monthly',
-		group_id: '8ca4c096-2b16-4e19-9586-4a162448fd63',
+		group_id: 'eebfa470-8f68-4030-b0ad-f0b345e5f06a',
 		features: [
 			"Everything in Basic",
 			'Coverage: Comprehensive acts, laws, court decisions, gazette notices, and cases',

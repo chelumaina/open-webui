@@ -36,9 +36,9 @@
 		console.log('Payment cancelled for plan:', plan);
 		toast.info($i18n.t('Payment was cancelled. You can try again anytime.'));
 	}
-// "6e475052-cd95-4d8b-8d9e-b0c5b9b3ae98"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Basic Plan"
-// "8ca4c096-2b16-4e19-9586-4a162448fd63"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Enterprise Plan"
-// "d78c232a-7eef-4a41-bb01-2ba44983c9c3"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Enterprise Pro"
+// "7601634e-5d97-4d2f-81dc-4ff609df3530"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Basic Plan"
+// "eebfa470-8f68-4030-b0ad-f0b345e5f06a"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Enterprise Plan"
+// "e6a862c6-a6f7-41a1-9614-62a41623f9d8"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Enterprise Pro"
 let plans = [
   {
     id: 'basic',
@@ -48,7 +48,7 @@ let plans = [
     period: 'month',
     amount: 5,
     currency: 'USD',
-    group_id: '6e475052-cd95-4d8b-8d9e-b0c5b9b3ae98',
+    group_id: '7601634e-5d97-4d2f-81dc-4ff609df3530',
     highlighted: false,
     badge: null,
     features: [
@@ -76,7 +76,7 @@ let plans = [
     period: 'month',
     amount: 10,
     currency: 'USD',
-    group_id: '8ca4c096-2b16-4e19-9586-4a162448fd63',
+    group_id: 'eebfa470-8f68-4030-b0ad-f0b345e5f06a',
     highlighted: true,
     badge: 'Most Popular',
     features: [
@@ -103,7 +103,7 @@ let plans = [
     period: 'month',
     amount: 20,
     currency: 'USD',
-    group_id: 'd78c232a-7eef-4a41-bb01-2ba44983c9c3',
+    group_id: 'e6a862c6-a6f7-41a1-9614-62a41623f9d8',
     highlighted: false,
     badge: 'Best Value',
     features: [
