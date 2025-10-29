@@ -5,7 +5,7 @@ networks:
 
 services:
   pg_db_ai:
-    image: postgres:latest
+    image: postgres:18.0-alpine
     container_name: pg_db_ai
     hostname: pg_db_ai
     environment:
