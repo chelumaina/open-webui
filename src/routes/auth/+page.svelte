@@ -71,6 +71,11 @@
 		await setSessionUser(sessionUser);
 	};
 
+	let getStartedHandler=() => {
+		onboarding = false;
+		mode = $config?.features.enable_ldap ? 'ldap' : 'signup';
+	};
+
 	const signUpHandler = async () => {
 		if ($config?.features?.enable_signup_password_confirmation) {
 			if (password !== confirmPassword) {
@@ -184,7 +189,7 @@
 		if (($config?.features.auth_trusted_header ?? false) || $config?.features.auth === false) {
 			await signInHandler();
 		} else {
-			onboarding = false;//$config?.onboarding ?? false;
+			onboarding = $config?.onboarding ?? false;
 		}
 	});
 </script>
@@ -195,13 +200,13 @@
 	</title>
 </svelte:head>
 
-<OnBoarding
+<!-- <OnBoarding
 	bind:show={onboarding}
 	getStartedHandler={() => {
 		onboarding = false;
 		mode = $config?.features.enable_ldap ? 'ldap' : 'signup';
 	}}
-/>
+/> -->
 
 <div class="w-full max-h-[100dvh] text-white relative " id="auth-page">
 	<!-- Animated background gradient -->
@@ -246,12 +251,8 @@
 									]}
 								/>
 
-								<p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto text-gray-100 font-light">
-									AI-powered instant Chat with Gazette Notices, Laws/Legislations & Court.
-								</p>
-								<p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-gray-100 font-light">
-									Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction. Ask in plain language, get grounded answers with paragraph-level citations to Gazette Notices, Acts (and subsidiary legislation), and authoritative case law—powered by secure RAG and optional firm-specific fine-tuning.
 								<div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+								
 									<a href="/auth" class="group relative bg-white text-indigo-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
 										<span class="relative z-10">Get Started Free</span>
 										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
@@ -261,6 +262,13 @@
 										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
 									</a>
 								</div>
+
+								<p class="text-xl md:text-2xl mb-10 mt-10 max-w-3xl mx-auto text-gray-100 font-light">
+									AI-powered instant Chat with Gazette Notices, Laws/Legislations & Court.
+								</p>
+								<p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-gray-100 font-light">
+									Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction. Ask in plain language, get grounded answers with paragraph-level citations to Gazette Notices, Acts (and subsidiary legislation), and authoritative case law—powered by secure RAG and optional firm-specific fine-tuning.
+								
 							</div>
 						</div>
 						
@@ -319,6 +327,7 @@
 									>
 										<div class="mb-6">
 											<div class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+												
 												{#if $config?.onboarding ?? false}
 													{$i18n.t(`Get started with {{WEBUI_NAME}}`, { WEBUI_NAME: $WEBUI_NAME })}
 												{:else if mode === 'ldap'}
@@ -468,6 +477,7 @@
 											</div>
 										{/if}
 										<div class="mt-6">
+											<!-- {#if onbo$config?.features.enable_login_formarding} -->
 											{#if $config?.features.enable_login_form || $config?.features.enable_ldap || form}
 												{#if mode === 'ldap'}
 													<button

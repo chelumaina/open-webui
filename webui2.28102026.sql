@@ -2,8 +2,6 @@
 -- PostgreSQL database dump
 --
 
-\restrict oylqjiPcL6KMekq05wsHPKfkxXczgWH9J9VbHsAqoKPAeB75bfdktBpRlkvltHa
-
 -- Dumped from database version 18.0 (Debian 18.0-1.pgdg13+3)
 -- Dumped by pg_dump version 18.0 (Debian 18.0-1.pgdg13+3)
 
@@ -1360,5 +1358,4 @@ ALTER TABLE ONLY public.oauth_session
 -- PostgreSQL database dump complete
 --
 
-\unrestrict oylqjiPcL6KMekq05wsHPKfkxXczgWH9J9VbHsAqoKPAeB75bfdktBpRlkvltHa
 
