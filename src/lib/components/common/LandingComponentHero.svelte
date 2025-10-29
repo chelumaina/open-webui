@@ -23,11 +23,11 @@
 				<h1 class="text-5xl md:text-7xl font-extrabold mb-6 text-white leading-tight">
 					Intelligent Chat.<br/>
 					<span class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 to-pink-200">
-						for Everyone
+						for Everyone in the Legal Field
 					</span>
 				</h1>
 				<p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto text-gray-100 font-light">
-					AI-powered instant Chat with Gazette Notices, Laws/Legislations & Court.
+					Enhanced AI-powered Chat with Gazette Notices, Laws/Legislations & Court decisions.
 				</p>
 				<p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-gray-100 font-light">
 					Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction. Ask in plain language, get grounded answers with paragraph-level citations to Gazette Notices, Acts (and subsidiary legislation), and authoritative case law—powered by secure RAG and optional firm-specific fine-tuning.
