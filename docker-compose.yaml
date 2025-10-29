@@ -14,7 +14,7 @@ services:
       - POSTGRES_DB=openwebui
     volumes:
       # - ./data/pgdata/:/var/lib/postgresql/
-      - ./data/pgdata-latest:/var/lib/postgresql/18/docker
+      - ./data/pgdata-latest:/var/lib/postgresql
 
     ports:
       - "5433:5432"
