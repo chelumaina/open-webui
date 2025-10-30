@@ -578,6 +578,11 @@ class OAuthClientManager:
 
         error_message = None
         try:
+            print(f"Created OAuth session {session.id} for user {user.id}") 
+            # exit()
+            group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
+            Groups.add_users_to_group(group_id, user_id)
+
             client_info = self.get_client_info(client_id)
             token_params = {}
             if (
@@ -612,11 +617,7 @@ class OAuthClientManager:
                         token=token,
                         expires_at=datetime.now().timestamp() + token["expires_in"]
                     )
-                    print(f"Created OAuth session {session.id} for user {user.id}") 
-                    exit()
-                    
-                    group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
-                    Groups.add_users_to_group(group_id, user_id)
+                   
                     log.info(
                         f"Stored OAuth session server-side for user {user_id}, client_id {client_id}"
                     )
@@ -1217,6 +1218,9 @@ class OAuthManager:
                         Users.update_user_oauth_sub_by_id(user.id, provider_sub)
 
             if user:
+                # exit()
+                group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
+                Groups.add_users_to_group(group_id, user.id)
                 determined_role = self.get_user_role(user, user_data)
                 if user.role != determined_role:
                     Users.update_user_role_by_id(user.id, determined_role)
@@ -1304,13 +1308,7 @@ class OAuthManager:
                     user_data=user_data,
                     default_permissions=request.app.state.config.USER_PERMISSIONS,
                 )
-                print(f"Created OAuth session {session.id} for user {user.id}") 
-                exit()
-                group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
-                Groups.add_users_to_group(group_id, user.id)
-
-
-
+              
         except Exception as e:
             log.error(f"Error during OAuth process: {e}")
             error_message = (
@@ -1370,11 +1368,7 @@ class OAuthManager:
                 token=token,
                 expires_at=datetime.now().timestamp() + token["expires_in"]
             )
-            print(f"Created OAuth session {session.id} for user {user.id}") 
-            exit()
-            group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
-            Groups.add_users_to_group(group_id, user.id)
-
+            
             response.set_cookie(
                 key="oauth_session_id",
                 value=session.id,
