@@ -610,6 +610,7 @@ class OAuthClientManager:
                         user_id=user_id,
                         provider=client_id,
                         token=token,
+                        expires_at=datetime.now().timestamp() + token["expires_in"]
                     )
                     
                     group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
@@ -1363,7 +1364,10 @@ class OAuthManager:
                 user_id=user.id,
                 provider=provider,
                 token=token,
+                expires_at=datetime.now().timestamp() + token["expires_in"]
             )
+            group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
+            Groups.add_users_to_group(group_id, user.id)
 
             response.set_cookie(
                 key="oauth_session_id",
