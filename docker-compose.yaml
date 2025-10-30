@@ -40,8 +40,8 @@ services:
       - POSTGRES_PASSWORD=fK7-SEqRwMsSREpAHBnU
       - POSTGRES_DB=openwebui
     volumes:
-      - ./data/pgdata_new/:/var/lib/postgresql/
-      # - ./data/pgdata-latest:/var/lib/postgresql
+      # - ./data/pgdata_new/:/var/lib/postgresql/
+      - ./data/pgdata-latest:/var/lib/postgresql
 
     ports:
       - "5433:5432"
