@@ -577,12 +577,7 @@ class OAuthClientManager:
             raise HTTPException(404)
 
         error_message = None
-        try:
-            print(f"Created OAuth session {session.id} for user {user.id}") 
-            # exit()
-            group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
-            Groups.add_users_to_group(group_id, user_id)
-
+        try: 
             client_info = self.get_client_info(client_id)
             token_params = {}
             if (
@@ -1217,8 +1212,7 @@ class OAuthManager:
                         # Update the user with the new oauth sub
                         Users.update_user_oauth_sub_by_id(user.id, provider_sub)
 
-            if user:
-                # exit()
+            if user: 
                 group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
                 Groups.add_users_to_group(group_id, user.id)
                 determined_role = self.get_user_role(user, user_data)

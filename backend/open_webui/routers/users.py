@@ -13,7 +13,7 @@ from pydantic import BaseModel
 from open_webui.models.auths import Auths
 from open_webui.models.oauth_sessions import OAuthSessions
 
-from open_webui.models.groups import Groups
+from open_webui.models.groups import GroupUpdateForm, Groups
 from open_webui.models.chats import Chats
 from open_webui.models.users import (
     UserModel,
@@ -232,6 +232,15 @@ async def update_default_user_permissions(
 @router.get("/user/settings", response_model=Optional[UserSettings])
 async def get_user_settings_by_session_user(user=Depends(get_verified_user)):
     user = Users.get_user_by_id(user.id)
+    # print("user:", user.role)
+    # form_data = GroupUpdateForm()
+    # if user.role is None:
+    #     group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
+    #     form_data.user_ids = Users.get_valid_user_ids([user.id])
+
+    #     # user_ids = [user.id]
+    #     group = Groups.update_group_by_id(group_id, form_data)
+    #     # Groups.add_users_to_group(group_id, user_ids)
     is_user_subscription_valid= Users.is_valid_monthly_subscription(user.id, 10, user) 
     
     prompt_token, response_token= Users.total_tokens_from_chat(user.id) 
