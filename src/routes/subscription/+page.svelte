@@ -154,7 +154,7 @@ let plans = [
 				Unlock powerful features and scale your productivity with our comprehensive subscription plans
 			</p>
 		</div>
-		{$token_cost?.subscription}
+		{$config?.subscription_id}
 
 		<!-- Pricing Cards -->
 		<ImpressionTracker sectionId="subscription-section">
@@ -229,7 +229,7 @@ let plans = [
 											</button>
 										</div>
 									{:else}
-										{#if $token_cost?.subscription_id === plan.id}
+										{#if $config?.subscription_id === plan.id}
 											<PaystackCheckout
 												planId={plan.id}
 												paystackPublicKey={PAYSTACK_PUBLIC_KEY}
