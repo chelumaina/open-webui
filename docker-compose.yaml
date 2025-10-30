@@ -10,26 +10,22 @@ services:
     ports:
       - "4001:4000"
     volumes:
-      - ./litellm-config.yaml:/app/config.yaml # Mount your config file
+      - ./litellm_config.yaml:/app/config.yaml # Mount your config file
     environment:
       - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}
       - LITELLM_SALT_KEY=${LITELLM_SALT_KEY}
+
+      - AZURE_OPENAI_API_KEY=""
+      - AZURE_OPENAI_ENDPOINT=""
+      - AZURE_OPENAI_API_VERSION=""
+      - AZURE_API_BASE=""
+      - AZURE_OPENAI_AD_TOKEN=""
+
       # Add other LLM API keys as needed
       # - OPENAI_API_KEY=${OPENAI_API_KEY}
     command: ["litellm", "--config", "/app/config.yaml", "--port", "4000"]
 
-
-  # Optional: OpenAI-compatible proxy (LiteLLM)
-  litellm_old:
-    image: ghcr.io/berriai/litellm:main
-    container_name: owui-litellm
-    command: ["--port", "4000", "--config", "/app/config.yaml"]
-    volumes:
-      - ./litellm_config.yaml:/app/config.yaml:ro
-    ports:
-      - "4000:4000"  # or keep internal only if using an nginx/traefik proxy
-    restart: unless-stopped
-
+ 
 
   pg_db_ai:
     image: postgres:18.0-alpine

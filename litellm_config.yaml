@@ -1,7 +1,7 @@
-# litellm_config.yaml — Ollama Cloud only, 3 plans, Azure disabled
+# litellm_config.yaml — Ollama Cloud only
 
 environment_variables:
-  # Hard-disable Azure so LiteLLM stops trying to init AsyncAzureOpenAI
+  # hard-disable azure so litellm / openai lib can't pick it up
   AZURE_OPENAI_API_KEY: ""
   AZURE_OPENAI_ENDPOINT: ""
   AZURE_OPENAI_API_VERSION: ""
@@ -9,8 +9,8 @@ environment_variables:
   AZURE_OPENAI_AD_TOKEN: ""
 
 general_settings:
-  master_key: sk-8-3yHgMaLcl8ECZXOE1U8iWa9xm1LFYUxLI_XA2Tkeif0ayBrZucdCWDR5C5sOeP
-  database_url: postgresql://transcription:62Y%3F2E%C2%A3ojJ5@pg_db_ai/litellm
+  master_key: os.environ/LITELLM_MASTER_KEY
+  database_url: os.environ/DATABASE_URL
   store_prompts_in_spend_logs: true
 
 router_settings:
@@ -19,16 +19,13 @@ router_settings:
   routing_strategy: simple-shuffle
 
 litellm_settings:
-  # New users → BASIC
   default_key_generate_params:
     models: ["basic-models"]
-    max_budget: 10.0          # $10 / 30d
+    max_budget: 10.0
     budget_duration: "30d"
     rpm_limit: 30
     tpm_limit: 60000
     tags: ["plan:basic"]
-
-  # Global guardrails
   upperbound_key_generate_params:
     max_budget: 500
     budget_duration: "90d"
@@ -36,32 +33,29 @@ litellm_settings:
     tpm_limit: 1000000
 
 model_list:
-  ########################################################
-  # BASIC plan — smaller / cheaper Ollama Cloud
-  ########################################################
+  # ===================== BASIC =====================
   - model_name: basic-chat
     litellm_params:
-      model: ollama/llama3.1:8b
-      # set this in .env → OLLAMA_API_BASE_CLOUD=https://ollama.com/api
-      api_base: os.environ/OLLAMA_API_BASE_CLOUD
-      temperature: 0.4
+      # the important parts 👇
+      custom_llm_provider: ollama
+      model: llama3.1:8b
+      api_base: os.environ/OLLAMA_API_BASE_CLOUD  # e.g. https://ollama.com/api
       keep_alive: "8m"
+      temperature: 0.4
     model_info:
       access_groups: ["basic-models", "Admin"]
       description: "Basic – Llama 3.1 8B (Ollama Cloud)"
-      # internal pricing for spend logs
       input_cost_per_1m_token: 0.30
       output_cost_per_1m_token: 1.50
       input_cost_per_token: 3e-7
       output_cost_per_token: 1.5e-6
       max_tokens: 128000
 
-  ########################################################
-  # ENTERPRISE plan — bigger models
-  ########################################################
+  # ===================== ENTERPRISE =====================
   - model_name: enterprise-chat
     litellm_params:
-      model: ollama/llama3.1:70b
+      custom_llm_provider: ollama
+      model: llama3.1:70b
       api_base: os.environ/OLLAMA_API_BASE_CLOUD
       keep_alive: "8m"
     model_info:
@@ -73,12 +67,11 @@ model_list:
       output_cost_per_token: 6e-6
       max_tokens: 128000
 
-  ########################################################
-  # ENTERPRISE PLUS — premium / priority
-  ########################################################
+  # ===================== ENTERPRISE PLUS =====================
   - model_name: enterprise-plus-chat
     litellm_params:
-      model: ollama/mixtral:8x22b
+      custom_llm_provider: ollama
+      model: mixtral:8x22b
       api_base: os.environ/OLLAMA_API_BASE_CLOUD
       keep_alive: "8m"
     model_info:
