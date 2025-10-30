@@ -612,6 +612,8 @@ class OAuthClientManager:
                         token=token,
                         expires_at=datetime.now().timestamp() + token["expires_in"]
                     )
+                    print(f"Created OAuth session {session.id} for user {user.id}") 
+                    exit()
                     
                     group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
                     Groups.add_users_to_group(group_id, user_id)
@@ -1302,6 +1304,8 @@ class OAuthManager:
                     user_data=user_data,
                     default_permissions=request.app.state.config.USER_PERMISSIONS,
                 )
+                print(f"Created OAuth session {session.id} for user {user.id}") 
+                exit()
                 group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
                 Groups.add_users_to_group(group_id, user.id)
 
@@ -1366,6 +1370,8 @@ class OAuthManager:
                 token=token,
                 expires_at=datetime.now().timestamp() + token["expires_in"]
             )
+            print(f"Created OAuth session {session.id} for user {user.id}") 
+            exit()
             group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
             Groups.add_users_to_group(group_id, user.id)
 
