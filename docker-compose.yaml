@@ -5,25 +5,25 @@ networks:
 
 services:
 
-  litellm:
-    image: ghcr.io/berriai/litellm:latest # Or build from a Dockerfile
-    ports:
-      - "4001:4000"
-    volumes:
-      - ./litellm_config.yaml:/app/config.yaml # Mount your config file
-    environment:
-      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}
-      - LITELLM_SALT_KEY=${LITELLM_SALT_KEY}
+  # litellm:
+  #   image: ghcr.io/berriai/litellm:latest # Or build from a Dockerfile
+  #   ports:
+  #     - "4001:4000"
+  #   volumes:
+  #     - ./litellm_config.yaml:/app/config.yaml # Mount your config file
+  #   environment:
+  #     - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}
+  #     - LITELLM_SALT_KEY=${LITELLM_SALT_KEY}
 
-      - AZURE_OPENAI_API_KEY=""
-      - AZURE_OPENAI_ENDPOINT=""
-      - AZURE_OPENAI_API_VERSION=""
-      - AZURE_API_BASE=""
-      - AZURE_OPENAI_AD_TOKEN=""
+  #     - AZURE_OPENAI_API_KEY=""
+  #     - AZURE_OPENAI_ENDPOINT=""
+  #     - AZURE_OPENAI_API_VERSION=""
+  #     - AZURE_API_BASE=""
+  #     - AZURE_OPENAI_AD_TOKEN=""
 
-      # Add other LLM API keys as needed
-      # - OPENAI_API_KEY=${OPENAI_API_KEY}
-    command: ["litellm", "--config", "/app/config.yaml", "--port", "4000"]
+  #     # Add other LLM API keys as needed
+  #     # - OPENAI_API_KEY=${OPENAI_API_KEY}
+  #   command: ["litellm", "--config", "/app/config.yaml", "--port", "4000"]
 
  
 
