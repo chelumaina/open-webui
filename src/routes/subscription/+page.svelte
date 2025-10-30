@@ -154,7 +154,7 @@ let plans = [
 				Unlock powerful features and scale your productivity with our comprehensive subscription plans
 			</p>
 		</div>
-		{$config?.plan_id}
+		
 
 		<!-- Pricing Cards -->
 		<ImpressionTracker sectionId="subscription-section">
