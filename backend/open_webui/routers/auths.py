@@ -610,7 +610,7 @@ async def signup(request: Request, response: Response, form_data: SignupForm):
 
         if user: 
             group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
-            Groups.add_users_to_group(group_id, user.id)
+            Groups.add_users_to_group(group_id, {user.id})
             expires_delta = parse_duration(request.app.state.config.JWT_EXPIRES_IN)
             expires_at = None
             if expires_delta:
