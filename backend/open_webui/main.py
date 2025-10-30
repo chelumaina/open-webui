@@ -60,6 +60,7 @@ from starsessions.stores.redis import RedisStore
 from open_webui.utils import logger
 from open_webui.utils.audit import AuditLevel, AuditLoggingMiddleware
 from open_webui.utils.logger import start_logger
+from open_webui.models.payments import Payments
 from open_webui.socket.main import (
     app as socket_app,
     periodic_usage_pool_cleanup,
@@ -94,7 +95,7 @@ from open_webui.routers import (
     utils,
     scim,
     payments,
-    Payments,
+   
 )
 
 from open_webui.routers.retrieval import (
@@ -1728,7 +1729,7 @@ async def get_app_config(request: Request):
     if user is None:
         onboarding = user_count == 0
     else:
-        subscription = Payments.get_active_subscription_by_user_id(user.id)
+        subscription = Payments.get_user_subscription(user.id)
 
     return {
         **({"onboarding": True} if onboarding else {}),
