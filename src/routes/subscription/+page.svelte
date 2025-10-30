@@ -229,7 +229,7 @@ let plans = [
 											</button>
 										</div>
 									{:else}
-										{#if $config?.subscription_id === plan.id}
+										{#if $config?.plan_id === plan.id}
 											<PaystackCheckout
 												planId={plan.id}
 												paystackPublicKey={PAYSTACK_PUBLIC_KEY}
