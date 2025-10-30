@@ -1,64 +1,91 @@
-# litellm_config.yaml  — Ollama-only, Free vs Pro plans
+# litellm_config.yaml — Ollama Cloud only, 3 plans, Azure disabled
+
+environment_variables:
+  # Hard-disable Azure so LiteLLM stops trying to init AsyncAzureOpenAI
+  AZURE_OPENAI_API_KEY: ""
+  AZURE_OPENAI_ENDPOINT: ""
+  AZURE_OPENAI_API_VERSION: ""
+  AZURE_API_BASE: ""
+  AZURE_OPENAI_AD_TOKEN: ""
 
 general_settings:
   master_key: sk-8-3yHgMaLcl8ECZXOE1U8iWa9xm1LFYUxLI_XA2Tkeif0ayBrZucdCWDR5C5sOeP
-  database_url: postgresql://transcription:62Y%3F2E£ojJ5@pg_db_ai/litellm
+  database_url: postgresql://transcription:62Y%3F2E%C2%A3ojJ5@pg_db_ai/litellm
   store_prompts_in_spend_logs: true
 
 router_settings:
   num_retries: 2
   timeout: 60
+  routing_strategy: simple-shuffle
 
 litellm_settings:
-  # Any /key/generate without overrides becomes a Free key
+  # New users → BASIC
   default_key_generate_params:
-    models: ["free-models"]          # <- access group
-    max_budget: 0.50                 # USD / 30d for Free
+    models: ["basic-models"]
+    max_budget: 10.0          # $10 / 30d
     budget_duration: "30d"
-    rpm_limit: 3
-    tpm_limit: 15000
-    tags: ["plan:free"]
-  # Guardrails on key generation
+    rpm_limit: 30
+    tpm_limit: 60000
+    tags: ["plan:basic"]
+
+  # Global guardrails
   upperbound_key_generate_params:
-    max_budget: 200
+    max_budget: 500
     budget_duration: "90d"
     rpm_limit: 600
     tpm_limit: 1000000
 
 model_list:
   ########################################################
-  # FREE PLAN (fast, light local models)
+  # BASIC plan — smaller / cheaper Ollama Cloud
   ########################################################
-  - model_name: free-chat
+  - model_name: basic-chat
     litellm_params:
-      # Use Ollama's chat endpoint (recommended)
-      model: ollama/smolLM:135m
-      api_base: http://ollama:11434       # if Ollama is a Docker service
+      model: ollama/llama3.1:8b
+      # set this in .env → OLLAMA_API_BASE_CLOUD=https://ollama.com/api
+      api_base: os.environ/OLLAMA_API_BASE_CLOUD
+      temperature: 0.4
       keep_alive: "8m"
     model_info:
-      access_groups: ["free-models", "Admin"]
-
-  # - model_name: qwen2.5:7b-instruct   # expose the raw name too (optional)
-  #   litellm_params:
-  #     model: ollama/qwen2.5:7b-instruct
-  #     api_base: http://ollama:11434
-  #   model_info:
-  #     access_groups: ["free-models", "Admin"]
+      access_groups: ["basic-models", "Admin"]
+      description: "Basic – Llama 3.1 8B (Ollama Cloud)"
+      # internal pricing for spend logs
+      input_cost_per_1m_token: 0.30
+      output_cost_per_1m_token: 1.50
+      input_cost_per_token: 3e-7
+      output_cost_per_token: 1.5e-6
+      max_tokens: 128000
 
   ########################################################
-  # PRO PLAN (bigger local models)
+  # ENTERPRISE plan — bigger models
   ########################################################
-  - model_name: pro-chat
+  - model_name: enterprise-chat
     litellm_params:
-      model: ollama/smolLM:135m
-      api_base: http://ollama:11434
+      model: ollama/llama3.1:70b
+      api_base: os.environ/OLLAMA_API_BASE_CLOUD
       keep_alive: "8m"
     model_info:
-      access_groups: ["pro-models", "Admin"]
+      access_groups: ["enterprise-models", "Admin"]
+      description: "Enterprise – Llama 3.1 70B (Ollama Cloud)"
+      input_cost_per_1m_token: 1.50
+      output_cost_per_1m_token: 6.00
+      input_cost_per_token: 1.5e-6
+      output_cost_per_token: 6e-6
+      max_tokens: 128000
 
-  # - model_name: mixtral:8x7b-instruct  # optional: another pro-only local
-  #   litellm_params:
-  #     model: ollama/mixtral:8x7b-instruct
-  #     api_base: http://ollama:11434
-  #   model_info:
-  #     access_groups: ["pro-models", "Admin"]
+  ########################################################
+  # ENTERPRISE PLUS — premium / priority
+  ########################################################
+  - model_name: enterprise-plus-chat
+    litellm_params:
+      model: ollama/mixtral:8x22b
+      api_base: os.environ/OLLAMA_API_BASE_CLOUD
+      keep_alive: "8m"
+    model_info:
+      access_groups: ["enterprise-plus-models", "Admin"]
+      description: "Enterprise Plus – Mixtral 8x22B (Ollama Cloud)"
+      input_cost_per_1m_token: 3.00
+      output_cost_per_1m_token: 12.00
+      input_cost_per_token: 3e-6
+      output_cost_per_token: 1.2e-5
+      max_tokens: 128000

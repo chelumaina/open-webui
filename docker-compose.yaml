@@ -5,14 +5,27 @@ networks:
 
 services:
 
+  litellm:
+    image: ghcr.io/berriai/litellm:latest # Or build from a Dockerfile
+    ports:
+      - "4001:4000"
+    volumes:
+      - ./litellm-config.yaml:/app/config.yaml # Mount your config file
+    environment:
+      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}
+      - LITELLM_SALT_KEY=${LITELLM_SALT_KEY}
+      # Add other LLM API keys as needed
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+    command: ["litellm", "--config", "/app/config.yaml", "--port", "4000"]
+
 
   # Optional: OpenAI-compatible proxy (LiteLLM)
-  litellm:
+  litellm_old:
     image: ghcr.io/berriai/litellm:main
     container_name: owui-litellm
     command: ["--port", "4000", "--config", "/app/config.yaml"]
     volumes:
-      - ./litellm/config.yaml:/app/config.yaml:ro
+      - ./litellm_config.yaml:/app/config.yaml:ro
     ports:
       - "4000:4000"  # or keep internal only if using an nginx/traefik proxy
     restart: unless-stopped
@@ -27,8 +40,8 @@ services:
       - POSTGRES_PASSWORD=fK7-SEqRwMsSREpAHBnU
       - POSTGRES_DB=openwebui
     volumes:
-      # - ./data/pgdata_new/:/var/lib/postgresql/
-      - ./data/pgdata-latest:/var/lib/postgresql
+      - ./data/pgdata_new/:/var/lib/postgresql/
+      # - ./data/pgdata-latest:/var/lib/postgresql
 
     ports:
       - "5433:5432"
