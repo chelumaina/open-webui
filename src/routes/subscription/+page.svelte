@@ -229,7 +229,6 @@ let plans = [
 											</button>
 										</div>
 									{:else}
-									plan_id: {$config?.plan_id} - plan_id: {plan.id}
 										{#if $config?.plan_id === plan.id}
 											<PaystackCheckout
 												planId={plan.id}
