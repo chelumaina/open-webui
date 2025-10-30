@@ -110,6 +110,7 @@ class OAuthSessionTable:
         user_id: str,
         provider: str,
         token: dict,
+        expires_at: int=0,
     ) -> Optional[OAuthSessionModel]:
         """Create a new OAuth session"""
         try:
@@ -123,7 +124,7 @@ class OAuthSessionTable:
                         "user_id": user_id,
                         "provider": provider,
                         "token": self._encrypt_token(token),
-                        "expires_at": token.get("expires_at"),
+                        "expires_at": expires_at,
                         "created_at": current_time,
                         "updated_at": current_time,
                     }
