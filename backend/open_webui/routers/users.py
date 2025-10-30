@@ -12,7 +12,7 @@ from pydantic import BaseModel
 
 from open_webui.models.auths import Auths
 from open_webui.models.oauth_sessions import OAuthSessions
-
+from open_webui.models.payments import Payments
 from open_webui.models.groups import GroupUpdateForm, Groups
 from open_webui.models.chats import Chats
 from open_webui.models.users import (
@@ -244,6 +244,8 @@ async def get_user_settings_by_session_user(user=Depends(get_verified_user)):
     is_user_subscription_valid= Users.is_valid_monthly_subscription(user.id, 10, user) 
     
     prompt_token, response_token= Users.total_tokens_from_chat(user.id) 
+    subscription= Payments.get_user_subscription(user.id) 
+
 
     # # super_user= Users.is_super_user(user.id)
     # print("user:", user.role)
@@ -275,6 +277,7 @@ async def get_user_settings_by_session_user(user=Depends(get_verified_user)):
                 "response_token": round(response_token, 2),
                 "cost": round(response_token + prompt_token, 2),
                 "is_user_subscription_valid": valid ,
+                "subscription": subscription,
             },
         }
         # return user.settings

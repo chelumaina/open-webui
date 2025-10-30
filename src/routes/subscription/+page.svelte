@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import ImpressionTracker from '$lib/components/ImpressionTracker.svelte';
 	import PaystackCheckout from '$lib/components/payment/PaystackCheckout.svelte';
-	import { WEBUI_NAME, config, user } from '$lib/stores';
+	import { WEBUI_NAME, config, user, token_cost } from '$lib/stores';
 	import { onMount, getContext } from 'svelte';
 	import { toast } from 'svelte-sonner';
 
@@ -154,6 +154,7 @@ let plans = [
 				Unlock powerful features and scale your productivity with our comprehensive subscription plans
 			</p>
 		</div>
+		{$token_cost}
 
 		<!-- Pricing Cards -->
 		<ImpressionTracker sectionId="subscription-section">

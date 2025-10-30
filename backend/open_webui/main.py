@@ -94,6 +94,7 @@ from open_webui.routers import (
     utils,
     scim,
     payments,
+    Payments,
 )
 
 from open_webui.routers.retrieval import (
@@ -1723,9 +1724,11 @@ async def get_app_config(request: Request):
 
     user_count = Users.get_num_users()
     onboarding = True
-
+    subscription = {}
     if user is None:
         onboarding = user_count == 0
+    else:
+        subscription = Payments.get_active_subscription_by_user_id(user.id)
 
     return {
         **({"onboarding": True} if onboarding else {}),
@@ -1733,6 +1736,7 @@ async def get_app_config(request: Request):
         "name": app.state.WEBUI_NAME,
         "version": VERSION,
         "default_locale": str(DEFAULT_LOCALE),
+        "subscription": subscription,
         "oauth": {
             "providers": {
                 name: config.get("name", name)

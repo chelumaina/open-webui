@@ -107,3 +107,19 @@ class WebhookPayload(BaseModel):
     event: str
     data: dict
 
+class PaymentsTable:
+    def get_user_subscription(self, user_id: str) -> Optional[UserSubscription]:
+        with get_db() as db:
+            subscription = (
+                db.query(UserSubscription)
+                .filter_by(user_id=user_id)
+                .order_by(UserSubscription.expires_at.desc())
+                .first()
+            )
+            if subscription:
+                return subscription
+            else:
+                 return None
+             
+
+Payments = PaymentsTable()
