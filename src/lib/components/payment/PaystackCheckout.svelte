@@ -202,7 +202,7 @@
 			></path>
 		</svg>
 		{#if disabled}
-			{$i18n.t('Already Subscribed to')} {plan.name}
+			{$i18n.t('Already Subscribed to')}
 		{:else}
 			{$i18n.t('Subscribe to')} {plan.name}
 		{/if}
