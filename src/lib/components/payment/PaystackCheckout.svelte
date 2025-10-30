@@ -205,6 +205,7 @@
 	{/if}
 </button>
 
+
 <!-- Alternative: Redirect checkout button -->
 <!-- 
 <button
