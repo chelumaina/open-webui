@@ -1,5 +1,5 @@
 
-import time
+import time, uuid
 from typing import Optional
 from datetime import datetime
 
@@ -27,7 +27,7 @@ from sqlalchemy import or_
 class PaymentTransaction(Base):
     __tablename__ = "payment_transactions"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, default=uuid.uuid4(), primary_key=True, index=True)
     user_id = Column(String, index=True, nullable=False)
     reference = Column(String, unique=True, index=True, nullable=False)
     amount = Column(Float, nullable=False)  # Amount in original currency
@@ -52,7 +52,7 @@ class PaymentTransaction(Base):
 class UserSubscription(Base):
     __tablename__ = "user_subscriptions"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer,default=uuid.uuid4(), primary_key=True, index=True)
     user_id = Column(String, index=True, nullable=False)
     plan_id = Column(String, nullable=False)
     plan_name = Column(String, nullable=False)
