@@ -611,6 +611,9 @@ class OAuthClientManager:
                         provider=client_id,
                         token=token,
                     )
+                    
+                    group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
+                    Groups.add_users_to_group(group_id, user_id)
                     log.info(
                         f"Stored OAuth session server-side for user {user_id}, client_id {client_id}"
                     )
@@ -1292,11 +1295,16 @@ class OAuthManager:
                 auth_manager_config.ENABLE_OAUTH_GROUP_MANAGEMENT
                 and user.role != "admin"
             ):
+                
                 self.update_user_groups(
                     user=user,
                     user_data=user_data,
                     default_permissions=request.app.state.config.USER_PERMISSIONS,
                 )
+                group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
+                Groups.add_users_to_group(group_id, user.id)
+
+
 
         except Exception as e:
             log.error(f"Error during OAuth process: {e}")
