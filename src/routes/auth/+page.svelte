@@ -208,12 +208,12 @@
 	}}
 /> -->
 
-<div class="w-full max-h-[100dvh] text-white relative " id="auth-page">
+<div class="w-full max-h-[100dvh] text-white relative overflow-x-hidden" id="auth-page">
 	<!-- Animated background gradient -->
 	<div class="relative inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-indigo-950 dark:to-purple-950 opacity-70"></div>
 	
 	{#if loaded}
-		<div class="grid lg:grid-cols-3 grid-cols-1 gap-1 h-full relative z-10">
+		<div class="grid lg:grid-cols-3 grid-cols-1 gap-1 h-full relative z-10 overflow-x-hidden">
 			<div class="lg:col-span-2 hidden lg:block">
 					<!-- Hero Section -->
 					<section class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-800 dark:via-purple-800 dark:to-pink-800">
@@ -224,11 +224,11 @@
 							<div class="absolute -bottom-8 left-40 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
 						</div>
 						
-						<div class="relative container mx-auto px-4 py-24 md:py-34 text-center">
+						<div class="relative container mx-auto px-4 py-24 md:py-34 text-center overflow-x-hidden">
 							
 							
 							<div class="transition-all duration-1000 transform {isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}">
-								<h1 class="text-5xl md:text-7xl font-extrabold mb-6 text-white leading-tight">
+								<h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold mb-6 text-white leading-tight break-words">
 									Intelligent Chat.<br/>
 									<span class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 to-pink-200">
 										for Everyone
@@ -253,22 +253,22 @@
 
 								<div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
 								
-									<a href="/auth" class="group relative bg-white text-indigo-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
+									<a href="/auth" class="group relative bg-white text-indigo-600 px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
 										<span class="relative z-10">Get Started Free</span>
 										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
 									</a>
-									<a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform">
+									<a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform">
 										Learn More
 										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
 									</a>
 								</div>
 
-								<p class="text-xl md:text-2xl mb-10 mt-10 max-w-3xl mx-auto text-gray-100 font-light">
+								<p class="text-xl md:text-2xl mb-10 mt-10 max-w-3xl mx-auto text-gray-100 font-light break-words px-4">
 									AI-powered instant Chat with Gazette Notices, Laws/Legislations & Court.
 								</p>
-								<p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-gray-100 font-light">
+								<p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-gray-100 font-light break-words px-4">
 									Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction. Ask in plain language, get grounded answers with paragraph-level citations to Gazette Notices, Acts (and subsidiary legislation), and authoritative case law—powered by secure RAG and optional firm-specific fine-tuning.
-								
+								</p>
 							</div>
 						</div>
 						
@@ -719,8 +719,8 @@
 				{/if} -->
 			</div>
 		</div>
-		<div class="flex justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-md">
-			<main class="container mx-auto px-4 py-0 flex-grow">
+		<div class="w-full p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-md overflow-x-hidden">
+			<main class="container mx-auto px-4 py-0">
 				<LandingComponent />
 			</main>
 		</div>
@@ -728,6 +728,16 @@
 </div>
 
 <style>
+	/* Prevent horizontal overflow */
+	#auth-page {
+		overflow-x: hidden;
+		max-width: 100vw;
+	}
+
+	#auth-page * {
+		max-width: 100%;
+	}
+
 	@keyframes blob {
 		0% {
 			transform: translate(0px, 0px) scale(1);
