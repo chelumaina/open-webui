@@ -613,7 +613,7 @@ class OAuthClientManager:
                         expires_at=datetime.now().timestamp() + token["expires_in"]
                     )
                     group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
-                    Groups.add_users_to_group(group_id, user_id)
+                    Groups.add_users_to_group(group_id, [user_id])
                    
                     log.info(
                         f"OAuthClientManager Stored OAuth session server-side for user {user_id}, client_id {client_id}"
@@ -1373,7 +1373,7 @@ class OAuthManager:
             )
             
             group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
-            Groups.add_users_to_group(group_id, user.id)
+            Groups.add_users_to_group(group_id, [user.id])
 
             log.info(
                 f"OAuthManager Stored OAuth session server-side for user {user.id}, provider {provider}"

@@ -285,6 +285,7 @@ class GroupTable:
         try:
             with get_db() as db:
                 group = db.query(Group).filter_by(id=id).first()
+                print(f"Group before adding users: {group.user_ids}")
                 if not group:
                     return None
 
