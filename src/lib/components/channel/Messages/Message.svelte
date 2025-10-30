@@ -186,7 +186,7 @@
 					{:else}
 						<img
 							src={message.reply_to_message.user?.profile_image_url ??
-								`${WEBUI_BASE_URL}/static/favicon.png`}
+								`${WEBUI_BASE_URL}/static/favicon-dark.png`}
 							alt={message.reply_to_message.user?.name ?? $i18n.t('Unknown User')}
 							class="size-4 ml-0.5 rounded-full object-cover"
 						/>
@@ -220,7 +220,7 @@
 					{:else}
 						<ProfilePreview user={message.user}>
 							<ProfileImage
-								src={message.user?.profile_image_url ?? `${WEBUI_BASE_URL}/static/favicon.png`}
+								src={message.user?.profile_image_url ?? `${WEBUI_BASE_URL}/static/favicon-dark.png`}
 								className={'size-8 ml-0.5'}
 							/>
 						</ProfilePreview>

@@ -312,7 +312,7 @@
 												<img
 													id="logo"
 													crossorigin="anonymous"
-													src="{WEBUI_BASE_URL}/static/favicon.png"
+													src="{WEBUI_BASE_URL}/static/favicon-dark.png"
 													class="relative size-20 rounded-full ring-4 ring-white dark:ring-gray-700 shadow-lg transform transition-transform duration-300 group-hover:scale-105"
 													alt="Logo"
 												/>
@@ -709,7 +709,7 @@
 							<img
 								id="logo"
 								crossorigin="anonymous"
-								src="{WEBUI_BASE_URL}/static/favicon.png"
+								src="{WEBUI_BASE_URL}/static/favicon-dark.png"
 								class="w-8 h-8 rounded-full"
 								alt="Logo"
 							/>

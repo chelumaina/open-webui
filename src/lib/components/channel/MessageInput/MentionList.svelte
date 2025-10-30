@@ -172,7 +172,7 @@
 						{:else if item.type === 'model'}
 							<img
 								src={item?.data?.info?.meta?.profile_image_url ??
-									`${WEBUI_BASE_URL}/static/favicon.png`}
+									`${WEBUI_BASE_URL}/static/favicon-dark.png`}
 								alt={item?.data?.name ?? item.id}
 								class="rounded-full size-5 items-center mr-2"
 							/>

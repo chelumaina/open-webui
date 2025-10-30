@@ -1096,7 +1096,7 @@
 														?.profile_image_url ??
 														($i18n.language === 'dg-DG'
 															? `${WEBUI_BASE_URL}/doge.png`
-															: `${WEBUI_BASE_URL}/static/favicon.png`)}
+															: `${WEBUI_BASE_URL}/static/favicon-dark.png`)}
 												/>
 												<div class="translate-y-[0.5px]">
 													<span class="">{atSelectedModel.name}</span>

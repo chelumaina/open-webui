@@ -429,12 +429,12 @@
 								<div class="flex bg-white rounded-2xl">
 									<div
 										class="{model.is_active ? '' : 'opacity-50 dark:opacity-50'} {model.meta
-											.profile_image_url !== `${WEBUI_BASE_URL}/static/favicon.png`
+											.profile_image_url !== `${WEBUI_BASE_URL}/static/favicon-dark.png`
 											? 'bg-transparent'
 											: 'bg-white'} rounded-2xl"
 									>
 										<img
-											src={model?.meta?.profile_image_url ?? `${WEBUI_BASE_URL}/static/favicon.png`}
+											src={model?.meta?.profile_image_url ?? `${WEBUI_BASE_URL}/static/favicon-dark.png`}
 											alt="modelfile profile"
 											class=" rounded-2xl size-12 object-cover"
 										/>

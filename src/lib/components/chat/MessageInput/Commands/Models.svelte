@@ -83,7 +83,7 @@
 			>
 				<div class="flex text-black dark:text-gray-100 line-clamp-1">
 					<img
-						src={model?.info?.meta?.profile_image_url ?? `${WEBUI_BASE_URL}/static/favicon.png`}
+						src={model?.info?.meta?.profile_image_url ?? `${WEBUI_BASE_URL}/static/favicon-dark.png`}
 						alt={model?.name ?? model.id}
 						class="rounded-full size-5 items-center mr-2"
 					/>
