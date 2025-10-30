@@ -612,9 +612,11 @@ class OAuthClientManager:
                         token=token,
                         expires_at=datetime.now().timestamp() + token["expires_in"]
                     )
+                    group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
+                    Groups.add_users_to_group(group_id, user_id)
                    
                     log.info(
-                        f"Stored OAuth session server-side for user {user_id}, client_id {client_id}"
+                        f"OAuthClientManager Stored OAuth session server-side for user {user_id}, client_id {client_id}"
                     )
                 except Exception as e:
                     error_message = "Failed to store OAuth session server-side"
@@ -1213,8 +1215,7 @@ class OAuthManager:
                         Users.update_user_oauth_sub_by_id(user.id, provider_sub)
 
             if user: 
-                group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
-                Groups.add_users_to_group(group_id, user.id)
+               
                 determined_role = self.get_user_role(user, user_data)
                 if user.role != determined_role:
                     Users.update_user_role_by_id(user.id, determined_role)
@@ -1370,9 +1371,12 @@ class OAuthManager:
                 samesite=WEBUI_AUTH_COOKIE_SAME_SITE,
                 secure=WEBUI_AUTH_COOKIE_SECURE,
             )
+            
+            group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
+            Groups.add_users_to_group(group_id, user.id)
 
             log.info(
-                f"Stored OAuth session server-side for user {user.id}, provider {provider}"
+                f"OAuthManager Stored OAuth session server-side for user {user.id}, provider {provider}"
             )
         except Exception as e:
             log.error(f"Failed to store OAuth session server-side: {e}")
