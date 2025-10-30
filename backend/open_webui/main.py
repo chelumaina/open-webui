@@ -1737,7 +1737,7 @@ async def get_app_config(request: Request):
         "name": app.state.WEBUI_NAME,
         "version": VERSION,
         "default_locale": str(DEFAULT_LOCALE),
-        "subscription": subscription,
+        "subscription_id": subscription.id if subscription else None,
         "oauth": {
             "providers": {
                 name: config.get("name", name)
