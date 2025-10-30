@@ -9,6 +9,7 @@ import hashlib
 import hmac
 from datetime import datetime, timedelta
 from typing import Optional
+import uuid
 from dateutil.relativedelta import relativedelta
 
 import requests
@@ -215,6 +216,7 @@ async def initialize_payment(
         # Store transaction in database
         with get_db() as db:
             transaction = PaymentTransaction(
+                id=uuid.uuid4(),
                 user_id=user.id,
                 reference=reference,
                 amount=request.amount,
