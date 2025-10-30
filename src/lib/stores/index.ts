@@ -236,6 +236,8 @@ type Prompt = {
 type TokenCost = {
 	prompt_token?: number;
 	response_token?: number;
+	today_balance_response_token?: Number,
+	today_balance_prompt_tokenn?: Number, 
 	cost?: number;
 	is_user_subscription_valid?: boolean;
 };

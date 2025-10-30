@@ -235,8 +235,8 @@ export const getUserSettings = async (token: string) => {
 		.then(async (res) => {
 			if (!res.ok) throw await res.json();
 			const response = await res.json();
-			console.log('User settings response:', response);
-			console.log('User settings response.tokens:', response.tokens);
+			// console.log('User settings response:', response);
+			// console.log('User settings response.tokens:', response.tokens);
 			token_cost.set(response.tokens);
 			// settings.set(response.settings);
 			return response;

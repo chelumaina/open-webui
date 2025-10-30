@@ -1657,6 +1657,12 @@ async def process_chat_response(
                             except Exception as e:
                                 pass
 
+    # print(f"process_chat_response metadata: {metadata}" )
+    # print(f"process_chat_response response: {response}" )
+    # print(f"process_chat_response form_data: {form_data}" )
+    # print(f"process_chat_response user: {user}" )
+    # print(f"process_chat_response model: {model}" )
+    # print(f"process_chat_response events: {events}" )
     event_emitter = None
     event_caller = None
     if (
@@ -2382,7 +2388,20 @@ async def process_chat_response(
                                                 },
                                             }
                                         )
-
+                                        chat_id=metadata['chat_id']
+                                        chat=Chats.get_chat_by_id(chat_id)
+                                          
+                                        # chat = chat.chat
+                                        # chat["title"] = title
+         
+                                        # Chats.update_chat_by_id(chat_id, chat)
+                                        updated_chat = {**usage}
+                                        chat = Chats.update_chat_by_id(chat_id, updated_chat)
+                                        
+                                        
+                                        # print(f"message_id: {metadata['message_id']} - Emitting usage data")
+                                        print(f"chat_id: {metadata['chat_id']} - Emitting usage data")
+                                        print(f"\n\n\n\nUsage data emitted: {updated_chat}\n\n\n\n")
                                     if not choices:
                                         error = data.get("error", {})
                                         if error:

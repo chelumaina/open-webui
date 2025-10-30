@@ -3,7 +3,7 @@ from typing import Literal, Optional
 from zoneinfo import ZoneInfo
 
 from open_webui.internal.db import Base, JSONField, get_db
-
+from typing import Dict, Any, Tuple, Iterable, Union
 
 from open_webui.env import DATABASE_USER_ACTIVE_STATUS_UPDATE_INTERVAL
 from open_webui.models.chats import Chats
@@ -239,7 +239,88 @@ class UsersTable:
         #     valid_until_nairobi=valid_until_local,
         #     grace_days=grace_days,
         # )
+    
+    
+    
+
+    def total_tokens_from_chat(self, user_id: str) -> Tuple[int, int]:
+        """
+        Calculate total prompt and completion tokens from a chat JSON payload.
+
+        Rules:
+        - Count ONLY assistant messages.
+        - Read token counts from message["usage"].
+        - Prefer "prompt_tokens" and "completion_tokens".
+        Fallbacks: "prompt_eval_count" and "eval_count".
+        - Deduplicate by message "id" (since messages may appear under both
+        history.messages and the top-level messages list).
+
+        Returns:
+            (total_prompt_tokens, total_completion_tokens)
+        """
+
+        def _iter_all_messages(chat_obj: Dict[str, Any]) -> Iterable[Dict[str, Any]]:
+            # history.messages can be a dict keyed by id
+            hist = chat_obj.get("history", {}).get("messages")
+            if isinstance(hist, dict):
+                yield from hist.values()
+            elif isinstance(hist, list):
+                yield from hist
+
+            # top-level messages can be a list or dict
+            top = chat_obj.get("messages")
+            if isinstance(top, list):
+                yield from top
+            elif isinstance(top, dict):
+                yield from top.values()
+
+        seen_ids = set()
+        total_prompt = 0
+        total_completion = 0
+        chats= Chats.get_chat_list_by_user_id_today(user_id)
+        if chats is None:
+            return total_prompt, total_completion
         
+        for chat in chats:
+            # print("msg:", chat.chat)
+            for msg in _iter_all_messages(chat.chat):
+                # print("msg:", msg)
+                usage: Dict[str, Union[int, Dict[str, Any]]] = msg.get("usage", {}) or {}
+                # prompt_tokens = usage.get("prompt_tokens")
+                # Deduplicate by message id
+                msg_id = msg.get("id")
+                if msg_id is None or msg_id in seen_ids:
+                    continue
+                seen_ids.add(msg_id)
+
+                if msg.get("role") != "assistant":
+                    continue
+
+                usage: Dict[str, Union[int, Dict[str, Any]]] = msg.get("usage", {}) or {}
+                prompt_tokens = usage.get("prompt_tokens", 0)
+                completion_tokens = usage.get("completion_tokens", 0)
+
+                # Fallbacks if primary keys are missing
+                if prompt_tokens == 0:
+                    prompt_tokens = usage.get("prompt_eval_count", 0)
+                if completion_tokens is None:
+                    completion_tokens = usage.get("eval_count", 0)
+                    
+                print(f" {msg_id}, {prompt_tokens}, {completion_tokens}")
+
+                # Ensure ints
+                try:
+                    total_prompt += int(prompt_tokens or 0)
+                except (TypeError, ValueError):
+                    pass
+                try:
+                    total_completion += int(completion_tokens or 0)
+                except (TypeError, ValueError):
+                    pass
+
+        return total_prompt, total_completion
+
+
         
     def check_valid_monthly(self, user_id: str, grace_days: int = 0) -> tuple[bool, Optional[datetime], Optional[str]]:
         """

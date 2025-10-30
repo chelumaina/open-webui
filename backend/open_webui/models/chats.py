@@ -497,6 +497,54 @@ class ChatTable:
             all_chats = query.all()
             return [ChatModel.model_validate(chat) for chat in all_chats]
 
+
+    def get_chat_list_by_user_id_today(
+        self,
+        user_id: str,
+        include_archived: bool = True,
+        filter: Optional[dict] = None,
+        skip: int = 0,
+        limit: int = 50,
+    ) -> list[ChatModel]:
+        with get_db() as db:
+            start_of_day = int(time.time()) - (int(time.time()) % 86400)
+            print("Start of day timestamp:", start_of_day)
+            query = db.query(Chat).filter(
+                Chat.user_id == user_id,
+                Chat.updated_at >= start_of_day
+            )
+
+            if not include_archived:
+                query = query.filter_by(archived=False)
+            
+            if filter:
+                query_key = filter.get("query")
+                if query_key:
+                    query = query.filter(Chat.title.ilike(f"%{query_key}%"))
+
+                order_by = filter.get("order_by")
+                direction = filter.get("direction")
+
+                if order_by and direction and getattr(Chat, order_by):
+                    if direction.lower() == "asc":
+                        query = query.order_by(getattr(Chat, order_by).asc())
+                    elif direction.lower() == "desc":
+                        query = query.order_by(getattr(Chat, order_by).desc())
+                    else:
+                        raise ValueError("Invalid direction for ordering")
+            else:
+                query = query.order_by(Chat.updated_at.desc())
+
+            if skip:
+                query = query.offset(skip)
+            if limit:
+                query = query.limit(limit)
+
+            all_chats = query.all()
+            return [ChatModel.model_validate(chat) for chat in all_chats]
+
+
+            
     def get_chat_title_id_list_by_user_id(
         self,
         user_id: str,

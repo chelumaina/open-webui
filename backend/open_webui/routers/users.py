@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import Optional
 import base64
 import io
@@ -232,25 +233,39 @@ async def update_default_user_permissions(
 async def get_user_settings_by_session_user(user=Depends(get_verified_user)):
     user = Users.get_user_by_id(user.id)
     is_user_subscription_valid= Users.is_valid_monthly_subscription(user.id, 10, user) 
-    # super_user= Users.is_super_user(user.id)
-    print("user:", user.role)
-    # print("is_valid_monthly_subscription:", is_valid_monthly_subscription)
+    
+    prompt_token, response_token= Users.total_tokens_from_chat(user.id) 
+
+    # # super_user= Users.is_super_user(user.id)
+    # print("user:", user.role)
+    # print("is_valid_monthly_subscription:", is_user_subscription_valid)
+    # print("response_token:", response_token)
+    # print("prompt_token:", prompt_token)
 
     # chats = Chats.get_chat_by_user_today(user.id)
     
-    response_token = 0
-    prompt_token = 0
+    # response_token = 0
+    # prompt_token = 0
     # for ch in chats:
     #     response_token += ch.response_token * ch.cost_per_response_token
     #     prompt_token += ch.prompt_token * ch.cost_per_prompt_token
+    FREE_PROMPT_TOKENS = os.getenv("FREE_PROMPT_TOKENS", 10000)
+    FREE_RESPONSE_TOKENS = os.getenv("FREE_RESPONSE_TOKENS", 10000)
+    today_balance_prompt_tokenn=int(FREE_PROMPT_TOKENS)-round(prompt_token, 2)
+    today_balance_response_token=int(FREE_RESPONSE_TOKENS)-round(response_token, 2)
+
+    valid= is_user_subscription_valid or ((today_balance_prompt_tokenn>0) and (today_balance_response_token>0))
+
     if user:
         return {
             "settings": user.settings,
             "tokens": {
+                "today_balance_response_token": today_balance_response_token,
+                "today_balance_prompt_tokenn": today_balance_prompt_tokenn,
                 "prompt_token": round(prompt_token, 2),
                 "response_token": round(response_token, 2),
                 "cost": round(response_token + prompt_token, 2),
-                "is_user_subscription_valid": is_user_subscription_valid,
+                "is_user_subscription_valid": valid ,
             },
         }
         # return user.settings
