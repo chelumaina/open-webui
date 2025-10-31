@@ -89,8 +89,44 @@ class PaymentInitializeRequest(BaseModel):
     plan_id: str = Field(..., description="Plan identifier")
     plan_name: str = Field(..., description="Plan name")
     callback_url: Optional[str] = Field(None, description="Callback URL")
+
+class UserSubscriptionResponse(BaseModel):
+    id: int
+    user_id: str
+    plan_id: str
+    plan_name: str
+    status: str
+    amount: float
+    currency: str
+    group_id: Optional[str]
+    billing_cycle: str
+    started_at: datetime
+    expires_at: Optional[datetime]
+    trial_end: Optional[datetime]
+    current_period_end: Optional[datetime]
+    transaction_reference: str
+    created_at: datetime
+    updated_at: datetime
     
-    
+class PaymentTransactionResponse(BaseModel):
+    id: int
+    user_id: str
+    reference: str
+    amount: float
+    currency: str
+    plan_id: str     
+    plan_name: str
+    billing_cycle: str
+    status: str
+    paystack_reference: Optional[str]
+    paystack_status: Optional[str]
+    gateway_response: Optional[str]
+    gateway_response_data: Optional[str]
+    group_id: Optional[str]
+    paid_at: Optional[datetime]
+    created_at: datetime
+    updated_at: datetime       
+
 class PaymentInitializeResponse(BaseModel):
     success: bool
     message: str
@@ -108,7 +144,7 @@ class WebhookPayload(BaseModel):
     data: dict
 
 class PaymentsTable:
-    def get_user_subscription(self, user_id: str) -> Optional[UserSubscription]:
+    def get_user_subscription(self, user_id: str) -> Optional[UserSubscriptionResponse]:
         with get_db() as db:
             subscription = (
                 db.query(UserSubscription)

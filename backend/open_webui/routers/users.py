@@ -245,6 +245,7 @@ async def get_user_settings_by_session_user(user=Depends(get_verified_user)):
     
     prompt_token, response_token= Users.total_tokens_from_chat(user.id) 
     subscription= Payments.get_user_subscription(user.id) 
+    # subscription={}
 
 
     # # super_user= Users.is_super_user(user.id)
