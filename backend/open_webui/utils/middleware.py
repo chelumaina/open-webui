@@ -2388,20 +2388,20 @@ async def process_chat_response(
                                                 },
                                             }
                                         )
-                                        chat_id=metadata['chat_id']
-                                        chat=Chats.get_chat_by_id(chat_id)
+                                        # chat_id=metadata['chat_id']
+                                        # chat=Chats.get_chat_by_id(chat_id)
                                           
-                                        # chat = chat.chat
-                                        # chat["title"] = title
+                                        # # chat = chat.chat
+                                        # # chat["title"] = title
          
-                                        # Chats.update_chat_by_id(chat_id, chat)
-                                        updated_chat = {**usage}
-                                        chat = Chats.update_chat_by_id(chat_id, updated_chat)
+                                        # # Chats.update_chat_by_id(chat_id, chat)
+                                        # updated_chat = {**usage}
+                                        # chat = Chats.update_chat_by_id(chat_id, updated_chat)
                                         
                                         
                                         # print(f"message_id: {metadata['message_id']} - Emitting usage data")
-                                        print(f"chat_id: {metadata['chat_id']} - Emitting usage data")
-                                        print(f"\n\n\n\nUsage data emitted: {updated_chat}\n\n\n\n")
+                                        # print(f"chat_id: {metadata['chat_id']} - Emitting usage data")
+                                        # print(f"\n\n\n\nUsage data emitted: {updated_chat}\n\n\n\n")
                                     if not choices:
                                         error = data.get("error", {})
                                         if error:
