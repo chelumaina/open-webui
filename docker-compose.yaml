@@ -28,7 +28,7 @@ services:
  
 
   pg_db_ai:
-    image: postgres:17-alpine
+    image: postgres:latest
     container_name: pg_db_ai
     hostname: pg_db_ai
     environment:
@@ -36,7 +36,7 @@ services:
       - POSTGRES_PASSWORD=fK7-SEqRwMsSREpAHBnU
       - POSTGRES_DB=openwebui 
     volumes:
-      - pgdata:/var/lib/postgresql/
+      - pgdata:/var/lib/postgresql/18/docker
       # - ./data/pgdata-latest:/var/lib/postgresql/18/docker
     ports:
       - "5433:5432"
