@@ -59,7 +59,6 @@ class User(Base):
 
 
     last_active_at = Column(BigInteger)
-    email_verification_token = Column(String, nullable=True, default=None)
     is_email_verified = Column(Boolean, nullable=True, default=False)
     is_email_verified_at = Column(BigInteger, nullable=True, default=None)
 
