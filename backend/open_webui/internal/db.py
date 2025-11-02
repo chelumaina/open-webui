@@ -78,6 +78,7 @@ def handle_peewee_migration(DATABASE_URL):
         assert db.is_closed(), "Database connection is still open."
 
 print(f"Handling peewee migration for DATABASE_URL: {DATABASE_URL}")
+# print("This may take a few moments...")
 handle_peewee_migration(DATABASE_URL)
 
 

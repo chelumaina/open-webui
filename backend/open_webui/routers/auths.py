@@ -4,6 +4,7 @@ import time
 import datetime
 import logging
 from aiohttp import ClientSession
+from open_webui.internal.db import Base, get_db
 
 from open_webui.models.auths import (
     AddUserForm,
@@ -17,7 +18,7 @@ from open_webui.models.auths import (
     UpdatePasswordForm,
     UserResponse,
 )
-from open_webui.models.users import Users, UpdateProfileForm
+from open_webui.models.users import User, Users, UpdateProfileForm
 from open_webui.models.groups import Groups
 from open_webui.models.oauth_sessions import OAuthSessions
 
@@ -33,7 +34,7 @@ from open_webui.env import (
     ENABLE_INITIAL_ADMIN_SIGNUP,
     SRC_LOG_LEVELS,
 )
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, status
 from fastapi.responses import RedirectResponse, Response, JSONResponse
 from open_webui.config import OPENID_PROVIDER_URL, ENABLE_OAUTH_SIGNUP, ENABLE_LDAP
 from pydantic import BaseModel
@@ -74,10 +75,78 @@ class SessionUserResponse(Token, UserResponse):
     permissions: Optional[dict] = None
 
 
+class EmailVerifyResponse(BaseModel):
+    success: bool
+    message: Optional[str] = None
+    data: Optional[dict] = {}
+
 class SessionUserInfoResponse(SessionUserResponse):
     bio: Optional[str] = None
     gender: Optional[str] = None
     date_of_birth: Optional[datetime.date] = None
+
+
+@router.get("/verify-email/{token}", response_model=Optional[EmailVerifyResponse])
+async def verify_email(token: str):
+    """Verify a payment with Paystack"""
+    paystack_data = {}
+    print("Verifying email with token:", token)
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Invalid Token. You must provide a valid token to verify email address"
+        )
+    
+    try:
+        print("Verifying email with token:", token)
+        # # Get transaction from database
+        with get_db() as db:
+            user = db.query(User).filter(User.email_verification_token == token).first()
+ 
+            print(f"Found user for token: {user}")
+            
+            if not user:
+                # return {
+                #     "success": False,
+                #     "message":"Email verification token not found",
+                #     "data":{"user_id": "Not Found"}
+                # }
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Email verification token not found"
+                )
+            user.is_email_verified = True
+            user.is_email_verified_at = int(time.time())
+            user.email_verification_token = None
+            user.role = "user"
+            
+            group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
+            Groups.add_users_to_group(group_id, {user.id})
+
+            # Update user in database
+            db.commit()
+        # return {
+        #         "success": True,
+        #         "message":"Email verification successful",
+        #         "data":{"user_id": user.id}
+        #     }
+
+            return EmailVerifyResponse(
+                success=True,
+                message="Email verification successful",
+                data={"user_id": user.id, 'status': 'success'}
+            )
+
+
+   
+    except HTTPException:
+        raise
+    except Exception as e:
+        log.error(f"Payment verification error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while verifying payment"
+        )
 
 
 @router.get("/", response_model=SessionUserInfoResponse)
@@ -563,7 +632,7 @@ async def signin(request: Request, response: Response, form_data: SigninForm):
 
 
 @router.post("/signup", response_model=SessionUserResponse)
-async def signup(request: Request, response: Response, form_data: SignupForm):
+async def signup(request: Request, response: Response, form_data: SignupForm, background_tasks: BackgroundTasks):
     has_users = Users.has_users()
 
     if WEBUI_AUTH:
@@ -609,8 +678,8 @@ async def signup(request: Request, response: Response, form_data: SignupForm):
         )
 
         if user: 
-            group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
-            Groups.add_users_to_group(group_id, {user.id})
+            # group_id = "7601634e-5d97-4d2f-81dc-4ff609df3530"
+            # Groups.add_users_to_group(group_id, {user.id})
             expires_delta = parse_duration(request.app.state.config.JWT_EXPIRES_IN)
             expires_at = None
             if expires_delta:
@@ -656,6 +725,7 @@ async def signup(request: Request, response: Response, form_data: SignupForm):
             if not has_users:
                 # Disable signup after the first user is created
                 request.app.state.config.ENABLE_SIGNUP = False
+            await Auths.send_activation_link(user, background_tasks)
 
             return {
                 "token": token,

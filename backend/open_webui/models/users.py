@@ -13,7 +13,7 @@ from fastapi import FastAPI, Depends, HTTPException
 
 
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Column, String, Text, Date
+from sqlalchemy import BigInteger, Boolean, Column, String, Text, Date
 from sqlalchemy import or_
 from datetime import datetime, timedelta, date, timezone
 
@@ -55,6 +55,14 @@ class User(Base):
     oauth_sub = Column(Text, unique=True)
 
     last_active_at = Column(BigInteger)
+    email_verification_token = Column(String, nullable=True, default=None)
+
+
+    last_active_at = Column(BigInteger)
+    email_verification_token = Column(String, nullable=True, default=None)
+    is_email_verified = Column(Boolean, nullable=True, default=False)
+    is_email_verified_at = Column(BigInteger, nullable=True, default=None)
+
 
     updated_at = Column(BigInteger)
     created_at = Column(BigInteger)
@@ -86,6 +94,10 @@ class UserModel(BaseModel):
 
     api_key: Optional[str] = None
     oauth_sub: Optional[str] = None
+    
+    is_email_verified: Optional[bool] = False
+    is_email_verified_at: Optional[int] = None
+    email_verification_token: Optional[str] = None
 
     last_active_at: int  # timestamp in epoch
     updated_at: int  # timestamp in epoch
