@@ -36,7 +36,7 @@ services:
       - POSTGRES_PASSWORD=fK7-SEqRwMsSREpAHBnU
       - POSTGRES_DB=openwebui 
     volumes:
-      - ./data/pgdata-latest:/var/lib/postgresql/18/docker
+      - ./data/pgdata-lex:/var/lib/postgresql/18/docker
       # - ./data/pgdata-latest:/var/lib/postgresql/18/docker
     ports:
       - "5433:5432"
