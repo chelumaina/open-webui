@@ -197,14 +197,14 @@
 
 
 <SEOHead
-  title="Email Verification - {$i18n.t('Open WebUI')}"
-  description="Email verification page for Lex Luma AI ."
+  title="Unlock mysteries with AI Legal Research Assistant - {$i18n.t('Lex Luma AI')}"
+  description="Unlock mysteries with AI Legal Research Assistant for Lex Luma AI ."
   image="/static/static/apple-touch-icon.png"
   noindex={false}
   structuredData={{
     "@context": "https://schema.org",
     "@type": "Page",
-    "headline": "Email Verification Page",
+    "headline": "Unlock mysteries with AI Legal Research AssistantAI-powered instant Chat with Gazette Notices, Laws/Legislations & Court. Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction",
     "description": "Page to allow user to verify their sign up credentials",
     "author": {
       "@type": "Organization",

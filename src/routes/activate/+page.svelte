@@ -122,12 +122,12 @@
 </script>
 
 <!-- <svelte:head>
-	<title>Email Verification - {$i18n.t('Open WebUI')}</title>
+	<title>Email Verification - {$i18n.t('Lex Luma AI')}</title>
 </svelte:head> -->
 
 
 <SEOHead
-  title="Email Verification and account Activation - {$i18n.t('Open WebUI')}"
+  title="Email Verification and account Activation - {$i18n.t('Lex Luma AI')}"
   description="Email verification page for Lex Luma AI ."
   image="/static/static/apple-touch-icon.png"
   noindex={false}

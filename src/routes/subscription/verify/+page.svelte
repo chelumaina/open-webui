@@ -124,7 +124,7 @@
 </script>
 
 <svelte:head>
-	<title>Payment Verification - {$i18n.t('Open WebUI')}</title>
+	<title>Payment Verification - {$i18n.t('Lex Luma AI')}</title>
 </svelte:head>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
