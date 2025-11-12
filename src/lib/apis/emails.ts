@@ -12,21 +12,15 @@ export interface EmailVerifyResponse {
  * Verify a payment
  */
 export const verifyEmail = async (
-	token: string,
 	email_verification_token: string
 ): Promise<EmailVerifyResponse> => {
 	let error = null;
-	let headers={
-			Accept: 'application/json',
-			authorization: `Bearer ${token}`
-		}
-	// console.log("Verifying email with headers:", headers);
- 
+
 	const res = await fetch(`${WEBUI_API_BASE_URL}/auths/verify-email/${email_verification_token}`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',
-			authorization: `Bearer ${token}`
+			// authorization: `Bearer ${token}`
 		}
 	}).then(async (res) => {
 		console.log("Response from verify-email:");

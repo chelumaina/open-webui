@@ -2,7 +2,7 @@ import logging
 import uuid, os, time
 from typing import Optional 
 from datetime import datetime, timedelta
-from backend.open_webui.utils.enhanced_email import send_activation_email_bg
+from open_webui.utils.enhanced_email import send_activation_email_bg, send_email_smtp
 from open_webui.internal.db import Base, get_db
 from open_webui.models.users import User, UserModel, Users
 from open_webui.env import SRC_LOG_LEVELS
@@ -386,14 +386,17 @@ class AuthsTable:
         except Exception:
             return False
 
-    async def send_activation_link(self, user: UserModel, background_tasks: BackgroundTasks) -> None:
-        log.info(f"send_activation_link to {user.email}")
+    async def send_activation_link(self, user_id: str, background_tasks: BackgroundTasks) -> None:
+        log.info(f"send_activation_link to {user_id}")
         # 3. create activation token
-        token = await self.create_activation_token(user.id)
+        token = await self.create_activation_token(user_id)
         with get_db() as db:
             
-            user_obj = db.get(User, user.id)
+            user_obj = db.get(User, user_id)
+            # print(f"\n\nUser obj: {user_obj}\n\n")
             user_obj.email_verification_token = token
+            
+            # print(f"\n\nUser email_verification_token: {user_obj.email_verification_token}\n\n")
             # chat_item.chat = chat
             # chat_item.title = chat["title"] if "title" in chat else "New Chat"
             # chat_item.updated_at = int(time.time())
@@ -404,7 +407,12 @@ class AuthsTable:
             # # user.email_verification_sent_at = None
             # db.commit()
             
-        background_tasks.add_task(send_activation_email_bg, user.email, token, name=user.name)
+        email_response=await send_email_smtp(user_obj.email, "Activate your account", user_obj.email_verification_token, True)
+        # print(f"\n\nEmail response: {email_response}\n\n")
+        # background_tasks.add_task(send_email_smtp, user_obj.email, "Activate your account", user_obj.email_verification_token, True)
+
+
+        background_tasks.add_task(send_activation_email_bg, user_obj.email, token, name=user_obj.name)
         return None
 
 

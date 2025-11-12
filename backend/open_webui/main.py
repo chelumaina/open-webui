@@ -95,6 +95,7 @@ from open_webui.routers import (
     utils,
     scim,
     payments,
+    features,
    
 )
 
@@ -1341,7 +1342,6 @@ app.include_router(channels.router, prefix="/api/v1/channels", tags=["channels"]
 app.include_router(chats.router, prefix="/api/v1/chats", tags=["chats"])
 app.include_router(notes.router, prefix="/api/v1/notes", tags=["notes"])
 
-
 app.include_router(models.router, prefix="/api/v1/models", tags=["models"])
 app.include_router(knowledge.router, prefix="/api/v1/knowledge", tags=["knowledge"])
 app.include_router(prompts.router, prefix="/api/v1/prompts", tags=["prompts"])
@@ -1353,6 +1353,8 @@ app.include_router(groups.router, prefix="/api/v1/groups", tags=["groups"])
 app.include_router(files.router, prefix="/api/v1/files", tags=["files"])
 app.include_router(functions.router, prefix="/api/v1/functions", tags=["functions"])
 app.include_router(payments.router, prefix="/api/v1/payments", tags=["payments"])
+app.include_router(features.router, prefix="/api/v1/features", tags=["features"])
+
 app.include_router(
     evaluations.router, prefix="/api/v1/evaluations", tags=["evaluations"]
 )

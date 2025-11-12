@@ -3,127 +3,145 @@
 	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
 	import { verifyEmail } from '$lib/apis/emails';
-
+	import SEOHead from '$lib/components/seo/SEOHead.svelte';
 	const i18n = getContext('i18n');
 
-	let loading = true;
-	let verificationStatus: 'verifying' | 'success' | 'failed' | 'cancelled' = 'verifying';
-	let emailData: any = null;
-	let errorMessage = '';
+	// let loading = true;
+	// let verificationStatus: 'verifying' | 'success' | 'failed' | 'cancelled' = 'verifying';
+	// let emailData: any = null;
+	// let errorMessage = '';
 
-	onMount(async () => {
-		await verifyEmailTransaction();
-	});
+	// onMount(async () => {
+	// 	await verifyEmailTransaction();
+	// });
 
-	async function verifyEmailTransaction() {
-		const urlParams = new URLSearchParams(window.location.search);
-		const email_verification_token = urlParams.get('token');
-		// const trxref = urlParams.get('trxref');
+	// async function verifyEmailTransaction() {
+	// 	const urlParams = new URLSearchParams(window.location.search);
+	// 	const email_verification_token = urlParams.get('token');
+	// 	// const trxref = urlParams.get('trxref');
 		
-		// Paystack redirects with either 'reference' or 'trxref'
-		// const transactionReference = email_verification_token || trxref;
+	// 	// Paystack redirects with either 'reference' or 'trxref'
+	// 	// const transactionReference = email_verification_token || trxref;
 
-		if (!email_verification_token) {
-			verificationStatus = 'failed';
-			errorMessage = $i18n.t('email verification token not found');
-			loading = false;
-			return;
-		}
+	// 	if (!email_verification_token) {
+	// 		verificationStatus = 'failed';
+	// 		errorMessage = $i18n.t('email verification token not found');
+	// 		loading = false;
+	// 		return;
+	// 	}
 
-		// if (!localStorage.token) {
-		// 	verificationStatus = 'failed';
-		// 	errorMessage = $i18n.t('Authentication required');
-		// 	loading = false;
-		// 	return;
-		// }
+	// 	// if (!localStorage.token) {
+	// 	// 	verificationStatus = 'failed';
+	// 	// 	errorMessage = $i18n.t('Authentication required');
+	// 	// 	loading = false;
+	// 	// 	return;
+	// 	// }
 
-		try {
-			// Verify payment with our backend
-			const verification = await verifyEmail(localStorage.token, email_verification_token);
+	// 	try {
+	// 		// Verify payment with our backend
+	// 		const verification = await verifyEmail(localStorage.token, email_verification_token);
 
-			if (verification.success && verification.data?.status === 'success') {
-				verificationStatus = 'success';
-				emailData = verification.data;
+	// 		if (verification.success && verification.data?.status === 'success') {
+	// 			verificationStatus = 'success';
+	// 			emailData = verification.data;
 				
-				await handleSuccessfulPayment(verification.data);
+	// 			await handleSuccessfulPayment(verification.data);
 				
-				toast.success($i18n.t('Payment verified successfully!'));
-			} else {
-				verificationStatus = 'failed';
-				errorMessage = verification.data?.gateway_response || verification.message || $i18n.t('verification failed');
-				toast.error($i18n.t('verification failed'));
-			}
-		} catch (error) {
-			console.error('verification error:', error);
-			verificationStatus = 'failed';
-			errorMessage = typeof error === 'string' ? error : $i18n.t('An error occurred while verifying your email');
-			toast.error($i18n.t('verification failed'));
-		} finally {
-			loading = false;
-		}
-	}
+	// 			toast.success($i18n.t('Payment verified successfully!'));
+	// 		} else {
+	// 			verificationStatus = 'failed';
+	// 			errorMessage = verification.data?.gateway_response || verification.message || $i18n.t('verification failed');
+	// 			toast.error($i18n.t('verification failed'));
+	// 		}
+	// 	} catch (error) {
+	// 		console.error('verification error:', error);
+	// 		verificationStatus = 'failed';
+	// 		errorMessage = typeof error === 'string' ? error : $i18n.t('An error occurred while verifying your email');
+	// 		toast.error($i18n.t('verification failed'));
+	// 	} finally {
+	// 		loading = false;
+	// 	}
+	// }
 
-	async function handleSuccessfulPayment(data: any) {
-		// Extract plan information from metadata
-		const planId = data.metadata?.plan_id;
-		const planName = data.metadata?.plan_name;
+	// async function handleSuccessfulPayment(data: any) {
+	// 	// Extract plan information from metadata
+	// 	const planId = data.metadata?.plan_id;
+	// 	const planName = data.metadata?.plan_name;
 		
-		console.log('Successful payment data:', {
-			reference: data.email_verification_token,
-			amount: data.amount / 100, // Convert from kobo
-			currency: data.currency,
-			plan: planId,
-			customer: data.customer
-		});
+	// 	console.log('Successful payment data:', {
+	// 		reference: data.email_verification_token,
+	// 		amount: data.amount / 100, // Convert from kobo
+	// 		currency: data.currency,
+	// 		plan: planId,
+	// 		customer: data.customer
+	// 	});
 
-		// Here you would call your backend API to:
-		// 1. Activate the user's subscription
-		// 2. Store transaction record
-		// 3. Update user permissions
+	// 	// Here you would call your backend API to:
+	// 	// 1. Activate the user's subscription
+	// 	// 2. Store transaction record
+	// 	// 3. Update user permissions
 		
-		// Example API call:
-		/*
-		try {
-			const response = await fetch('/api/subscriptions/activate', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${$user?.token}`
-				},
-				body: JSON.stringify({
-					transaction_reference: data.reference,
-					plan_id: planId,
-					amount: data.amount,
-					currency: data.currency,
-					paystack_data: data
-				})
-			});
+	// 	// Example API call:
+	// 	/*
+	// 	try {
+	// 		const response = await fetch('/api/subscriptions/activate', {
+	// 			method: 'POST',
+	// 			headers: {
+	// 				'Content-Type': 'application/json',
+	// 				'Authorization': `Bearer ${$user?.token}`
+	// 			},
+	// 			body: JSON.stringify({
+	// 				transaction_reference: data.reference,
+	// 				plan_id: planId,
+	// 				amount: data.amount,
+	// 				currency: data.currency,
+	// 				paystack_data: data
+	// 			})
+	// 		});
 
-			if (!response.ok) {
-				throw new Error('Failed to activate subscription');
-			}
+	// 		if (!response.ok) {
+	// 			throw new Error('Failed to activate subscription');
+	// 		}
 
-			const result = await response.json();
-			console.log('Subscription activated:', result);
-		} catch (error) {
-			console.error('Failed to activate subscription:', error);
-			toast.error($i18n.t('Payment successful but failed to activate subscription. Please contact support.'));
-		}
-		*/
-	}
+	// 		const result = await response.json();
+	// 		console.log('Subscription activated:', result);
+	// 	} catch (error) {
+	// 		console.error('Failed to activate subscription:', error);
+	// 		toast.error($i18n.t('Payment successful but failed to activate subscription. Please contact support.'));
+	// 	}
+	// 	*/
+	// }
 
-	function goToDashboard() {
-		goto('/');
-	}
+	// function goToDashboard() {
+	// 	goto('/');
+	// }
 
-	function retryPayment() {
-		goto('/subscription');
-	}
+	// function retryPayment() {
+	// 	goto('/subscription');
+	// }
 </script>
 
-<svelte:head>
-	<title>Email Verification - {$i18n.t('Open WebUI')}</title>
-</svelte:head>
+<!-- <svelte:head>
+	<title>Email Verification - {$i18n.t('Lex Luma AI')}</title>
+</svelte:head> -->
+
+
+<SEOHead
+  title="Email Verification and account Activation - {$i18n.t('Lex Luma AI')}"
+  description="Email verification page for Lex Luma AI ."
+  image="/static/static/apple-touch-icon.png"
+  noindex={false}
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "Page",
+    "headline": "Email Verification Page",
+    "description": "Page to allow user to verify their sign up credentials",
+    "author": {
+      "@type": "Organization",
+      "name": "Lex Luma"
+    }
+  }}
+/>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
 	<div class="sm:mx-auto sm:w-full sm:max-w-md">

@@ -1155,8 +1155,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">AI-Powered Conversational Legal Research</h3>
-                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Ask questions across Gazette Notices, statutes, regulations, and case law. Get concise answers with citations and confidence notes.</p>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white"><a class="btn btn-link" href="/features/ai-powered-conversational-legal-research">AI-Powered Conversational Legal Research</a></h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Ask questions across Gazette Notices, statutes, regulations, and case law. Get concise answers with citations and confidence notes.
+                    
+                    <a href="/features/ai-powered-conversational-legal-research" class="group border-0 border-white/30 text-white pl-2 pr-10 rounded font-bold text-sm  hover:scale-105 transform s-m2wW3TfO6y5x">
+                      Learn More
+                      <span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                    </p>
                 </div>
                 
                 <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:scale-105 transform">
@@ -1165,8 +1171,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Legislation & Gazette Navigator</h3>
-                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Trace amendments, subsidiary legislation, and commencement dates. Compare versions and see change summaries.</p>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white"><a class="btn btn-link" href="/features/legislation-gazette-navigator">Legislation & Gazette Navigator</a></h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Trace amendments, subsidiary legislation, and commencement dates. Compare versions and see change summaries.
+
+                    <a href="/features/legislation-gazette-navigator" class="group border-0 border-white/30 text-white pl-2 pr-10 rounded font-bold text-sm  hover:scale-105 transform s-m2wW3TfO6y5x">
+                      Learn More
+                      <span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                    </p>
                 </div>
                 
                 <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:scale-105 transform">
@@ -1175,8 +1187,13 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Case Law Q&A</h3>
-                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Query holdings, ratio decidendi, and trends across courts. Pull precedent lists with one prompt and filter by year, court level, or topic.</p>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white"><a class="btn btn-link" href="/features/case-law-qa">Case Law Q&A</a></h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Query holdings, ratio decidendi, and trends across courts. Pull precedent lists with one prompt and filter by year, court level, or topic.
+                    <a href="/features/case-law-qa" class="group border-0 border-white/30 text-white pl-2 pr-10 rounded font-bold text-sm  hover:scale-105 transform s-m2wW3TfO6y5x">
+                      Learn More
+                      <span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                    </p>
                 </div>
                 
                 <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:scale-105 transform">
@@ -1185,8 +1202,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Drafting Assistant</h3>
-                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Get help with legal drafting, including contracts, pleadings, and other documents. Improve your writing with AI suggestions.</p>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white"><a class="btn btn-link" href="/features/drafting-assistant">Drafting Assistant</a></h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Get help with legal drafting, including contracts, pleadings, and other documents. Improve your writing with AI suggestions.
+
+                    <a href="/features/drafting-assistant" class="group border-0 border-white/30 text-white pl-2 pr-10 rounded font-bold text-sm  hover:scale-105 transform s-m2wW3TfO6y5x">
+                      Learn More
+                      <span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                  </p>
                 </div>
                 
                 <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:scale-105 transform">
@@ -1195,8 +1218,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Compliance & Checklists</h3>
-                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Create step-by-step procedures from statutory requirements; export as checklists with linked provisions.</p>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white"><a class="btn btn-link" href="/features/compliance-checklists">Compliance & Checklists</a></h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Create step-by-step procedures from statutory requirements; export as checklists with linked provisions.
+
+                      <a href="/features/compliance-checklists" class="group border-0 border-white/30 text-white pl-2 pr-10 rounded font-bold text-sm  hover:scale-105 transform s-m2wW3TfO6y5x">
+                        Learn More
+                        <span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                      </a>
+                    </p>
                 </div>
                 
                 <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:scale-105 transform">
@@ -1205,8 +1234,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Knowledge Base & DMS Integration</h3>
-                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Connect your document management system or knowledge repository to chat over internal materials, with strict access controls..</p>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white"><a class="btn btn-link" href="/features/knowledge-base-dms-integration">Knowledge Base & DMS Integration</a></h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Connect your document management system or knowledge repository to chat over internal materials, with strict access controls..
+
+                    <a href="/features/knowledge-base-dms-integration" class="group border-0 border-white/30 text-white pl-2 pr-10 rounded font-bold text-sm  hover:scale-105 transform s-m2wW3TfO6y5x">
+                      Learn More
+                      <span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                    </p>
                 </div>
             </div>
         </div>

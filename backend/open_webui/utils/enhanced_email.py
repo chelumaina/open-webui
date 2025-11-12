@@ -6,7 +6,11 @@ from typing import Optional
 import asyncio
 from urllib.parse import quote_plus
 from email.message import EmailMessage
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
+from aiohttp import request
 import aiosmtplib
 from jinja2 import Template
 
@@ -126,7 +130,20 @@ async def send_activation_email(
 
     activation_link = build_activation_url(token)
     subject = subject or f"Activate your {BRAND_NAME} account"
+    # print(f"\n\nUser activation_link: {activation_link}\n\n")
+    # print(f"\n\nUser subject: {subject}\n\n")
     
+    # print("Preparing email content...")
+    # print(f"Recipient: {recipient}")
+    # print(f"Name: {name}")
+    # print(f"Logo URL: {logo_url}")
+    # print(f"Unsubscribe URL: {unsubscribe_url}")
+    # print(f"Privacy URL: {privacy_url}")
+    # print(f"Tracking Pixel: {tracking_pixel or TRACKING_PIXEL_URL}")  
+    # print(f"BRAND_NAME: {BRAND_NAME}")
+    # print(f"SUPPORT_EMAIL: {SUPPORT_EMAIL}")
+    # print(f"FROM_EMAIL: {FROM_EMAIL}")
+    # print(f"BRAND_NAME: {BRAND_NAME}")
     
 
     # Render templates
@@ -142,21 +159,21 @@ async def send_activation_email(
         "privacy_url": privacy_url,
     }
     # print(f"Email context: {ctx}")
-    print(f"Rendering email templates...{FROM_EMAIL} -> {recipient} {SMTP_HOST} {SMTP_PORT}")
+    print(f"Rendering email templates...\n\n{FROM_EMAIL} -> \n\n{SMTP_USER} \n\n{SMTP_HOST} \n\n{SMTP_PORT}")
     
 
     html_content = Template(HTML_TEMPLATE).render(**ctx)
     text_content = Template(TEXT_TEMPLATE).render(**ctx)
-    print("Templates rendered.")
-    print(f"Sending email to {recipient} via {SMTP_HOST}:{SMTP_PORT}...")
-    print(f"Subject: {subject}")
-    print(f"text_content: {text_content}")
-    print(f"HTML content length: {len(html_content)}")
-    print(f"Text content length: {len(text_content)}")
-    print(f"From: {FROM_EMAIL}")
-    print(f"To: {recipient}")
-    print(f"Using SMTP user: {SMTP_USER}")
-    print("Preparing email message...")
+    # print("Templates rendered.")
+    # print(f"Sending email to {recipient} via {SMTP_HOST}:{SMTP_PORT}...")
+    # print(f"Subject: {subject}")
+    # print(f"text_content: {text_content}")
+    # print(f"HTML content length: {len(html_content)}")
+    # print(f"Text content length: {len(text_content)}")
+    # print(f"From: {FROM_EMAIL}")
+    # print(f"To: {recipient}")
+    # print(f"Using SMTP user: {SMTP_USER}")
+    # print("Preparing email message...")
     # Build email message
     msg = EmailMessage()
     msg["From"] = FROM_EMAIL
@@ -168,21 +185,105 @@ async def send_activation_email(
     msg.add_alternative(html_content, subtype="html")
 
     # option: add custom headers recognized by transactional providers
-    # msg["X-Entity-Ref-ID"] = "activation-email"
+    msg["X-Entity-Ref-ID"] = "activation-email"
 
     # send via aiosmtplib
-    # await aiosmtplib.send(
-    #     msg,
-    #     hostname=SMTP_HOST,
-    #     port=SMTP_PORT,
-    #     username=SMTP_USER,
-    #     password=SMTP_PASSWORD,
-    #     start_tls=True,
-    #     timeout=30,
-    # )
+    await aiosmtplib.send(
+        msg,
+        hostname=SMTP_HOST,
+        port=SMTP_PORT,
+        username=SMTP_USER,
+        password=SMTP_PASSWORD,
+        start_tls=True,
+        timeout=30,
+    )
+    return None
 
+async def send_email_smtp(to: str, subject: str, token: str, html: bool):
+  # import socket, time
+
+  # HOST = "mail.verbaltranscript.com"
+  # PORT = 587
+  # t0 = time.time()
+  # try:
+  #     s = socket.create_connection((HOST, PORT), timeout=15)
+  #     print("connected", s.getpeername())
+  #     s.close()
+  # except Exception as e:
+  #     print("connect failed:", type(e).__name__, e)
+  # print("elapsed", time.time()-t0)
+
+  # try:
+  #   import smtplib
+  #   s = smtplib.SMTP("mail.verbaltranscript.com", 587, timeout=5)
+  #   s.set_debuglevel(1)
+  #   s.ehlo()
+  #   s.starttls()
+  #   s.login(SMTP_USER, SMTP_PASSWORD)
+  #   s.sendmail(FROM_EMAIL, ["chelule.maina@court.go.ke", "admin@verbaltranscript.com"], "Test email")
+  # except Exception as e:
+  #     print(f"Error connecting to smtplib: {e}")
+  #     raise e
+  logo_url: str = "https://assets.your-app.com/logo.png",
+  unsubscribe_url: str = "https://your-app.com/unsubscribe",
+  privacy_url: str = "https://your-app.com/privacy",
+  tracking_pixel: Optional[str] = None,
+
+  try:
+    activation_link = build_activation_url(token)
+    subject = subject or f"Activate your {BRAND_NAME} account"
+    
+    ctx = {
+        "brand_name": BRAND_NAME,
+        "name": "name",
+        "activation_link": activation_link,
+        "logo_url": logo_url,
+        "support_email": SUPPORT_EMAIL,
+        "tracking_pixel": tracking_pixel or TRACKING_PIXEL_URL,
+        "year": __import__("datetime").datetime.utcnow().year,
+        "unsubscribe_link": unsubscribe_url,
+        "privacy_url": privacy_url,
+    }
+    # print(f"Email context: {ctx}")
+    print(f"Rendering email templates...\n\n{FROM_EMAIL} -> \n\n{SMTP_USER} \n\n{SMTP_HOST} \n\n{SMTP_PORT}")
+    
+
+    html_content = Template(HTML_TEMPLATE).render(**ctx)
+    text_content = Template(TEXT_TEMPLATE).render(**ctx)
+    
+    
+    msg = EmailMessage()
+    msg["From"] = FROM_EMAIL
+    msg["To"] = to
+    msg["Subject"] = subject
+    # recommended headers for deliverability
+    msg["List-Unsubscribe"] = f"<mailto:{SUPPORT_EMAIL}>"
+    msg.set_content(text_content)
+    msg.add_alternative(html_content, subtype="html")
+
+    # option: add custom headers recognized by transactional providers
+    msg["X-Entity-Ref-ID"] = "activation-email"
+    
+    
+    # msg = MIMEMultipart("alternative")
+    # msg["From"] = FROM_EMAIL
+    # msg["To"] = to
+    # msg["Subject"] = subject
+    # part = MIMEText(body, "html" if html else "plain")
+    # msg.attach(part)
+
+    # start TLS
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=30) as server:
+        server.starttls()
+        server.login(SMTP_USER, SMTP_PASSWORD)
+        server.sendmail(FROM_EMAIL, [to,  "admin@verbaltranscript.com"], msg.as_string())
+        print(f"Email sent to {to} via SMTP.")
+  except Exception as e:
+    print(f"Error sending email to {to} via SMTP: {e}")
+    raise e
+        
 # Example sync-friendly wrapper to use with BackgroundTasks
-def send_activation_email_bg(recipient: str, token: str, name: Optional[str] = None, **kwargs):
+async def send_activation_email_bg(recipient: str, token: str, name: Optional[str] = None, **kwargs):
     """
     Helper for FastAPI BackgroundTasks (which accepts callables). This runs the coroutine.
     Usage:
@@ -199,7 +300,10 @@ def send_activation_email_bg(recipient: str, token: str, name: Optional[str] = N
     else:
         # not running inside an event loop (unit tests or script) -> run until complete
         asyncio.run(send_activation_email(recipient, token, name, **kwargs))
+    # await send_activation_email(recipient, token, name, **kwargs)
+    # background_tasks.add_task(send_email_smtp, req.to, req.subject, req.body, req.html)
 
+    return None
 # def create_activation_token(user_id: int, expires_delta: Optional[timedelta] = None) -> str:
 #     expire = datetime.utcnow() + (expires_delta or timedelta(hours=ACTIVATION_EXP_HOURS))
 #     payload = {"sub": str(user_id), "exp": int(expire.timestamp())}

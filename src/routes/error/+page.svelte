@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { WEBUI_NAME, config } from '$lib/stores';
 	import { onMount, getContext } from 'svelte';
-
+	import SEOHead from '$lib/components/seo/SEOHead.svelte';
 	const i18n = getContext('i18n');
 
 	let loaded = false;
@@ -16,6 +16,22 @@
 	});
 </script>
 
+<SEOHead
+  title="Unlock mysteries with AI Legal Research Assistant - {$i18n.t('Lex Luma AI')}"
+  description="Unlock mysteries with AI Legal Research Assistant for Lex Luma AI ."
+  image="/static/static/apple-touch-icon.png"
+  noindex={false}
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "Page",
+    "headline": "Unlock mysteries with AI Legal Research AssistantAI-powered instant Chat with Gazette Notices, Laws/Legislations & Court. Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction",
+    "description": "Page to allow user to verify their sign up credentials",
+    "author": {
+      "@type": "Organization",
+      "name": "Lex Luma"
+    }
+  }}
+/>
 {#if loaded}
 	<div class="absolute w-full h-full flex z-50">
 		<div class="absolute rounded-xl w-full h-full backdrop-blur-sm flex justify-center">
