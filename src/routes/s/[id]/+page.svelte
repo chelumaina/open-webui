@@ -2,6 +2,7 @@
 	import { onMount, tick, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import SEOHead from '$lib/components/seo/SEOHead.svelte';
 
 	import dayjs from 'dayjs';
 
@@ -141,13 +142,33 @@
 	};
 </script>
 
-<svelte:head>
+
+<SEOHead
+  title="{title
+			? `${title.length > 30 ? `${title.slice(0, 30)}...` : title} • ${$WEBUI_NAME}`
+			: `${$WEBUI_NAME}`}"
+  description="Email verification page for Lex Luma AI ."
+  image="/static/static/apple-touch-icon.png"
+  noindex={false}
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "Page",
+    "headline": "Email Verification Page",
+    "description": "Page to allow user to verify their sign up credentials",
+    "author": {
+      "@type": "Organization",
+      "name": "Lex Luma"
+    }
+  }}
+/>
+
+<!-- <svelte:head>
 	<title>
 		{title
 			? `${title.length > 30 ? `${title.slice(0, 30)}...` : title} • ${$WEBUI_NAME}`
 			: `${$WEBUI_NAME}`}
 	</title>
-</svelte:head>
+</svelte:head> -->
 
 {#if loaded}
 	<div

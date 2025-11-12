@@ -14,7 +14,7 @@
 	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
 	import { WEBUI_NAME, config, user, socket } from '$lib/stores';
 	import SEOHead from '$lib/components/seo/SEOHead.svelte';
-	import ArrowRightCircle from '$lib/components/icons/ArrowRightCircle.svelte';
+
 	import { generateInitialsImage, canvasPixelTest } from '$lib/utils';
 
 	import Spinner from '$lib/components/common/Spinner.svelte';
@@ -26,6 +26,7 @@
 
 	import Marquee from '$lib/components/common/Marquee.svelte';
 	// import SlideShow from '$lib/common/SlideShow.svelte';
+	// import ArrowRightCircle from '$lib/icons/ArrowRightCircle.svelte';
 
 	const i18n = getContext('i18n');
 
@@ -191,8 +192,6 @@
 		} else {
 			onboarding = $config?.onboarding ?? false;
 		}
-		// mode='signup';
-		onboarding = true;
 	});
 </script>
 
@@ -213,19 +212,7 @@
     }
   }}
 />
-<!-- <svelte:head>
-	<title>
-		{`${$WEBUI_NAME}`}
-	</title>
-</svelte:head> -->
-<!-- 
-<OnBoarding
-	bind:show={onboarding}
-	getStartedHandler={() => {
-		onboarding = false;
-		mode = $config?.features.enable_ldap ? 'ldap' : 'signup';
-	}}
-/> -->
+
 
 <div class="w-full max-h-[100dvh] text-white relative overflow-x-hidden" id="auth-page">
 	<!-- Animated background gradient -->
@@ -276,21 +263,10 @@
 										<span class="relative z-10">Get Started Free</span>
 										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
 									</a>
-									<!-- <a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform">
+									<a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform">
 										Learn More
 										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
-									</a> -->
-									<button
-										aria-labelledby="get-started"
-										class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform"
-										on:click={() => {
-											getStartedHandler();
-										}}
-									>
-										Learn More 
-										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
-
-									</button>
+									</a>
 								</div>
 
 								<p class="text-xl md:text-2xl mb-10 mt-10 max-w-3xl mx-auto text-gray-100 font-light break-words px-4">
@@ -357,8 +333,7 @@
 									>
 										<div class="mb-6">
 											<div class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-												 
-												{mode}
+												
 												{#if $config?.onboarding ?? false}
 													{$i18n.t(`Get started with {{WEBUI_NAME}}`, { WEBUI_NAME: $WEBUI_NAME })}
 												{:else if mode === 'ldap'}
@@ -752,7 +727,7 @@
 		</div>
 		<div class="w-full p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-md overflow-x-hidden">
 			<main class="container mx-auto px-4 py-0">
-				<LandingComponent />
+				<!-- <LandingComponent /> -->
 			</main>
 		</div>
 	{/if}

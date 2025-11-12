@@ -634,6 +634,9 @@ async def signin(request: Request, response: Response, form_data: SigninForm):
 @router.post("/signup", response_model=SessionUserResponse)
 async def signup(request: Request, response: Response, form_data: SignupForm, background_tasks: BackgroundTasks):
     has_users = Users.has_users()
+    # print(has_users)
+    
+   
 
     if WEBUI_AUTH:
         if (
@@ -725,7 +728,9 @@ async def signup(request: Request, response: Response, form_data: SignupForm, ba
             if not has_users:
                 # Disable signup after the first user is created
                 request.app.state.config.ENABLE_SIGNUP = False
-            await Auths.send_activation_link(user, background_tasks)
+            # await Auths.send_activation_link(user, background_tasks)
+            await Auths.send_activation_link(user.id, background_tasks)
+    
 
             return {
                 "token": token,

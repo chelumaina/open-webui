@@ -624,7 +624,7 @@
 
 				const currentUrl = `${window.location.pathname}${window.location.search}`;
 				const encodedUrl = encodeURIComponent(currentUrl);
-
+				
 				if (localStorage.token) {
 					// Get Session User Info
 					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
@@ -641,9 +641,18 @@
 						await goto(`/auth?redirect=${encodedUrl}`);
 					}
 				} else {
+
+					const str = $page.url.pathname;
+					const keywords = ["/auth", "/activate"];
+
+					const contains = keywords.some(keyword => str.includes(keyword));
+
+					// alert("",contains);
+					// alert($page.url.pathname.includes('/activate') === false);
+					// alert("$page.url.pathname.includes('/activate'). "+($page.url.pathname !== '/auth' && $page.url.pathname.includes('/activate') !== false));
 					// Don't redirect if we're already on the auth page
 					// Needed because we pass in tokens from OAuth logins via URL fragments
-					if ($page.url.pathname !== '/auth') {
+					if ((!contains)) {
 						await goto(`/auth?redirect=${encodedUrl}`);
 					}
 				}

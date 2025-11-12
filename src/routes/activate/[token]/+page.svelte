@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
 	import { verifyEmail } from '$lib/apis/emails';
+	import SEOHead from '$lib/components/seo/SEOHead.svelte';
 
 	const i18n = getContext('i18n');
 
@@ -12,10 +13,10 @@
 	let errorMessage = '';
 
 	onMount(async () => {
-		await verifyEmailTransaction();
+		await verifyEmailToken();
 	});
 
-	async function verifyEmailTransaction() {
+	async function verifyEmailToken() {
 		const urlParams = new URLSearchParams(window.location.search);
 		const email_verification_token = urlParams.get('token');
 		const trxref = "";
@@ -30,16 +31,16 @@
 			return;
 		}
 
-		if (!localStorage.token) {
-			verificationStatus = 'failed';
-			errorMessage = $i18n.t('Authentication required. Login First');
-			loading = false;
-			return;
-		}
+		// if (!localStorage.token) {
+		// 	verificationStatus = 'failed';
+		// 	errorMessage = $i18n.t('Authentication required. Login First');
+		// 	loading = false;
+		// 	return;
+		// }
 
 		try {
 			// Verify email with our backend
-			const verification = await verifyEmail(localStorage.token, verification_token);
+			const verification = await verifyEmail(verification_token);
 			console.log("Verification response:", verification);
 			if (verification.success && verification.data?.status === 'success') {
 				verificationStatus = 'success';
@@ -117,13 +118,31 @@
 	}
 
 	function retryEmail() {
-		goto('/subscription');
+		let current_url = window.location.href;
+		goto('/activate/'+current_url.split('/activate/')[1]);
 	}
 </script>
 
-<svelte:head>
+<SEOHead
+  title="Email Verification - {$i18n.t('Open WebUI')}"
+  description="Email verification page for Lex Luma AI ."
+  image="/static/static/apple-touch-icon.png"
+  noindex={false}
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "Page",
+    "headline": "Email Verification Page",
+    "description": "Page to allow user to verify their sign up credentials",
+    "author": {
+      "@type": "Organization",
+      "name": "Lex Luma"
+    }
+  }}
+/>
+
+<!-- <svelte:head>
 	<title>Email Verification - {$i18n.t('Open WebUI')}</title>
-</svelte:head>
+</svelte:head> -->
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
 	<div class="sm:mx-auto sm:w-full sm:max-w-md">
@@ -133,7 +152,7 @@
 				<div class="text-center">
 					<div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
 					<h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-						{$i18n.t('Verifying Email')}
+						{$i18n.t('Verifying Your Email')}
 					</h2>
 					<p class="text-gray-600 dark:text-gray-400">
 						{$i18n.t('Please wait while we verify your email...')}
@@ -207,12 +226,12 @@
 					{/if}
 					
 					<div class="space-y-3">
-						<button
+						<!-- <button
 							on:click={retryEmail}
 							class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
 						>
 							{$i18n.t('Try Again')}
-						</button>
+						</button> -->
 						
 						<button
 							on:click={goToDashboard}
