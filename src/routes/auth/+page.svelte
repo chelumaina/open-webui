@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { json } from '@sveltejs/kit';
 	import DOMPurify from 'dompurify';
 	import { marked } from 'marked';
 
@@ -11,17 +12,18 @@
 	import { getBackendConfig } from '$lib/apis';
 	import { ldapUserSignIn, getSessionUser, userSignIn, userSignUp } from '$lib/apis/auths';
 
-	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
+	import {WEBUI_BASE_URL } from '$lib/constants';
 	import { WEBUI_NAME, config, user, socket } from '$lib/stores';
 	import SEOHead from '$lib/components/seo/SEOHead.svelte';
-	import ArrowRightCircle from '$lib/components/icons/ArrowRightCircle.svelte';
+	// import ArrowRightCircle from '$lib/components/icons/ArrowRightCircle.svelte';
 	import { generateInitialsImage, canvasPixelTest } from '$lib/utils';
 
 	import Spinner from '$lib/components/common/Spinner.svelte';
 	import LandingComponent from '$lib/components/common/LandingComponent.svelte';
-	import OnBoarding from '$lib/components/OnBoarding.svelte';
+	// import OnBoarding from '$lib/components/OnBoarding.svelte';
 	import SensitiveInput from '$lib/components/common/SensitiveInput.svelte';
-	import { redirect } from '@sveltejs/kit';
+	// import { redirect } from '@sveltejs/kit';
+	// import { getPages } from '$lib/apis/page_contents';
 
 
 	import Marquee from '$lib/components/common/Marquee.svelte';
@@ -33,7 +35,7 @@
 	let isVisible = false;
 	let mode = $config?.features.enable_ldap ? 'ldap' : 'signin';
 
-	let form = null;
+	let form:any = null;
 
 	let name = '';
 	let email = '';
@@ -42,9 +44,9 @@
 
 	let ldapUsername = '';
 
-	const setSessionUser = async (sessionUser, redirectPath: string | null = null) => {
+	const setSessionUser = async (sessionUser:any, redirectPath: string | null = null) => {
 		if (sessionUser) {
-			console.log(sessionUser);
+			// console.log(sessionUser);
 			toast.success($i18n.t(`You're now logged in.`));
 			if (sessionUser.token) {
 				localStorage.token = sessionUser.token;
@@ -193,20 +195,24 @@
 		}
 		// mode='signup';
 		onboarding = true;
+
+		// await getAllPages();
 	});
 </script>
 
 
 <SEOHead
   title="Unlock mysteries with AI Legal Research Assistant - {$i18n.t('Lex Luma AI')}"
-  description="Unlock mysteries with AI Legal Research Assistant for Lex Luma AI ."
+  description="Our AI legal assistant is a specialized LLM designed to transform legal work. It enables conversational legal research on case law and legislation, provides direct Q&A, and acts as a drafting assistant. Streamline compliance with automated checklists and centralize your firm's expertise in a powerful knowledge base. It’s the all-in-one intelligent platform for modern legal professionals."
+  keywords="AI Legal Research, Legal Research Platform, AI-Powered Legal Tools, Legislation Navigation, Legal Research Features, Legal AI, AI legal research, case law Q&A, legislation navigator, legal drafting assistant, AI compliance, legal knowledge base, generative AI for law, legal LLM, lawyer software, contract drafting AI, regulatory compliance tool"
+
   image="/static/static/apple-touch-icon.png"
   noindex={false}
   structuredData={{
     "@context": "https://schema.org",
     "@type": "Page",
     "headline": "Unlock mysteries with AI Legal Research AssistantAI-powered instant Chat with Gazette Notices, Laws/Legislations & Court. Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction",
-    "description": "Page to allow user to verify their sign up credentials",
+    "description": "Our AI legal assistant is a specialized LLM designed to transform legal work. It enables conversational legal research on case law and legislation, provides direct Q&A, and acts as a drafting assistant. Streamline compliance with automated checklists and centralize your firm's expertise in a powerful knowledge base. It’s the all-in-one intelligent platform for modern legal professionals.",
     "author": {
       "@type": "Organization",
       "name": "Lex Luma"
@@ -243,7 +249,7 @@
 							<div class="absolute -bottom-8 left-40 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
 						</div>
 						
-						<div class="relative container mx-auto px-4 py-24 md:py-34 text-center overflow-x-hidden">
+						<div class="relative container mx-auto px-4 py-12 md:py-12 text-center overflow-x-hidden">
 							
 							
 							<div class="transition-all duration-1000 transform {isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}">
@@ -764,6 +770,7 @@
 		overflow-x: hidden;
 		max-width: 100vw;
 	}
+
 
 	#auth-page * {
 		max-width: 100%;

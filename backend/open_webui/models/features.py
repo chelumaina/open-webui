@@ -4,6 +4,8 @@ from typing import List, Optional, Dict, Any
 
 from datetime import datetime
 
+from fastapi import HTTPException, status
+
 from open_webui.internal.db import Base, get_db
 
 from open_webui.env import DATABASE_USER_ACTIVE_STATUS_UPDATE_INTERVAL
@@ -137,6 +139,7 @@ class FeatureRequest(BaseModel):
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     
 class PageRequest(BaseModel):
+    id: Optional[uuid.UUID] = Field(default_factory=uuid.uuid4)
     title: str
     slug: str
     intro: str
@@ -198,16 +201,33 @@ class FeatureResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 class PageResponse(BaseModel): 
+    id: uuid.UUID
     title: str
     slug: str
     intro: Optional[str] = None    # short HTML/Markdown
+    summary: Optional[str] = None
     seo_title: Optional[str] = None
     seo_description: Optional[str] = None
     is_published: bool
     locale: Optional[str]
     order_index: Optional[int]
-    created_at: datetime
-    updated_at: datetime
+    
+    meta_keywords: Optional[List[str]] = []
+    canonical_url: str
+    meta_robots: str = "index,follow"
+    locale: str = "en"
+    svg_icon: Optional[str] = None
+    icon_reference: Optional[Dict[str, Any]] = None  # JSON dict
+    icon_url: Optional[str] = None
+    open_graph: Optional[Dict[str, Any]] = None  # JSON dict
+    twitter_card: Optional[Dict[str, Any]] = None  # JSON dict
+    structured_data: Optional[Dict[str, Any]] = None  # JSON dict
+    meta_tags: Optional[List[Dict[str, Any]]] = None  # JSON list of dicts
+    schema_org_jsonld: Optional[Dict[str, Any]] = None  # JSON dict
+    
+    
+    
+  
     # page_features: List[FeatureResponse] = []
     model_config = {"from_attributes": True}
     
@@ -261,7 +281,7 @@ class FeaturesTable:
                 return False
 
 class PagesTable:
-    def get_page(self, id: str) -> Optional[PageResponse]:
+    def get_page_content(self, id: str) -> Optional[PageResponse]:
         with get_db() as db:
             page_content = (
                 db.query(PageContent).filter_by(id=id).first()
@@ -270,15 +290,28 @@ class PagesTable:
                 return page_content
             else:
                  return None
-             
-    def list_pages(self) -> List[PageResponse]:
+    def get_page_content_using_slug(self, slug: str):
+        try:
+            with get_db() as db:
+                page_content = (
+                    db.query(PageContent).filter_by(slug=slug).first()
+                )
+                if not page_content:
+                    raise HTTPException(
+                        status_code=status.HTTP_404_NOT_FOUND,
+                        detail="Page not found"
+                    )
+                return page_content
+        except Exception as e:
+            raise 
+            
+    def list_pages(self) -> Optional[List[PageResponse]]:
+         # Get transaction from database
         with get_db() as db:
-            pages = (
-                db.query(PageContent)
-                .order_index(PageContent.created_at.desc())
-                .all()
-            )
-            return pages
+            pages = db.query(PageContent).order_by(PageContent.order_index.asc()).all()
+            page_list = [PageResponse.from_orm(page) for page in pages]
+            return page_list
+        
     def create_page(self, page_data: PageRequest) -> PageResponse:
         with get_db() as db:
             new_page = PageContent(**page_data.dict())

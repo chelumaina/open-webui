@@ -4,8 +4,9 @@
   export let image = '/default-og.jpg';
   export let canonical = '';
   export let noindex = false;
-  export let structuredData = null;
-  
+  export let structuredData = {};
+  export let keywords = '';
+   
   $: fullCanonical = canonical ? canonical : `https://lexluma.com`;
 </script>
 
@@ -13,6 +14,7 @@
   <!-- Basic Meta -->
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="keywords" content={keywords} />
   
   {#if noindex}
     <meta name="robots" content="noindex, nofollow" />

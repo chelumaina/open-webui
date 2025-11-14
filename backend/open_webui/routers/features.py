@@ -21,12 +21,12 @@ from open_webui.models.groups import Group, Groups
 from open_webui.models.users import Users
 from open_webui.utils.auth import get_admin_user, get_verified_user
 
-from open_webui.models.features import Feature, FeatureRequest, FeatureResponse,  PageContent, PageResponse, PageRequest
+from open_webui.models.features import PagesTable, FeaturesTable, Feature, FeatureRequest, FeatureResponse,  PageContent, PageResponse, PageRequest
 from open_webui.env import SRC_LOG_LEVELS
 
 
 log = logging.getLogger(__name__)
-
+pageTable=PagesTable()
 ##########################################
 #
 # Features functions
@@ -115,22 +115,11 @@ async def create_feature(feature_request: FeatureRequest, user=Depends(get_admin
 ##########################################
 
 
-@router.get("/pages", response_model=PageResponse)
-async def get_pages(request: Request, response: Response):
+@router.get("/pages", response_model=Optional[list[PageResponse]])
+async def get_pages():
     """Load all active features"""
     try:
-        # Get transaction from database
-        with get_db() as db:
-            pages = db.query(PageContent).all()
-            
-            if not pages:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="Pages not found"
-                )
-            page_list = [PageResponse.from_orm(page) for page in pages]
-            return page_list
-        
+        return pageTable.list_pages()
     except HTTPException:
         raise
     except Exception as e:
@@ -141,24 +130,11 @@ async def get_pages(request: Request, response: Response):
         )
         
 @router.get("/page/{slug}", response_model=PageResponse)
-async def get_page(
-    slug: str,
-):
-
+async def get_page(slug: str):
     try:
         # Get transaction from database
-        with get_db() as db: 
-            page = db.query(PageContent).filter(PageContent.slug == slug).first()
-
-            if not page:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="Pages not found"
-                )
-            page_response = PageResponse.from_orm(page)
-            return page_response               
-           
-            
+        page= pageTable.get_page_content_using_slug(slug)
+        return PageResponse.model_validate(page)
     except HTTPException:
         raise
     except Exception as e:

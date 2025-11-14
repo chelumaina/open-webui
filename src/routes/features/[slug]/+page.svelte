@@ -12,19 +12,23 @@
 	import { ldapUserSignIn, getSessionUser, userSignIn, userSignUp } from '$lib/apis/auths';
 
 	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
-	import { WEBUI_NAME, config, user, socket } from '$lib/stores';
+	import { WEBUI_NAME, config, user, socket, pageContents } from '$lib/stores';
 	import SEOHead from '$lib/components/seo/SEOHead.svelte';
 
 	import { generateInitialsImage, canvasPixelTest } from '$lib/utils';
 
 	import Spinner from '$lib/components/common/Spinner.svelte';
-	import LandingComponent from '$lib/components/common/LandingComponent.svelte';
-	import OnBoarding from '$lib/components/OnBoarding.svelte';
+	// import LandingComponent from '$lib/components/common/LandingComponent.svelte';
+	// import OnBoarding from '$lib/components/OnBoarding.svelte';
 	import SensitiveInput from '$lib/components/common/SensitiveInput.svelte';
-	import { redirect } from '@sveltejs/kit';
+	// import { redirect } from '@sveltejs/kit';
 
 
 	import Marquee from '$lib/components/common/Marquee.svelte';
+
+	let slug: string=$page.params.slug || '';
+	let pageContent:any={};
+	 
 	// import SlideShow from '$lib/common/SlideShow.svelte';
 	// import ArrowRightCircle from '$lib/icons/ArrowRightCircle.svelte';
 
@@ -34,7 +38,7 @@
 	let isVisible = false;
 	let mode = $config?.features.enable_ldap ? 'ldap' : 'signin';
 
-	let form = null;
+	let form:any = null;
 
 	let name = '';
 	let email = '';
@@ -42,8 +46,12 @@
 	let confirmPassword = '';
 
 	let ldapUsername = '';
+	const filterPageContentBySlug = async (slug: string) => {
+		const content = $pageContents.find((page:any) => page.slug === slug);
+		return content ? content : null;
+	};
 
-	const setSessionUser = async (sessionUser, redirectPath: string | null = null) => {
+	const setSessionUser = async (sessionUser:any, redirectPath: string | null = null) => {
 		if (sessionUser) {
 			console.log(sessionUser);
 			toast.success($i18n.t(`You're now logged in.`));
@@ -70,11 +78,6 @@
 		});
 
 		await setSessionUser(sessionUser);
-	};
-
-	let getStartedHandler=() => {
-		onboarding = false;
-		mode = $config?.features.enable_ldap ? 'ldap' : 'signup';
 	};
 
 	const signUpHandler = async () => {
@@ -115,7 +118,7 @@
 
 	const oauthCallbackHandler = async () => {
 		// Get the value of the 'token' cookie
-		function getCookie(name) {
+		function getCookie(name:any) {
 			const match = document.cookie.match(
 				new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)')
 			);
@@ -192,25 +195,20 @@
 		} else {
 			onboarding = $config?.onboarding ?? false;
 		}
+
+		pageContent=await filterPageContentBySlug(slug);
 	});
 </script>
 
 
 <SEOHead
-  title="Unlock mysteries with AI Legal Research Assistant - {$i18n.t('Lex Luma AI')}"
-  description="Unlock mysteries with AI Legal Research Assistant for Lex Luma AI ."
+  title="{pageContent?.seo_title} - {$i18n.t('Lex Luma AI')}"
+  description="{pageContent?.summary}"
+  keywords="{pageContent?.meta_keywords}"
+  canonical="{pageContent?.canonical_url}"
   image="/static/static/apple-touch-icon.png"
   noindex={false}
-  structuredData={{
-    "@context": "https://schema.org",
-    "@type": "Page",
-    "headline": "Unlock mysteries with AI Legal Research AssistantAI-powered instant Chat with Gazette Notices, Laws/Legislations & Court. Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction",
-    "description": "Page to allow user to verify their sign up credentials",
-    "author": {
-      "@type": "Organization",
-      "name": "Lex Luma"
-    }
-  }}
+  structuredData={pageContent?.structured_data}
 />
 
 <div class="w-full max-h-[100dvh] text-white relative overflow-x-hidden" id="auth-page">
@@ -229,15 +227,12 @@
 							<div class="absolute -bottom-8 left-40 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
 						</div>
 						
-						<div class="relative container mx-auto px-4 py-24 md:py-34 text-center overflow-x-hidden">
+						<div class="relative container mx-auto px-4 py-12 md:py-12 text-center overflow-x-hidden">
 							
 							
-							<div class="transition-all duration-1000 transform {isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}">
+							<div class="">
 								<h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold mb-6 text-white leading-tight break-words">
-									Intelligent Chat.<br/>
-									<span class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 to-pink-200">
-										for Everyone
-									</span>
+									{pageContent.title || 'Discover the Future of Legal Research with AI'}
 								</h1>
 
 								<Marquee
@@ -258,22 +253,27 @@
 
 								<div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
 								
-									<a href="/auth" class="group relative bg-white text-indigo-600 px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
+									<a href="/auth" class="group relative bg-white text-indigo-600 px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-50">
 										<span class="relative z-10">Get Started Free</span>
-										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
+										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 "></div>
 									</a>
-									<a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform">
+									<a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20">
 										Learn More
-										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+										<span class="inline-block ml-2 transform">→</span>
 									</a>
 								</div>
 
-								<p class="text-xl md:text-2xl mb-10 mt-10 max-w-3xl mx-auto text-gray-100 font-light break-words px-4">
+
+								<!-- <p class="text-xl md:text-2xl mb-10 mt-10 max-w-3xl mx-auto text-gray-100 font-light break-words px-4">
 									AI-powered instant Chat with Gazette Notices, Laws/Legislations & Court.
-								</p>
-								<p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-gray-100 font-light break-words px-4">
+								</p> -->
+								<!-- <p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-gray-100 font-light break-words px-4">
 									Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction. Ask in plain language, get grounded answers with paragraph-level citations to Gazette Notices, Acts (and subsidiary legislation), and authoritative case law—powered by secure RAG and optional firm-specific fine-tuning.
-								</p>
+								</p> -->
+								<div id="introduction" class="intro">
+									{@html pageContent?.intro}
+								</div>
+
 							</div>
 						</div>
 						
@@ -310,15 +310,15 @@
 							<div class="my-auto flex flex-col justify-center items-center">
 								<div class="sm:max-w-md my-auto pb-10 w-full">
 									<!-- Enhanced auth card with glass morphism effect -->
-									<div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-gray-200/50 dark:border-gray-700/50 transform transition-all duration-300 hover:shadow-3xl">
+									<div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-gray-200/50 dark:border-gray-700/50 ">
 										<div class="flex justify-center mb-8">
 											<div class="relative group">
-												<div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+												<div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full blur opacity-25 group-hover:opacity-40"></div>
 												<img
 													id="logo"
 													crossorigin="anonymous"
 													src="{WEBUI_BASE_URL}/static/favicon-dark.png"
-													class="relative size-20 rounded-full ring-4 ring-white dark:ring-gray-700 shadow-lg transform transition-transform duration-300 group-hover:scale-105"
+													class="relative size-20 rounded-full ring-4 ring-white dark:ring-gray-700 shadow-lg"
 													alt="Logo"
 												/>
 											</div>
@@ -372,7 +372,7 @@
 																bind:value={name}
 																type="text"
 																id="name"
-																class="w-full px-4 py-3 text-sm bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+																class="w-full px-4 py-3 text-sm bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
 																autocomplete="name"
 																placeholder={$i18n.t('Enter Your Full Name')}
 																required
@@ -398,7 +398,7 @@
 															<input
 																bind:value={ldapUsername}
 																type="text"
-																class="w-full px-4 py-3 text-sm bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+																class="w-full px-4 py-3 text-sm bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl  text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
 																autocomplete="username"
 																name="username"
 																id="username"
@@ -425,7 +425,7 @@
 																bind:value={email}
 																type="email"
 																id="email"
-																class="w-full px-4 py-3 text-sm bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+																class="w-full px-4 py-3 text-sm bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl  text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
 																autocomplete="email"
 																name="email"
 																placeholder={$i18n.t('Enter Your Email')}
@@ -451,7 +451,7 @@
 														bind:value={password}
 														type="password"
 														id="password"
-														class="w-full px-4 py-3 text-sm bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+														class="w-full px-4 py-3 text-sm bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition------all duration-200 text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
 														placeholder={$i18n.t('Enter Your Password')}
 														autocomplete={mode === 'signup' ? 'new-password' : 'current-password'}
 														name="password"
@@ -471,7 +471,7 @@
 															bind:value={confirmPassword}
 															type="password"
 															id="confirm-password"
-															class="w-full px-4 py-3 text-sm bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+															class="w-full px-4 py-3 text-sm bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition------all duration-200 text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
 															placeholder={$i18n.t('Confirm Your Password')}
 															name="confirm-password"
 															autocomplete={mode === 'signup' ? 'new-password' : 'current-password'}
@@ -486,7 +486,7 @@
 											{#if $config?.features.enable_login_form || $config?.features.enable_ldap || form}
 												{#if mode === 'ldap'}
 													<button
-														class="group relative w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-3.5 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg hover:shadow-xl"
+														class="group relative w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-3.5 px-4 rounded-xl transition------all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg hover:shadow-xl"
 														type="submit"
 													>
 														<span class="flex items-center justify-center">
@@ -498,7 +498,7 @@
 													</button>
 												{:else}
 													<button
-														class="group relative w-full bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-semibold py-3.5 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-lg hover:shadow-xl"
+														class="group relative w-full bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-semibold py-3.5 px-4 rounded-xl transition------all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-lg hover:shadow-xl"
 														type="submit"
 													>
 														<span class="flex items-center justify-center">
@@ -524,7 +524,7 @@
 																: $i18n.t('Already have an account?')}
 
 															<button
-																class="ml-1 font-semibold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 underline decoration-2 underline-offset-2 transition-colors duration-200"
+																class="ml-1 font-semibold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 underline decoration-2 underline-offset-2 transition------colors duration-200"
 																type="button"
 																on:click={() => {
 																	if (mode === 'signin') {
@@ -556,7 +556,7 @@
 										<div class="flex flex-col space-y-3">
 											{#if $config?.oauth?.providers?.google}
 												<button
-													class="flex justify-center items-center bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-medium py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
+													class="flex justify-center items-center bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-medium py-3 px-4 rounded-xl transition------all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
 													on:click={() => {
 														window.location.href = `${WEBUI_BASE_URL}/oauth/google/login`;
 													}}
@@ -585,7 +585,7 @@
 											{/if}
 											{#if $config?.oauth?.providers?.microsoft}
 												<button
-													class="flex justify-center items-center bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-medium py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
+													class="flex justify-center items-center bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-medium py-3 px-4 rounded-xl transition------all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
 													on:click={() => {
 														window.location.href = `${WEBUI_BASE_URL}/oauth/microsoft/login`;
 													}}
@@ -615,7 +615,7 @@
 											{/if}
 											{#if $config?.oauth?.providers?.github}
 												<button
-													class="flex justify-center items-center bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
+													class="flex justify-center items-center bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white font-medium py-3 px-4 rounded-xl transition------all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
 													on:click={() => {
 														window.location.href = `${WEBUI_BASE_URL}/oauth/github/login`;
 													}}
@@ -635,7 +635,7 @@
 											{/if}
 											{#if $config?.oauth?.providers?.oidc}
 												<button
-													class="flex justify-center items-center bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-medium py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
+													class="flex justify-center items-center bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-medium py-3 px-4 rounded-xl transition------all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
 													on:click={() => {
 														window.location.href = `${WEBUI_BASE_URL}/oauth/oidc/login`;
 													}}
@@ -664,7 +664,7 @@
 											{/if}
 											{#if $config?.oauth?.providers?.feishu}
 												<button
-													class="flex justify-center items-center bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-medium py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
+													class="flex justify-center items-center bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-medium py-3 px-4 rounded-xl transition------all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
 													on:click={() => {
 														window.location.href = `${WEBUI_BASE_URL}/oauth/feishu/login`;
 													}}
@@ -678,7 +678,7 @@
 									{#if $config?.features.enable_ldap && $config?.features.enable_login_form}
 										<div class="mt-6">
 											<button
-												class="flex justify-center items-center text-sm w-full text-center text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 font-medium underline decoration-2 underline-offset-2 transition-colors duration-200"
+												class="flex justify-center items-center text-sm w-full text-center text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 font-medium underline decoration-2 underline-offset-2 transition------colors duration-200"
 												type="button"
 												on:click={() => {
 													if (mode === 'ldap')
@@ -727,6 +727,7 @@
 		<div class="w-full p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-md overflow-x-hidden">
 			<main class="container mx-auto px-4 py-0">
 				<!-- <LandingComponent /> -->
+				 <!-- {@html pageContent.intro} -->
 			</main>
 		</div>
 	{/if}
@@ -738,6 +739,10 @@
 		overflow-x: hidden;
 		max-width: 100vw;
 	}
+ 
+
+
+
 
 	#auth-page * {
 		max-width: 100%;
@@ -788,10 +793,10 @@
 		background: rgba(107, 114, 128, 0.7);
 	}
 
-	/* Smooth transitions */
+	/* Smooth transition-----s */
 	input,
 	button {
-		transition: all 0.2s ease-in-out;
+		transition-----: all 0.2s ease-in-out;
 	}
 
 	/* Focus visible outline */

@@ -1,6 +1,6 @@
 # Paystack Integration Documentation
 
-This document explains how to set up and use the Paystack payment integration for Open WebUI subscriptions.
+This document explains how to set up and use the Paystack payment integration for Lex Luma AI subscriptions.
 
 ## Features
 
@@ -232,7 +232,7 @@ All errors are logged and user-friendly messages are displayed.
 
 ### Styling
 
-The PaystackCheckout component uses Tailwind CSS classes that match Open WebUI's design system. Customize by modifying the component's style section.
+The PaystackCheckout component uses Tailwind CSS classes that match Lex Luma AI's design system. Customize by modifying the component's style section.
 
 ### Payment Methods
 
@@ -305,4 +305,4 @@ To contribute to this payment integration:
 
 ## License
 
-This integration follows the same license as Open WebUI.
+This integration follows the same license as Lex Luma AI.

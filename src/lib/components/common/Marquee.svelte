@@ -24,7 +24,7 @@
 		{#key idx}
 			<hr />
 			<div class=" marquee-item py-5" in:fly={{ y: '30%', duration: 1000 }}>
-				<h5 class="text-xl md:text-2xl font-extrabold mb-6 text-white leading-tight s-1epn7BoarYrf">{words.at(idx)}</h5>
+				<h5 class="text-lg md:text-2xl font-extrabold mb-6 text-white leading-tight s-1epn7BoarYrf">{words.at(idx)}</h5>
 			</div>
 		{/key}
 	</div>

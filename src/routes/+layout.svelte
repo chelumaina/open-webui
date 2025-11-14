@@ -303,7 +303,7 @@
 
 					if ($isLastActiveTab) {
 						if ($settings?.notificationEnabled ?? false) {
-							new Notification(`${title} • Open WebUI`, {
+							new Notification(`${title} • Lex Luma AI`, {
 								body: content,
 								icon: `${WEBUI_BASE_URL}/static/favicon-dark.png`
 							});
@@ -452,7 +452,7 @@
 			if (type === 'message') {
 				if ($isLastActiveTab) {
 					if ($settings?.notificationEnabled ?? false) {
-						new Notification(`${data?.user?.name} (#${event?.channel?.name}) • Open WebUI`, {
+						new Notification(`${data?.user?.name} (#${event?.channel?.name}) • Lex Luma AI`, {
 							body: data?.content,
 							icon: data?.user?.profile_image_url ?? `${WEBUI_BASE_URL}/static/favicon-dark.png`
 						});
@@ -654,7 +654,7 @@
 				} else {
 
 					const str = $page.url.pathname;
-					const keywords = ["/auth", "/activate"];
+					const keywords = ["/auth", "/activate", "/help", "/error"];
 
 					const contains = keywords.some(keyword => str.includes(keyword));
 

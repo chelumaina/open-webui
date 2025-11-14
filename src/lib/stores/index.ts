@@ -95,6 +95,7 @@ export const currentChatPage = writable(1);
 
 export const isLastActiveTab = writable(true);
 export const playingNotificationSound = writable(false);
+export const pageContents = writable([]);
 
 export type Model = OpenAIModel | OllamaModel;
 
@@ -104,6 +105,13 @@ type BaseModel = {
 	info?: ModelConfig;
 	owned_by: 'ollama' | 'openai' | 'arena';
 };
+
+export type PageData = {
+	videos: any;
+	manuals: any;
+	allTags: any;
+};
+ 
 
 export interface OpenAIModel extends BaseModel {
 	owned_by: 'openai';
@@ -262,9 +270,13 @@ type Config = {
 	default_locale: string;
 	default_models: string;
 	default_prompt_suggestions: PromptSuggestion[];
+	onboarding: boolean;
 	features: {
 		auth: boolean;
 		auth_trusted_header: boolean;
+		enable_ldap: boolean;
+		enable_sso: boolean;
+		enable_magic_link: boolean;
 		enable_api_key: boolean;
 		enable_signup: boolean;
 		enable_login_form: boolean;
@@ -278,6 +290,7 @@ type Config = {
 		enable_autocomplete_generation: boolean;
 		enable_direct_connections: boolean;
 		enable_version_update_check: boolean;
+		enable_signup_password_confirmation: boolean;
 	};
 	oauth: {
 		providers: {

@@ -3,6 +3,50 @@
 	import TestimonialsCarousel, { type Testimonial } from "$lib/components/common/TestimonialsCarousel.svelte";
 	// import HowItWorksFlow, { type HowItWorksSection } from "$lib/components/common/HowItWorksFlow.svelte";
 	import HowItWorks from "$lib/components/common/HowItWorksFlow.svelte";
+  
+  import { getPages } from '$lib/apis/page_contents';
+  import { pageContents } from '$lib/stores';
+	import SEOHead from '../seo/SEOHead.svelte';
+  let transactionData: any = null;
+  let pages:any = [];
+	let pageRegistry = {};
+
+
+  const getAllPages = async () => {
+		const pageList:any[] = await getPages(localStorage.token).catch((error) => {
+			// toast.error(`${error}`);
+			return [];
+		});
+		pageContents.set(pageList || []);
+    console.log('Page contents fetched and stored in store:', pageList);
+    console.log('Page contents :', pageContents);
+
+		pageList.forEach((page) => {
+      pages[page.id] = page;
+    });
+
+    console.log('Pages fetched and stored:', pages);
+ 
+	};
+
+  // let pageContents: any[] = [];
+	async function getAllPages222() { 
+		try { 
+      const res = await getPages(localStorage.token).then(async (res) => {
+        console.log('Page contents fetched:', res);
+        // pageContents = res || [];
+        return res;
+      });
+			transactionData =  res;
+			
+
+		} catch (error) {
+			transactionData = [];
+		} finally {
+			transactionData = [];
+		}
+	}
+
 
 	  // If loading from a file:
   // import data from "$lib/testimonials.json";
@@ -1125,17 +1169,19 @@
   
 	let isVisible = false;
 	
-	onMount(() => {
+	onMount(async () => {
 		isVisible = true;
+    await getAllPages();
 	});
  
-
-
 </script>
+<!-- <SEOHead 
+  title="Features - Smart AI Legal Research Platform" 
+  description="Discover the powerful features of our Smart AI Legal Research Platform, designed to enhance your legal research with AI-powered tools, comprehensive legislation navigation, and more."
+  keywords="AI Legal Research, Legal Research Platform, AI-Powered Legal Tools, Legislation Navigation, Legal Research Features",
 
+/> -->
 <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-	 
-
     <!-- Features Section -->
     <section id="features" class="py-20 bg-gray-50 dark:bg-gray-900">
         <div class="container mx-auto px-4">
@@ -1149,22 +1195,25 @@
 			</div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:scale-105 transform">
-                    <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white"><a class="btn btn-link" href="/features/ai-powered-conversational-legal-research">AI-Powered Conversational Legal Research</a></h3>
-                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Ask questions across Gazette Notices, statutes, regulations, and case law. Get concise answers with citations and confidence notes.
-                    
-                    <a href="/features/ai-powered-conversational-legal-research" class="group border-0 border-white/30 text-white pl-2 pr-10 rounded font-bold text-sm  hover:scale-105 transform s-m2wW3TfO6y5x">
-                      Learn More
-                      <span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
-                    </p>
-                </div>
+              <!-- *******{$pageContents} -->
+              
                 
+                  {#each $pageContents as page  }
+                  <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:scale-105 transform">
+                      {@html page.svg_icon}
+                      <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white"><a class="btn btn-link" href="/features/{page.slug}">{@html page.title}</a></h3>
+                      <p class="text-gray-600 dark:text-gray-400 leading-relaxed">{@html page.summary}
+                      
+                      <a href="/features/{page.slug}" class="group border-0 border-white/30 text-white pl-2 pr-10 rounded font-bold text-sm  hover:scale-105 transform s-m2wW3TfO6y5x">
+                        Learn More
+                        <span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                      </a>
+                      </p>
+                  </div>
+                  {/each}
+                    
+                
+<!--                 
                 <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:scale-105 transform">
                     <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1242,7 +1291,7 @@
                       <span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
                     </a>
                     </p>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
@@ -1253,8 +1302,6 @@
 
 
 	<TestimonialsCarousel items={dataFromServer.items} title="What Our Users Say" subtitle="See how we've helped our clients succeed." />
-
-
 
 	<!-- CTA Section -->
 	<section class="py-20 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-800 dark:via-purple-800 dark:to-pink-800 relative overflow-hidden">
