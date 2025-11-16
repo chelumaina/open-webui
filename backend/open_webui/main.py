@@ -2230,7 +2230,7 @@ async def get_robots_txt():
     return Response(content=robots_content, media_type="text/plain")
 
 
-@app.get("/sitemaps.xml")
+@app.get("/sitemap.xml")
 async def get_sitemap_xml():
     xml_content = rf"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
