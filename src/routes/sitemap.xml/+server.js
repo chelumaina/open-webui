@@ -1,4 +1,4 @@
-export async function GET() {
+export async function GET({url}) {
   const baseUrl = 'https://lexluma.com';
 
   // Get all your pages - you might want to fetch this from a CMS or generate dynamically
