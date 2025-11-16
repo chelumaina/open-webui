@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /
+# Sitemaps
+Sitemap: https://lexluma/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

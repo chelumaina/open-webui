@@ -1,5 +1,7 @@
 export async function GET({url}) {
   const baseUrl = 'https://lexluma.com';
+  // import { writeFileSync } from 'fs';
+
 
   // Get all your pages - you might want to fetch this from a CMS or generate dynamically
   const pages = [
@@ -705,6 +707,16 @@ export async function GET({url}) {
     <priority>${page.priority}</priority>
   </url>`).join('')}
 </urlset>`;
+
+
+// const sitemap_data= `<?xml version="1.0" encoding="UTF-8"?>
+// <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+//    `+ sitemap+ ` 
+// </urlset>`;
+
+// writeFileSync('static/sitemap.xml', sitemap_data);
+
+
 
   return new Response(sitemap, {
     headers: {
