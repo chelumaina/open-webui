@@ -1,4 +1,4 @@
-export async function GET({ url }) {
+export async function GET() {
   const baseUrl = 'https://lexluma.com';
   const environment = process.env.NODE_ENV;
   

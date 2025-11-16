@@ -350,6 +350,7 @@
 											</div>
 										</div> 
 									<form
+										id="auth-form"
 										class="flex flex-col justify-center"
 										on:submit={(e) => {
 											e.preventDefault();
@@ -358,8 +359,7 @@
 									>
 										<div class="mb-6">
 											<div class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-												 
-												{mode}
+												  
 												{#if $config?.onboarding ?? false}
 													{$i18n.t(`Get started with {{WEBUI_NAME}}`, { WEBUI_NAME: $WEBUI_NAME })}
 												{:else if mode === 'ldap'}

@@ -1280,7 +1280,7 @@
 				
 				An AI legal copilot that answers with sources, drafts with authority, and learns your firm’s style.
 			</p>
-			<a href="/auth" class="inline-block bg-white text-indigo-600 px-12 py-5 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
+			<a href="/auth#auth-form" class="inline-block bg-white text-indigo-600 px-12 py-5 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
 				Get Started Today - It's Free
 			</a>
 			<p class="text-sm text-gray-200 mt-6">No credit card required • Cancel anytime</p>

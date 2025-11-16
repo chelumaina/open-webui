@@ -269,7 +269,7 @@
 			<p class="text-xl text-gray-100 mb-10 max-w-2xl mx-auto">
 				Join thousands of investors who trust our platform for smarter trading decisions.
 			</p>
-			<a href="#" class="inline-block bg-white text-indigo-600 px-12 py-5 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
+			<a href="#auth-form" class="inline-block bg-white text-indigo-600 px-12 py-5 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
 				Get Started Today - It's Free
 			</a>
 			<p class="text-sm text-gray-200 mt-6">No credit card required • Cancel anytime</p>

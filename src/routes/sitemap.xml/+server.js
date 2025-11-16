@@ -1,6 +1,4 @@
-import { base } from '$app/paths';
-
-export async function GET({ url }) {
+export async function GET() {
   const baseUrl = 'https://lexluma.com';
 
   // Get all your pages - you might want to fetch this from a CMS or generate dynamically
