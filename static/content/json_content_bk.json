@@ -1,0 +1,205 @@
+[
+    {
+      "title": "Getting Started",
+      "slug": "getting-started",
+      "pages": [
+        { "title": "Introduction to LexLuma", "slug": "introduction-to-lexluma" },
+        { "title": "First Login & Account Creation", "slug": "first-login-account-creation" },
+        { "title": "Basic Layout Overview", "slug": "basic-layout-overview" },
+        { "title": "Your First Chat", "slug": "your-first-chat" },
+        { "title": "Quick Tour of Interface", "slug": "quick-tour-of-interface" },
+        { "title": "Basic Navigation", "slug": "basic-navigation" }
+      ]
+    },
+    {
+      "title": "Sidebar Navigation",
+      "slug": "sidebar-navigation",
+      "pages": [
+        { "title": "Chats Section Overview", "slug": "chats-section-overview" },
+        { "title": "Starting New Chats", "slug": "starting-new-chats" },
+        { "title": "Managing Chat History", "slug": "managing-chat-history" },
+        { "title": "Searching and Filtering Chats", "slug": "searching-and-filtering-chats" },
+        { "title": "Pinning and Organizing Chats", "slug": "pinning-and-organizing-chats" },
+        { "title": "Workspaces Overview", "slug": "workspaces-overview" },
+        { "title": "Creating and Managing Workspaces", "slug": "creating-and-managing-workspaces" },
+        { "title": "Models Quick Access Panel", "slug": "models-quick-access-panel" },
+        { "title": "Sidebar Customization", "slug": "sidebar-customization" }
+      ]
+    },
+    {
+      "title": "Chat Interface",
+      "slug": "chat-interface",
+      "pages": [
+        { "title": "Main Chat Area Overview", "slug": "main-chat-area-overview" },
+        { "title": "Reading Conversations", "slug": "reading-conversations" },
+        { "title": "Composing Messages", "slug": "composing-messages" },
+        { "title": "Text Formatting and Multi-line Input", "slug": "text-formatting-and-multi-line-input" },
+        { "title": "Attaching Files to Chats", "slug": "attaching-files-to-chats" },
+        { "title": "Supported File Types", "slug": "supported-file-types" },
+        { "title": "Message Actions Menu", "slug": "message-actions-menu" },
+        { "title": "Regenerating Responses", "slug": "regenerating-responses" },
+        { "title": "Editing Previous Messages", "slug": "editing-previous-messages" },
+        { "title": "Copying and Sharing Messages", "slug": "copying-and-sharing-messages" },
+        { "title": "Chat Management Options", "slug": "chat-management-options" },
+        { "title": "Renaming and Organizing Chats", "slug": "renaming-and-organizing-chats" },
+        { "title": "Exporting Conversations", "slug": "exporting-conversations" },
+        { "title": "Clearing Conversation History", "slug": "clearing-conversation-history" }
+      ]
+    },
+    {
+      "title": "Working with Models",
+      "slug": "working-with-models",
+      "pages": [
+        { "title": "Model Selection Guide", "slug": "model-selection-guide" },
+        { "title": "Understanding Different Model Types", "slug": "understanding-different-model-types" },
+        { "title": "Text-Only Models", "slug": "text-only-models" },
+        { "title": "Vision and Multimodal Models", "slug": "vision-and-multimodal-models" },
+        { "title": "Specialized Models (Coding, Creative, etc.)", "slug": "specialized-models" },
+        { "title": "Accessing Model Information", "slug": "accessing-model-information" },
+        { "title": "Switching Models Mid-Conversation", "slug": "switching-models-mid-conversation" },
+        { "title": "Model Parameters and Settings", "slug": "model-parameters-and-settings" },
+        { "title": "Temperature and Creativity Controls", "slug": "temperature-and-creativity-controls" },
+        { "title": "Response Length Settings", "slug": "response-length-settings" },
+        { "title": "Context Window Management", "slug": "context-window-management" },
+        { "title": "Model Performance Optimization", "slug": "model-performance-optimization" }
+      ]
+    },
+    {
+      "title": "Advanced Features",
+      "slug": "advanced-features",
+      "pages": [
+        { "title": "Document Chat & RAG Overview", "slug": "document-chat-rag-overview" },
+        { "title": "Uploading and Managing Documents", "slug": "uploading-and-managing-documents" },
+        { "title": "Chatting with PDF Files", "slug": "chatting-with-pdf-files" },
+        { "title": "Working with Text Documents", "slug": "working-with-text-documents" },
+        { "title": "Image and Vision File Support", "slug": "image-and-vision-file-support" },
+        { "title": "Web Search Integration", "slug": "web-search-integration" },
+        { "title": "Enabling and Using Web Search", "slug": "enabling-and-using-web-search" },
+        { "title": "Understanding Search Results", "slug": "understanding-search-results" },
+        { "title": "Voice Features Overview", "slug": "voice-features-overview" },
+        { "title": "Voice Input (Speech-to-Text)", "slug": "voice-input-speech-to-text" },
+        { "title": "Text-to-Speech Output", "slug": "text-to-speech-output" },
+        { "title": "Voice Settings and Preferences", "slug": "voice-settings-and-preferences" },
+        { "title": "Prompt Presets Introduction", "slug": "prompt-presets-introduction" },
+        { "title": "Using Pre-made Prompts", "slug": "using-pre-made-prompts" },
+        { "title": "Creating Custom Prompt Presets", "slug": "creating-custom-prompt-presets" },
+        { "title": "Managing Your Prompt Library", "slug": "managing-your-prompt-library" },
+        { "title": "Vision and Image Analysis", "slug": "vision-and-image-analysis" },
+        { "title": "Uploading Images for Analysis", "slug": "uploading-images-for-analysis" },
+        { "title": "Best Practices for Image Prompts", "slug": "best-practices-for-image-prompts" },
+        { "title": "Multi-modal Conversations", "slug": "multi-modal-conversations" }
+      ]
+    },
+    {
+      "title": "Personal Settings",
+      "slug": "personal-settings",
+      "pages": [
+        { "title": "Profile Management Overview", "slug": "profile-management-overview" },
+        { "title": "Updating Account Information", "slug": "updating-account-information" },
+        { "title": "Changing Display Name and Avatar", "slug": "changing-display-name-and-avatar" },
+        { "title": "Security and Password Management", "slug": "security-and-password-management" },
+        { "title": "Appearance Customization", "slug": "appearance-customization" },
+        { "title": "Theme Selection (Light/Dark/Auto)", "slug": "theme-selection" },
+        { "title": "Font Size and Layout Adjustments", "slug": "font-size-and-layout-adjustments" },
+        { "title": "Color Scheme Preferences", "slug": "color-scheme-preferences" },
+        { "title": "Interface Density Options", "slug": "interface-density-options" },
+        { "title": "Notification Settings", "slug": "notification-settings" },
+        { "title": "Chat Notification Preferences", "slug": "chat-notification-preferences" },
+        { "title": "Email Notification Settings", "slug": "email-notification-settings" },
+        { "title": "Update and Alert Preferences", "slug": "update-and-alert-preferences" },
+        { "title": "API Keys Management", "slug": "api-keys-management" },
+        { "title": "Adding and Managing OpenAI API Keys", "slug": "adding-and-managing-openai-api-keys" },
+        { "title": "Web Search API Configuration", "slug": "web-search-api-configuration" },
+        { "title": "Other Service Integrations", "slug": "other-service-integrations" },
+        { "title": "Key Security Best Practices", "slug": "key-security-best-practices" }
+      ]
+    },
+    {
+      "title": "Quick Reference",
+      "slug": "quick-reference",
+      "pages": [
+        { "title": "Keyboard Shortcuts Guide", "slug": "keyboard-shortcuts-guide" },
+        { "title": "Navigation Shortcuts", "slug": "navigation-shortcuts" },
+        { "title": "Chat Management Shortcuts", "slug": "chat-management-shortcuts" },
+        { "title": "Text Editing Shortcuts", "slug": "text-editing-shortcuts" },
+        { "title": "Status Indicators Reference", "slug": "status-indicators-reference" },
+        { "title": "Connection Status Indicators", "slug": "connection-status-indicators" },
+        { "title": "Model Status Indicators", "slug": "model-status-indicators" },
+        { "title": "Upload and Progress Indicators", "slug": "upload-and-progress-indicators" },
+        { "title": "Common Icons Guide", "slug": "common-icons-guide" },
+        { "title": "Toolbar Icons Reference", "slug": "toolbar-icons-reference" },
+        { "title": "Message Action Icons", "slug": "message-action-icons" },
+        { "title": "Status and Notification Icons", "slug": "status-and-notification-icons" },
+        { "title": "Troubleshooting Common Issues", "slug": "troubleshooting-common-issues" },
+        { "title": "Connection Problems", "slug": "connection-problems" },
+        { "title": "File Upload Issues", "slug": "file-upload-issues" },
+        { "title": "Performance Optimization", "slug": "performance-optimization" },
+        { "title": "Feature-Specific Troubleshooting", "slug": "feature-specific-troubleshooting" }
+      ]
+    },
+    {
+      "title": "Best Practices",
+      "slug": "best-practices",
+      "pages": [
+        { "title": "Effective Prompt Writing", "slug": "effective-prompt-writing" },
+        { "title": "Organizing Your Workspace", "slug": "organizing-your-workspace" },
+        { "title": "Managing Multiple Projects", "slug": "managing-multiple-projects" },
+        { "title": "Collaboration Tips", "slug": "collaboration-tips" },
+        { "title": "Data Privacy and Security", "slug": "data-privacy-and-security" },
+        { "title": "Performance Optimization Tips", "slug": "performance-optimization-tips" }
+      ]
+    },
+    {
+      "title": "LEGAL AI BEST PRACTICES",
+      "slug": "legal-ai-best-practices",
+      "pages": [
+        { "title": "Confidentiality Considerations", "slug": "confidentiality-considerations" },
+        { "title": "Ethical Use of AI in Law", "slug": "ethical-use-of-ai-in-law" },
+        { "title": "Verifying AI Outputs", "slug": "verifying-ai-outputs" },
+        { "title": "Documenting AI Usage", "slug": "documenting-ai-usage" },
+        { "title": "Compliance with Legal Standards", "slug": "compliance-with-legal-standards" },
+        { "title": "Risk Management Strategies", "slug": "risk-management-strategies" },
+        { "title": "Client Communication Best Practices", "slug": "client-communication-best-practices" },
+        { "title": "Continuing Legal Education on AI", "slug": "continuing-legal-education-on-ai" },
+        { "title": "Staying Updated with AI Developments", "slug": "staying-updated-with-ai-developments" },
+        { "title": "Integrating AI into Legal Workflows", "slug": "integrating-ai-into-legal-workflows" },
+        { "title": "Case Studies and Examples", "slug": "case-studies-and-examples" },
+        { "title": "Future Trends in Legal AI", "slug": "future-trends-in-legal-ai" },
+        { "title": "Resources for Legal Professionals", "slug": "resources-for-legal-professionals" },  
+        { "title":"Responsible Use of AI in Legal Research", "slug":"responsible-use-of-ai-in-legal-research" },
+        { "title":"Avoiding Common Pitfalls in Legal AI Use", "slug":"avoiding-common-pitfalls-in-legal-ai-use" },
+        { "title":"Balancing AI Assistance with Human Judgment", "slug":"balancing-ai-assistance-with-human-judgment" },
+        { "title":"Training and Onboarding for Legal AI Tools", "slug":"training-and-onboarding-for-legal-ai-tools"  },
+        { "title":"Measuring the Impact of AI on Legal Practice", "slug":"measuring-the-impact-of-ai-on-legal-practice" },
+        { "title":"Customizing AI Tools for Specific Legal Needs", "slug":"customizing-ai-tools-for-specific-legal-needs" },
+        { "title":"Building Client Trust When Using AI", "slug":"building-client-trust-when-using-ai" },
+        { "title":"AI and Legal Research Efficiency", "slug":"ai-and-legal-research-efficiency" },
+        { "title":"Maintaining Data Integrity with AI Tools", "slug":"maintaining-data-integrity-with-ai-tools" },
+        { "title":"AI in Contract Review and Analysis", "slug":"ai-in-contract-review-and-analysis" },
+        { "title":"Legal Precedent and AI Recommendations", "slug":"legal-precedent-and-ai-recommendations" },
+        { "title":"AI-Assisted Legal Writing Best Practices", "slug":"ai-assisted-legal-writing-best-practices" },
+        { "title":"Ensuring Compliance with Data Protection Laws", "slug":"ensuring-compliance-with-data-protection-laws" },
+        { "title":"AI and Intellectual Property Considerations", "slug":"ai-and-intellectual-property-considerations" },
+        {"title":"Best Practices for Document Chat & RAG", "slug":"best-practices-for-document-chat-rag" },
+        {"title":"Optimizing Voice Features for Legal Use", "slug":"optimizing-voice-features-for-legal-use" },
+        {"title":"Ethical Considerations for Legal AI Use", "slug":"ethical-considerations-for-legal-ai-use" },
+        {"title":"Leveraging Prompt Presets for Legal Tasks", "slug":"leveraging-prompt-presets-for-legal-tasks" },
+        {"title":"Utilizing Vision and Image Analysis in Legal Contexts", "slug":"utilizing-vision-and-image-analysis-in-legal-contexts" },
+        {"title":"Maximizing Personal Settings for Productivity", "slug":"maximizing-personal-settings-for-productivity" },
+        {"title":"Quick Reference for Legal AI Features", "slug":"quick-reference-for-legal-ai-features" },
+        {"title":"Maintaining Accuracy in AI Legal Research", "slug":"maintaining-accuracy-in-ai-legal-research"}
+      ]
+    },
+    {
+      "title": "FAQs", 
+      "slug": "faqs",
+      "pages": [
+        { "title": "General Questions", "slug": "general-questions" },
+        { "title": "Account and Billing", "slug": "account-and-billing" },
+        { "title": "Technical Support", "slug": "technical-support" },
+        { "title": "Feature Requests", "slug": "feature-requests" }
+      ]
+    }
+]
+
+ 

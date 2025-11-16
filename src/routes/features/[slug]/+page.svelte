@@ -12,8 +12,9 @@
 	import { ldapUserSignIn, getSessionUser, userSignIn, userSignUp } from '$lib/apis/auths';
 
 	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
-	import { WEBUI_NAME, config, user, socket, pageContents } from '$lib/stores';
+	import { WEBUI_NAME, config, user, socket } from '$lib/stores';
 	import SEOHead from '$lib/components/seo/SEOHead.svelte';
+	import FAQComponent from '$lib/components/faqs/FAQComponent.svelte';
 
 	import { generateInitialsImage, canvasPixelTest } from '$lib/utils';
 
@@ -22,7 +23,7 @@
 	// import OnBoarding from '$lib/components/OnBoarding.svelte';
 	import SensitiveInput from '$lib/components/common/SensitiveInput.svelte';
 	// import { redirect } from '@sveltejs/kit';
-
+	import { getPage } from '$lib/apis/page_contents';
 
 	import Marquee from '$lib/components/common/Marquee.svelte';
 
@@ -45,11 +46,33 @@
 	let password = '';
 	let confirmPassword = '';
 
+	const faqs = [
+    {
+      question: "What is OpenWebUI?",
+      answer: "<p>OpenWebUI is a powerful web interface...</p>"
+    },
+    {
+      question: "How do I get started?",
+      answer: "<p>Getting started is easy. Simply...</p>"
+    }
+  ];
+
+
+
 	let ldapUsername = '';
-	const filterPageContentBySlug = async (slug: string) => {
-		const content = $pageContents.find((page:any) => page.slug === slug);
-		return content ? content : null;
+
+	const getAllPage = async (slug: string) => {
+		const pageItem = await getPage(localStorage.token, slug).catch((error) => {
+			// toast.error(`${error}`);
+			return [];
+		}); 
+		// alert("Page Item: "+JSON.stringify(pageItem));
+		pageContent=pageItem;
+		// return pageItem;
+     
 	};
+
+
 
 	const setSessionUser = async (sessionUser:any, redirectPath: string | null = null) => {
 		if (sessionUser) {
@@ -196,8 +219,15 @@
 			onboarding = $config?.onboarding ?? false;
 		}
 
-		pageContent=await filterPageContentBySlug(slug);
+		await getAllPage(slug);
+
 	});
+
+	let getStartedHandler=() => {
+		onboarding = false;
+		mode = $config?.features.enable_ldap ? 'ldap' : 'signup';
+	};
+
 </script>
 
 
@@ -230,7 +260,7 @@
 						<div class="relative container mx-auto px-4 py-12 md:py-12 text-center overflow-x-hidden">
 							
 							
-							<div class="">
+							<div class="mb-20">
 								<h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold mb-6 text-white leading-tight break-words">
 									{pageContent.title || 'Discover the Future of Legal Research with AI'}
 								</h1>
@@ -253,14 +283,27 @@
 
 								<div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
 								
-									<a href="/auth" class="group relative bg-white text-indigo-600 px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-50">
-										<span class="relative z-10">Get Started Free</span>
-										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 "></div>
+									<a href="/help" class="group relative bg-white text-indigo-600 px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
+										Learn More 
+										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+
 									</a>
-									<a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20">
+									<!-- <a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform">
 										Learn More
-										<span class="inline-block ml-2 transform">→</span>
-									</a>
+										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+									</a> -->
+									<button
+										aria-labelledby="get-started"
+										class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform"
+										on:click={() => {
+											getStartedHandler();
+										}}
+									>
+									<span class="relative z-10">Get Started Free</span>
+										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
+
+									
+									</button>
 								</div>
 
 
@@ -270,9 +313,9 @@
 								<!-- <p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-gray-100 font-light break-words px-4">
 									Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction. Ask in plain language, get grounded answers with paragraph-level citations to Gazette Notices, Acts (and subsidiary legislation), and authoritative case law—powered by secure RAG and optional firm-specific fine-tuning.
 								</p> -->
-								<div id="introduction" class="intro">
+								<!-- <div id="introduction" class="intro">
 									{@html pageContent?.intro}
-								</div>
+								</div> -->
 
 							</div>
 						</div>
@@ -726,8 +769,17 @@
 		</div>
 		<div class="w-full p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-md overflow-x-hidden">
 			<main class="container mx-auto px-4 py-0">
+
+				<div class="grid lg:grid-cols-4 grid-cols-1 gap-1 h-full relative z-10 overflow-x-hidden">
+					<div class="lg:col-span-3 hidden lg:block">
 				<!-- <LandingComponent /> -->
-				 <!-- {@html pageContent.intro} -->
+				 <div id="introduction" class="intro">
+									{@html pageContent?.intro}
+								</div>
+								</div>
+					<div class="lg:col-span-1 col-span-1">
+						<FAQComponent faqs={faqs} />
+					</div>
 			</main>
 		</div>
 	{/if}

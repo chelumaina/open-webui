@@ -2,39 +2,14 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { Header, Sidebar, HomeContent } from '$lib/components/index.js';
-  
   let { data } = $props();
 
-  let sections =  [{
-        title: 'Getting Started',
-        slug: 'getting-started',
-        pages: [
-          { title: 'Introduction', slug: 'introduction' },
-          { title: 'Installation', slug: 'installation' },
-          { title: 'Quick Start', slug: 'quick-start' }
-        ]
-      },
-      {
-        title: 'Features',
-        slug: 'features',
-        pages: [
-          { title: 'Chat Interface', slug: 'chat-interface' },
-          { title: 'Model Management', slug: 'model-management' },
-          { title: 'Plugins', slug: 'plugins' }
-        ]
-      },
-      {
-        title: 'Advanced',
-        slug: 'advanced',
-        pages: [
-          { title: 'API Reference', slug: 'api-reference' },
-          { title: 'Deployment', slug: 'deployment' },
-          { title: 'Troubleshooting', slug: 'troubleshooting' }
-        ]
-      }
-    ];
+  
+  const { mydata, content } = data;
+  // let { data } = $props();
 
-
+  
+  let sections =  mydata || [];
   
   let isDark = $state(false);
   let isMobileMenuOpen = $state(false);
@@ -70,6 +45,7 @@
   <div class="flex min-h-screen">
     <!-- {data.sections} -->
     <!-- Sidebar -->
+
     <Sidebar 
       sections={sections} 
       {searchQuery} 
@@ -88,7 +64,7 @@
       />
       
       <!-- Home Content -->
-      <HomeContent />
+      <HomeContent content={content} />
     </div>
   </div>
 </div>

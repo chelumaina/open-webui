@@ -4,49 +4,9 @@
 	// import HowItWorksFlow, { type HowItWorksSection } from "$lib/components/common/HowItWorksFlow.svelte";
 	import HowItWorks from "$lib/components/common/HowItWorksFlow.svelte";
   
-  import { getPages } from '$lib/apis/page_contents';
   import { pageContents } from '$lib/stores';
-	import SEOHead from '../seo/SEOHead.svelte';
-  let transactionData: any = null;
-  let pages:any = [];
-	let pageRegistry = {};
 
-
-  const getAllPages = async () => {
-		const pageList:any[] = await getPages(localStorage.token).catch((error) => {
-			// toast.error(`${error}`);
-			return [];
-		});
-		pageContents.set(pageList || []);
-    console.log('Page contents fetched and stored in store:', pageList);
-    console.log('Page contents :', pageContents);
-
-		pageList.forEach((page) => {
-      pages[page.id] = page;
-    });
-
-    console.log('Pages fetched and stored:', pages);
  
-	};
-
-  // let pageContents: any[] = [];
-	async function getAllPages222() { 
-		try { 
-      const res = await getPages(localStorage.token).then(async (res) => {
-        console.log('Page contents fetched:', res);
-        // pageContents = res || [];
-        return res;
-      });
-			transactionData =  res;
-			
-
-		} catch (error) {
-			transactionData = [];
-		} finally {
-			transactionData = [];
-		}
-	}
-
 
 	  // If loading from a file:
   // import data from "$lib/testimonials.json";
@@ -1195,7 +1155,6 @@
 			</div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <!-- *******{$pageContents} -->
               
                 
                   {#each $pageContents as page  }

@@ -271,9 +271,10 @@
 
 								<div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
 								
-									<a href="/auth" class="group relative bg-white text-indigo-600 px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
-										<span class="relative z-10">Get Started Free</span>
-										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
+									<a href="/help" class="group relative bg-white text-indigo-600 px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
+										Learn More 
+										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+
 									</a>
 									<!-- <a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform">
 										Learn More
@@ -286,9 +287,10 @@
 											getStartedHandler();
 										}}
 									>
-										Learn More 
-										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+									<span class="relative z-10">Get Started Free</span>
+										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
 
+									
 									</button>
 								</div>
 

@@ -1,0 +1,1091 @@
+[
+  {
+    "title": "Getting Started",
+    "slug": "getting-started",
+    "metaTitle": "Getting Started with LexLuma - Your AI Legal Assistant",
+    "metaDescription": "Begin your journey with LexLuma. Learn how to create an account, navigate the interface, and start your first AI-powered chat for legal tasks.",
+    "keywords": ["LexLuma start", "account creation", "first login", "basic navigation", "AI legal assistant tutorial", "interface overview"],
+    "og": {
+      "title": "Getting Started with LexLuma - Your AI Legal Assistant",
+      "description": "Begin your journey with LexLuma. Learn how to create an account, navigate the interface, and start your first AI-powered chat for legal tasks.",
+      "type": "article"
+    },
+    "twitter": {
+      "card": "summary",
+      "title": "Getting Started with LexLuma - Your AI Legal Assistant",
+      "description": "Begin your journey with LexLuma. Learn how to create an account, navigate the interface, and start your first AI-powered chat for legal tasks."
+    },
+    "jsonLd": {
+      "@type": "CollectionPage",
+      "name": "Getting Started with LexLuma",
+      "description": "A guide to help new users begin using the LexLuma AI legal assistant platform."
+    },
+    "pages": [
+      {
+        "title": "Introduction to LexLuma",
+        "slug": "introduction-to-lexluma",
+        "metaTitle": "What is LexLuma? - AI for Legal Professionals | LexLuma Help",
+        "metaDescription": "Discover LexLuma, the AI assistant designed for lawyers and legal professionals. Learn about its core features for research, drafting, and analysis.",
+        "keywords": ["LexLuma AI", "legal AI assistant", "what is LexLuma", "AI for lawyers", "legal technology", "law firm software"]
+      },
+      {
+        "title": "First Login & Account Creation",
+        "slug": "first-login-account-creation",
+        "metaTitle": "Create Your LexLuma Account & First Login Guide",
+        "metaDescription": "Step-by-step instructions for creating your LexLuma account and successfully logging in for the first time to access AI legal tools.",
+        "keywords": ["sign up LexLuma", "create account", "first login", "account setup", "legal AI login", "onboarding"]
+      },
+      {
+        "title": "Basic Layout Overview",
+        "slug": "basic-layout-overview",
+        "metaTitle": "LexLuma Interface & Layout Guide for Beginners",
+        "metaDescription": "Get familiar with the LexLuma workspace. This guide explains the sidebar, chat area, and settings to help you navigate efficiently.",
+        "keywords": ["LexLuma layout", "user interface", "workspace overview", "UI guide", "where to find features"]
+      },
+      {
+        "title": "Your First Chat",
+        "slug": "your-first-chat",
+        "metaTitle": "How to Start Your First AI Chat in LexLuma",
+        "metaDescription": "Learn how to start your first conversation with LexLuma's AI. A simple guide to asking questions and getting legal insights.",
+        "keywords": ["first chat", "start conversation", "ask AI a question", "legal AI chat", "beginner tutorial"]
+      },
+      {
+        "title": "Quick Tour of Interface",
+        "slug": "quick-tour-of-interface",
+        "metaTitle": "Quick Tour: LexLuma's Key Features and Interface",
+        "metaDescription": "Take a fast-paced tour of LexLuma's most important features, from the chat history to model selection and settings.",
+        "keywords": ["interface tour", "feature overview", "LexLuma walkthrough", "key features", "quick start guide"]
+      },
+      {
+        "title": "Basic Navigation",
+        "slug": "basic-navigation",
+        "metaTitle": "How to Navigate the LexLuma Platform | Help Guide",
+        "metaDescription": "Master the basics of moving around the LexLuma app. Learn how to access different sections, chats, and workspaces with ease.",
+        "keywords": ["navigation guide", "how to navigate", "menu navigation", "moving between chats", "basic controls"]
+      }
+    ]
+  },
+  {
+    "title": "Sidebar Navigation",
+    "slug": "sidebar-navigation",
+    "metaTitle": "Master LexLuma Sidebar: Chats, Workspaces & Models",
+    "metaDescription": "Learn to use the LexLuma sidebar effectively. Manage your chat history, organize workspaces, and quickly switch between AI models.",
+    "keywords": ["LexLuma sidebar", "chat history", "workspaces", "model switcher", "sidebar customization", "organize chats"],
+    "og": {
+      "title": "Master LexLuma Sidebar: Chats, Workspaces & Models",
+      "description": "Learn to use the LexLuma sidebar effectively. Manage your chat history, organize workspaces, and quickly switch between AI models.",
+      "type": "article"
+    },
+    "twitter": {
+      "card": "summary",
+      "title": "Master LexLuma Sidebar: Chats, Workspaces & Models",
+      "description": "Learn to use the LexLuma sidebar effectively. Manage your chat history, organize workspaces, and quickly switch between AI models."
+    },
+    "jsonLd": {
+      "@type": "CollectionPage",
+      "name": "LexLuma Sidebar Navigation Guide",
+      "description": "Learn how to use the sidebar to manage chats, workspaces, and AI models in LexLuma."
+    },
+    "pages": [
+      {
+        "title": "Chats Section Overview",
+        "slug": "chats-section-overview",
+        "metaTitle": "LexLuma Chats Section: Manage Conversation History",
+        "metaDescription": "Understand the Chats section in LexLuma's sidebar. Learn how to view, search, and access your past and current AI conversations.",
+        "keywords": ["chats section", "conversation history", "past chats", "chat list", "sidebar chats"]
+      },
+      {
+        "title": "Starting New Chats",
+        "slug": "starting-new-chats",
+        "metaTitle": "How to Start a New Chat in LexLuma | Step-by-Step",
+        "metaDescription": "Quick guide on initiating a new conversation with LexLuma's AI. Start fresh chats for different legal topics or tasks.",
+        "keywords": ["new chat", "start conversation", "begin new chat", "fresh chat", "create new conversation"]
+      },
+      {
+        "title": "Managing Chat History",
+        "slug": "managing-chat-history",
+        "metaTitle": "How to Manage & Delete Your LexLuma Chat History",
+        "metaDescription": "Keep your LexLuma workspace organized. Learn how to review, search, archive, and delete your old chat conversations.",
+        "keywords": ["chat history", "delete chats", "manage conversations", "clear history", "organize chats"]
+      },
+      {
+        "title": "Searching and Filtering Chats",
+        "slug": "searching-and-filtering-chats",
+        "metaTitle": "Find Chats Fast: Search & Filter in LexLuma",
+        "metaDescription": "Use LexLuma's powerful search and filter tools to quickly locate specific conversations or topics within your chat history.",
+        "keywords": ["search chats", "filter conversations", "find old chat", "search history", "locate conversation"]
+      },
+      {
+        "title": "Pinning and Organizing Chats",
+        "slug": "pinning-and-organizing-chats",
+        "metaTitle": "Pin Important Chats in LexLuma for Quick Access",
+        "metaDescription": "Keep your most important legal research and drafts at your fingertips. Learn how to pin and organize chats in your LexLuma sidebar.",
+        "keywords": ["pin chats", "favorite chats", "organize sidebar", "important conversations", "quick access chats"]
+      },
+      {
+        "title": "Workspaces Overview",
+        "slug": "workspaces-overview",
+        "metaTitle": "Using Workspaces in LexLuma to Organize Legal Work",
+        "metaDescription": "Use LexLuma Workspaces to separate chats by case, client, or project. Keep your legal work organized and context-specific.",
+        "keywords": ["workspaces", "organize by case", "client workspaces", "project organization", "separate chats"]
+      },
+      {
+        "title": "Creating and Managing Workspaces",
+        "slug": "creating-and-managing-workspaces",
+        "metaTitle": "Create & Manage LexLuma Workspaces | Guide",
+        "metaDescription": "Step-by-step instructions on creating new workspaces, renaming them, and managing chats across different workspaces in LexLuma.",
+        "keywords": ["create workspace", "manage workspaces", "rename workspace", "delete workspace", "workspace settings"]
+      },
+      {
+        "title": "Models Quick Access Panel",
+        "slug": "models-quick-access-panel",
+        "metaTitle": "Quick AI Model Switcher in LexLuma Sidebar",
+        "metaDescription": "Learn how to use the quick access panel in the sidebar to swiftly switch between different AI models for various legal tasks.",
+        "keywords": ["model switcher", "quick access", "change AI model", "sidebar model panel", "switch GPT model"]
+      },
+      {
+        "title": "Sidebar Customization",
+        "slug": "sidebar-customization",
+        "metaTitle": "Customize Your LexLuma Sidebar Layout & Preferences",
+        "metaDescription": "Tailor the LexLuma sidebar to your workflow. Learn how to show, hide, and resize elements for an optimal user experience.",
+        "keywords": ["customize sidebar", "sidebar settings", "hide sidebar", "resize panel", "personalize interface"]
+      }
+    ]
+  },
+  {
+    "title": "Chat Interface",
+    "slug": "chat-interface",
+    "metaTitle": "LexLuma Chat Interface: Composing, Managing & Exporting",
+    "metaDescription": "Master the LexLuma chat interface. Learn to compose messages, use formatting, attach files, manage conversations, and export your legal work.",
+    "keywords": ["LexLuma chat", "compose message", "chat management", "export conversation", "message actions", "file upload"],
+    "og": {
+      "title": "LexLuma Chat Interface: Composing, Managing & Exporting",
+      "description": "Master the LexLuma chat interface. Learn to compose messages, use formatting, attach files, manage conversations, and export your legal work.",
+      "type": "article"
+    },
+    "twitter": {
+      "card": "summary",
+      "title": "LexLuma Chat Interface: Composing, Managing & Exporting",
+      "description": "Master the LexLuma chat interface. Learn to compose messages, use formatting, attach files, manage conversations, and export your legal work."
+    },
+    "jsonLd": {
+      "@type": "CollectionPage",
+      "name": "LexLuma Chat Interface Guide",
+      "description": "A comprehensive guide to using the main chat area in LexLuma, from composing messages to managing conversations."
+    },
+    "pages": [
+      {
+        "title": "Main Chat Area Overview",
+        "slug": "main-chat-area-overview",
+        "metaTitle": "LexLuma Main Chat Area: A Complete Guide",
+        "metaDescription": "Get a detailed overview of the LexLuma main chat area. Understand all the components and tools available during your conversation.",
+        "keywords": ["main chat", "chat window", "conversation area", "chat UI", "message display"]
+      },
+      {
+        "title": "Reading Conversations",
+        "slug": "reading-conversations",
+        "metaTitle": "How to Read & Follow AI Conversations in LexLuma",
+        "metaDescription": "Learn the best ways to read and follow long conversations with LexLuma's AI, including scrolling, formatting, and distinguishing turns.",
+        "keywords": ["read chat", "follow conversation", "chat history view", "scroll messages", "understanding responses"]
+      },
+      {
+        "title": "Composing Messages",
+        "slug": "composing-messages",
+        "metaTitle": "How to Write Effective Messages to LexLuma AI",
+        "metaDescription": "Tips and instructions for composing clear, effective prompts and questions to get the best results from the LexLuma AI for your legal work.",
+        "keywords": ["compose message", "write prompt", "asking questions", "effective prompts", "message input"]
+      },
+      {
+        "title": "Text Formatting and Multi-line Input",
+        "slug": "text-formattin g-and-multi-line-input",
+        "metaTitle": "Use Text Formatting & Multi-line Input in LexLuma",
+        "metaDescription": "Make your prompts clear and structured. Learn how to use multi-line input and basic text formatting in LexLuma chat.",
+        "keywords": ["text formatting", "multi-line input", "code blocks", "lists in chat", "structured prompts"]
+      },
+      {
+        "title": "Attaching Files to Chats",
+        "slug": "attaching-files-to-chats",
+        "metaTitle": "How to Attach Files to Your LexLuma Chats",
+        "metaDescription": "Upload documents, images, and other files directly to your LexLuma chat for the AI to analyze, summarize, or answer questions about.",
+        "keywords": ["attach files", "upload document", "chat with PDF", "file upload", "add attachment"]
+      },
+      {
+        "title": "Supported File Types",
+        "slug": "supported-file-types",
+        "metaTitle": "LexLuma Supported File Types: PDF, DOCX, TXT & More",
+        "metaDescription": "A complete list of file types supported by LexLuma for chat analysis, including documents, images, and data files.",
+        "keywords": ["supported files", "file types", "PDF support", "DOCX support", "image upload", "allowed formats"]
+      },
+      {
+        "title": "Message Actions Menu",
+        "slug": "message-actions-menu",
+        "metaTitle": "LexLuma Message Actions: Copy, Edit, Regenerate",
+        "metaDescription": "Learn how to use the message actions menu on each AI response to copy, edit, regenerate, or share specific parts of the conversation.",
+        "keywords": ["message actions", "copy message", "edit prompt", "regenerate response", "response menu"]
+      },
+      {
+        "title": "Regenerating Responses",
+        "slug": "regenerating-responses",
+        "metaTitle": "How to Regenerate AI Responses in LexLuma",
+        "metaDescription": "Not satisfied with an answer? Learn how to ask LexLuma to regenerate a response for a different perspective or more detail.",
+        "keywords": ["regenerate response", "get new answer", "retry AI", "alternative response", "refresh answer"]
+      },
+      {
+        "title": "Editing Previous Messages",
+        "slug": "editing-previous-messages",
+        "slug": "editing-previous-messages",
+        "metaTitle": "Edit Your Previous Messages in a LexLuma Chat",
+        "metaDescription": "Made a mistake in your prompt? Learn how to edit your previous messages to steer the conversation in a new direction without starting over.",
+        "keywords": ["edit message", "correct prompt", "change question", "edit history", "revise input"]
+      },
+      {
+        "title": "Copying and Sharing Messages",
+        "slug": "copying-and-sharing-messages",
+        "metaTitle": "Copy & Share Snippets from LexLuma Conversations",
+        "metaDescription": "Easily copy text from your AI conversations or share specific messages and responses with colleagues or for your notes.",
+        "keywords": ["copy message", "share chat", "export snippet", "copy text", "share AI output"]
+      },
+      {
+        "title": "Chat Management Options",
+        "slug": "chat-management-options",
+        "metaTitle": "Manage LexLuma Chats: Rename, Export, Clear",
+        "metaDescription": "Access high-level chat management options. Learn how to rename, export, or clear entire conversations in LexLuma.",
+        "keywords": ["chat management", "chat settings", "menu options", "manage conversation", "chat tools"]
+      },
+      {
+        "title": "Renaming and Organizing Chats",
+        "slug": "renaming-and-organizing-chats",
+        "metaTitle": "Rename LexLuma Chats for Better Organization",
+        "metaDescription": "Keep your chat history tidy. Learn how to rename your conversations with descriptive titles for easy future reference.",
+        "keywords": ["rename chat", "chat title", "organize chats", "label conversation", "change chat name"]
+      },
+      {
+        "title": "Exporting Conversations",
+        "slug": "exporting-conversations",
+        "metaTitle": "Export Your LexLuma Chat History | PDF & Text",
+        "metaDescription": "Save a record of your work. Learn how to export your LexLuma conversations to PDF or text file for your records or reports.",
+        "keywords": ["export chat", "save conversation", "PDF export", "text export", "download history"]
+      },
+      {
+        "title": "Clearing Conversation History",
+        "slug": "clearing-conversation-history",
+        "metaTitle": "How to Clear a Single Chat in LexLuma",
+        "metaDescription": "Need a fresh start? Learn how to clear the history of a specific chat conversation while keeping the chat itself open.",
+        "keywords": ["clear chat", "delete conversation", "start fresh", "erase history", "reset chat"]
+      }
+    ]
+  },
+  {
+    "title": "Working with Models",
+    "slug": "working-with-models",
+    "metaTitle": "Choose the Right AI Model in LexLuma | Model Guide",
+    "metaDescription": "Select the best AI model for your legal task. Compare text-only, vision, and specialized models, and learn to adjust parameters for optimal results.",
+    "keywords": ["AI models", "model selection", "GPT-4", "Claude", "model parameters", "temperature", "context window"],
+    "og": {
+      "title": "Choose the Right AI Model in LexLuma | Model Guide",
+      "description": "Select the best AI model for your legal task. Compare text-only, vision, and specialized models, and learn to adjust parameters for optimal results.",
+      "type": "article"
+    },
+    "twitter": {
+      "card": "summary",
+      "title": "Choose the Right AI Model in LexLuma | Model Guide",
+      "description": "Select the best AI model for your legal task. Compare text-only, vision, and specialized models, and learn to adjust parameters for optimal results."
+    },
+    "jsonLd": {
+      "@type": "CollectionPage",
+      "name": "Working with AI Models in LexLuma",
+      "description": "A guide to selecting and configuring different AI models for specialized legal tasks in LexLuma."
+    },
+    "pages": [
+      {
+        "title": "Model Selection Guide",
+        "slug": "model-selection-guide",
+        "metaTitle": "How to Choose the Best AI Model in LexLuma",
+        "metaDescription": "A practical guide to selecting the right AI model in LexLuma for tasks like legal research, contract review, creative brainstorming, and more.",
+        "keywords": ["choose model", "model guide", "which AI to use", "model comparison", "task-specific model"]
+      },
+      {
+        "title": "Understanding Different Model",
+        "slug": "understanding-different-model-types",
+        "metaTitle": "Text, Vision & Multimodal AI Models in LexLuma",
+        "metaDescription": "Understand the difference between text-only, vision, and multimodal AI models available in LexLuma and their applications in law.",
+        "keywords": ["model types", "text models", "vision models", "multimodal AI", "GPT-4V", "model capabilities"]
+      },
+      {
+        "title": "Text-Only Models",
+        "slug": "text-only-models",
+        "metaTitle": "Using Text-Only AI Models for Legal Writing & Research",
+        "metaDescription": "Learn when and how to use text-only AI models in LexLuma for powerful legal drafting, research summarization, and analysis.",
+        "keywords": ["text models", "GPT-3.5", "Claude Instant", "legal writing", "research models"]
+      },
+      {
+        "title": "Vision and Multimodal Models",
+        "slug": "vision-and-multimodal-models",
+        "metaTitle": "LexLuma Vision Models: Analyze Images & Documents",
+        "metaDescription": "Use LexLuma's vision and multimodal models to analyze scanned documents, charts, graphs, and crime scene photos for legal insights.",
+        "keywords": ["vision models", "multimodal", "GPT-4V", "image analysis", "document analysis", "visual AI"]
+      },
+      {
+        "title": "Specialized Models",
+        "slug": "specialized-models",
+        "metaTitle": "Specialized AI Models for Coding & Creative Tasks",
+        "metaDescription": "Explore LexLuma's specialized AI models optimized for specific tasks like code generation, creative writing, and complex reasoning.",
+        "keywords": ["specialized models", "coding AI", "creative writing", "reasoning models", "task-specific AI"]
+      },
+      {
+        "title": "Accessing Model Information",
+        "slug": "accessing-model-information",
+        "metaTitle": "How to Check AI Model Info & Capabilities in LexLuma",
+        "metaDescription": "Learn where to find detailed information about each AI model in LexLuma, including its strengths, limitations, and context window size.",
+        "keywords": ["model info", "AI capabilities", "model specs", "context window", "token limit"]
+      },
+      {
+        "title": "Switching Models Mid-Conversation",
+        "slug": "switching-models-mid-conversation",
+        "metaTitle": "Switch AI Models Mid-Chat in LexLuma | Guide",
+        "metaDescription": "Change AI models during a conversation to leverage different strengths. Learn how to switch models without losing your chat context.",
+        "keywords": ["switch model", "change AI", "mid-conversation", "model switcher", "different model for task"]
+      },
+      {
+        "title": "Model Parameters and Settings",
+        "slug": "model-parameters-and-settings",
+        "metaTitle": "Configure AI Model Parameters in LexLuma",
+        "metaDescription": "Fine-tune how the AI responds by adjusting advanced model parameters like temperature, top-p, and response length in LexLuma.",
+        "keywords": ["model parameters", "AI settings", "fine-tuning", "customize responses", "advanced settings"]
+      },
+      {
+        "title": "Temperature and Creativity Controls",
+        "slug": "temperature-and-creativity-controls",
+        "metaTitle": "AI Temperature Setting: Control Creativity in LexLuma",
+        "metaDescription": "Understand how the 'temperature' parameter affects the creativity and determinism of LexLuma's AI responses for legal tasks.",
+        "keywords": ["temperature", "creativity control", "deterministic output", "randomness", "AI creativity"]
+      },
+      {
+        "title": "Response Length Settings",
+        "slug": "response-length-settings",
+        "metaTitle": "Control AI Response Length in LexLuma | Max Tokens",
+        "metaDescription": "Learn how to set minimum and maximum response lengths to get detailed analyses or concise summaries from the LexLuma AI.",
+        "keywords": ["response length", "max tokens", "short answers", "long answers", "control output length"]
+      },
+      {
+        "title": "Context Window Management",
+        "slug": "context-window-management",
+        "metaTitle": "Manage AI Context Window for Long Legal Documents",
+        "metaDescription": "Understand what the context window is and how to manage it effectively when working with long legal documents and multi-file conversations.",
+        "keywords": ["context window", "token limit", "long documents", "memory", "conversation history"]
+      },
+      {
+        "title": "Model Performance Optimization",
+        "slug": "model-performance-optimization",
+        "metaTitle": "Optimize LexLuma AI Model Performance & Speed",
+        "metaDescription": "Get the best performance and fastest response times from LexLuma's AI models with these tips and configuration settings.",
+        "keywords": ["performance", "optimization", "speed", "fast responses", "efficient AI", "reduce latency"]
+      }
+    ]
+  },
+  {
+    "title": "Advanced Features",
+    "slug": "advanced-features",
+    "metaTitle": "LexLuma Advanced Features: RAG, Web Search, Voice & More",
+    "metaDescription": "Unlock the full power of LexLuma with advanced features like Document Chat (RAG), live web search, voice commands, and custom prompt presets.",
+    "keywords": ["RAG", "document chat", "web search", "voice AI", "prompt presets", "multimodal", "advanced LexLuma"],
+    "og": {
+      "title": "LexLuma Advanced Features: RAG, Web Search, Voice & More",
+      "description": "Unlock the full power of LexLuma with advanced features like Document Chat (RAG), live web search, voice commands, and custom prompt presets.",
+      "type": "article"
+    },
+    "twitter": {
+      "card": "summary",
+      "title": "LexLuma Advanced Features: RAG, Web Search, Voice & More",
+      "description": "Unlock the full power of LexLuma with advanced features like Document Chat (RAG), live web search, voice commands, and custom prompt presets."
+    },
+    "jsonLd": {
+      "@type": "CollectionPage",
+      "name": "LexLuma Advanced Features Guide",
+      "description": "Explore advanced LexLuma capabilities including document analysis, web search, voice features, and prompt management."
+    },
+    "pages": [
+      {
+        "title": "Document Chat & RAG Overview",
+        "slug": "document-chat-rag-overview",
+        "metaTitle": "Chat with Documents using RAG in LexLuma",
+        "metaDescription": "Use Retrieval-Augmented Generation (RAG) to chat with your legal documents. Upload PDFs, DOCX, and more for the AI to analyze and answer questions.",
+        "keywords": ["RAG", "document chat", "chat with PDF", "ask document", "retrieval augmented generation"]
+      },
+      {
+        "title": "Uploading and Managing Documents",
+        "slug": "uploading-and-managing-documents",
+        "metaTitle": "Upload & Manage Documents for AI Analysis in LexLuma",
+        "metaDescription": "Learn how to upload, view, and manage the documents in your LexLuma library for use with the Document Chat feature.",
+        "keywords": ["upload documents", "document library", "manage files", "delete documents", "document storage"]
+      },
+      {
+        "title": "Chatting with PDF Files",
+        "slug": "chatting-with-pdf-files",
+        "metaTitle": "Ask Questions About PDFs in LexLuma | Legal Docs",
+        "metaDescription": "Extract key information from legal PDFs. Learn how to ask LexLuma questions about case law, contracts, and briefs saved as PDF files.",
+        "keywords": ["chat with PDF", "PDF analysis", "ask about PDF", "legal PDF", "contract review PDF"]
+      },
+      {
+        "title": "Working with Text Documents",
+        "slug": "working-with-text-documents",
+        "metaTitle": "Analyze TXT & DOCX Files with LexLuma AI",
+        "metaDescription": "Use LexLuma to summarize, draft, and analyze content from text documents (.txt, .docx) for legal research and drafting.",
+        "keywords": ["text documents", "DOCX files", "TXT files", "summarize document", "analyze text"]
+      },
+      {
+        "title": "Image and Vision File Support",
+        "slug": "image-and-vision-file-support",
+        "metaTitle": "Analyze Images, Charts & Diagrams with LexLuma Vision",
+        "metaDescription": "Upload images for the AI to describe and analyze. Ideal for reviewing visual evidence, charts from reports, or crime scene photos.",
+        "keywords": ["image analysis", "vision AI", "upload images", "describe photo", "visual evidence analysis"]
+      },
+      {
+        "title": "Web Search Integration",
+        "slug": "web-search-integration",
+        "metaTitle": "Use Real-Time Web Search in LexLuma Chats",
+        "metaDescription": "Enable web search to give LexLuma access to current, real-time information for up-to-date legal research and fact-checking.",
+        "keywords": ["web search", "real-time search", "live information", "search internet", "Bing search"]
+      },
+      {
+        "title": "Enabling and Using Web Search",
+        "slug": "enabling-and-using-web-search",
+        "metaTitle": "How to Enable & Use Web Search in LexLuma | Step-by-Step",
+        "metaDescription": "A step-by-step guide on how to turn on the web search feature and use it within your LexLuma conversations.",
+        "keywords": ["enable web search", "turn on search", "use web search", "search toggle", "how to search web"]
+      },
+      {
+        "title": "Understanding Search Results",
+        "slug": "understanding-search-results",
+        "metaTitle": "How LexLuma Uses & Cites Web Search Results",
+        "metaDescription": "Learn how LexLuma incorporates and cites information from web searches, and how to interpret the results in your legal context.",
+        "keywords": ["search results", "citations", "source links", "interpreting results", "web citations"]
+      },
+      {
+        "title": "Voice Features Overview",
+        "slug": "voice-features-overview",
+        "metaTitle": "Use Voice Commands & Text-to-Speech in LexLuma",
+        "metaDescription": "Go hands-free with LexLuma's voice features. Use speech-to-text for input and text-to-speech to have responses read aloud.",
+        "keywords": ["voice features", "speech to text", "text to speech", "voice input", "audio output"]
+      },
+      {
+        "title": "Voice Input (Speech-to-Text)",
+        "slug": "voice-input-speech-to-text",
+        "metaTitle": "Dictate Messages to LexLuma with Voice Input",
+        "metaDescription": "Use your microphone to dictate prompts and questions to LexLuma instead of typing, for faster input and note-taking.",
+        "keywords": ["voice input", "speech to text", "dictation", "microphone", "talk to AI"]
+      },
+      {
+        "title": "Text-to-Speech Output",
+        "slug": "text-to-speech-output",
+        "metaTitle": "Have LexLuma Read Responses Aloud with TTS",
+        "metaDescription": "Enable text-to-speech to have LexLuma's AI responses read aloud, perfect for proofreading drafts or multitasking.",
+        "keywords": ["text to speech", "TTS", "read aloud", "audio playback", "voice output"]
+      },
+      {
+        "title": "Voice Settings and Preferences",
+        "slug": "voice-settings-and-preferences",
+        "metaTitle": "Configure Voice Input & Output Settings in LexLuma",
+        "metaDescription": "Customize your voice experience by adjusting speech-to-text sensitivity, text-to-speech voice selection, and playback speed.",
+        "keywords": ["voice settings", "TTS voice", "STT settings", "playback speed", "microphone settings"]
+      },
+      {
+        "title": "Prompt Presets Introduction",
+        "slug": "prompt-presets-introduction",
+        "metaTitle": "Save Time with Prompt Presets in LexLuma",
+        "metaDescription": "Create and use pre-defined prompt templates for common legal tasks like contract review, deposition preparation, and legal research.",
+        "keywords": ["prompt presets", "prompt templates", "saved prompts", "quick prompts", "task templates"]
+      },
+      {
+        "title": "Using Pre-made Prompts",
+        "slug": "using-pre-made-prompts",
+        "metaTitle": "How to Use LexLuma's Library of Pre-made Prompts",
+        "metaDescription": "Access and use LexLuma's curated library of pre-made prompt presets designed for common legal workflows and tasks.",
+        "keywords": ["pre-made prompts", "prompt library", "use templates", "curated prompts", "example prompts"]
+      },
+      {
+        "title": "Creating Custom Prompt Presets",
+        "slug": "creating-custom-prompt-presets",
+        "metaTitle": "Create Your Own Custom Prompt Presets in LexLuma",
+        "metaDescription": "Build and save your own custom prompt presets for repetitive legal tasks, ensuring consistency and saving time.",
+        "keywords": ["create prompt preset", "custom prompts", "save prompt", "build template", "personal presets"]
+      },
+      {
+        "title": "Managing Your Prompt Library",
+        "slug": "managing-your-prompt-library",
+        "metaTitle": "Organize, Edit & Delete Your LexLuma Prompt Presets",
+        "metaDescription": "Learn how to manage your growing library of prompt presets by organizing, editing, and deleting them as needed.",
+        "keywords": ["manage prompts", "prompt library", "edit preset", "delete preset", "organize prompts"]
+      },
+      {
+        "title": "Vision and Image Analysis",
+        "slug": "vision-and-image-analysis",
+        "metaTitle": "In-Depth Guide to LexLuma's Vision AI Capabilities",
+        "metaDescription": "A comprehensive guide to using LexLuma's vision models to analyze images, extract text, identify objects, and understand visual content.",
+        "keywords": ["vision AI", "image analysis", "computer vision", "visual AI", "image recognition"]
+      },
+      {
+        "title": "Uploading Images for Analysis",
+        "slug": "uploading-images-for-analysis",
+        "metaTitle": "Step-by-Step: Upload Images to LexLuma for AI Analysis",
+        "metaDescription": "Practical instructions on how to upload image files (JPG, PNG, etc.) to LexLuma for description, analysis, and contextual understanding.",
+        "keywords": ["upload images", "image file types", "add picture", "visual upload", "image for analysis"]
+      },
+      {
+        "title": "Best Practices for Image Prompts",
+        "slug": "best-practices-for-image-prompts",
+        "metaTitle": "How to Write Effective Prompts for Image Analysis",
+        "metaDescription": "Learn the best practices for writing prompts that get the most accurate and useful information from LexLuma's vision AI models.",
+        "keywords": ["image prompts", "visual prompts", "asking about images", "effective questions", "vision prompts"]
+      },
+      {
+        "title": "Multi-modal Conversations",
+        "slug": "multi-modal-conversations",
+        "metaTitle": "Combine Text & Images in Multi-modal LexLuma Chats",
+        "metaDescription": "Create rich, multi-modal conversations by combining text prompts with image uploads for complex legal analysis and document review.",
+        "keywords": ["multi-modal", "text and images", "combined input", "rich conversations", "multi-modal chat"]
+      }
+    ]
+  },
+  {
+    "title": "Personal Settings",
+    "slug": "personal-settings",
+    "metaTitle": "LexLuma Personal Settings: Profile, Appearance & API",
+    "metaDescription": "Customize your LexLuma experience. Manage your profile, adjust appearance themes, configure notifications, and set up API keys for integrations.",
+    "keywords": ["LexLuma settings", "profile", "appearance", "theme", "notifications", "API keys", "personalization"],
+    "og": {
+      "title": "LexLuma Personal Settings: Profile, Appearance & API",
+      "description": "Customize your LexLuma experience. Manage your profile, adjust appearance themes, configure notifications, and set up API keys for integrations.",
+      "type": "article"
+    },
+    "twitter": {
+      "card": "summary",
+      "title": "LexLuma Personal Settings: Profile, Appearance & API",
+      "description": "Customize your LexLuma experience. Manage your profile, adjust appearance themes, configure notifications, and set up API keys for integrations."
+    },
+    "jsonLd": {
+      "@type": "CollectionPage",
+      "name": "LexLuma Personal Settings and Configuration",
+      "description": "Guide to customizing your profile, appearance, notifications, and API settings in LexLuma."
+    },
+    "pages": [
+      {
+        "title": "Profile Management Overview",
+        "slug": "profile-management-overview",
+        "metaTitle": "Manage Your LexLuma User Profile & Account",
+        "metaDescription": "An overview of all profile management options in LexLuma, including account info, security, and personal details.",
+        "keywords": ["profile management", "user profile", "account settings", "profile overview", "user account"]
+      },
+      {
+        "title": "Updating Account Information",
+        "slug": "updating-account-information",
+        "metaTitle": "Update Your Email, Name & Account Info in LexLuma",
+        "metaDescription": "Learn how to change your primary email address, name, and other basic account information in your LexLuma profile.",
+        "keywords": ["update account", "change email", "change name", "account info", "profile details"]
+      },
+      {
+        "title": "Changing Display Name and Avatar",
+        "slug": "changing-display-name-and-avatar",
+        "metaTitle": "Change Your Display Name & Profile Picture in LexLuma",
+        "metaDescription": "Personalize how you appear in LexLuma by changing your display name and uploading a custom profile picture or avatar.",
+        "keywords": ["display name", "profile picture", "avatar", "user icon", "personalize profile"]
+      },
+      {
+        "title": "Security and Password Management",
+        "slug": "security-and-password-management",
+        "metaTitle": "Change Password & Enhance LexLuma Account Security",
+        "metaDescription": "Keep your account secure. Learn how to change your password and implement other security best practices for your LexLuma account.",
+        "keywords": ["security", "password change", "account security", "strong password", "secure account"]
+      },
+      {
+        "title": "Appearance Customization",
+        "slug": "appearance-customization",
+        "metaTitle": "Customize LexLuma's Look: Themes, Fonts & Layout",
+        "metaDescription": "Make LexLuma work for your eyes. Customize the theme, font size, color scheme, and layout density for optimal comfort.",
+        "keywords": ["appearance", "customization", "themes", "font size", "layout", "UI customization"]
+      },
+      {
+        "title": "Theme Selection (Light/Dark/Auto)",
+        "slug": "theme-selection",
+        "metaTitle": "Choose Light, Dark, or Auto Theme in LexLuma",
+        "metaDescription": "Reduce eye strain by selecting a light, dark, or system-matched theme for the LexLuma interface.",
+        "keywords": ["theme", "light mode", "dark mode", "auto theme", "dark theme", "light theme"]
+      },
+      {
+        "title": "Font Size and Layout Adjustments",
+        "slug": "font-size-and-layout-adjustments",
+        "metaTitle": "Adjust Text Size & Interface Layout in LexLuma",
+        "metaDescription": "Make text more readable by adjusting the font size and changing the overall density of the LexLuma user interface.",
+        "keywords": ["font size", "text size", "layout density", "compact mode", "readability"]
+      },
+      {
+        "title": "Color Scheme Preferences",
+        "slug": "color-scheme-preferences",
+        "metaTitle": "Customize Color Schemes & Accents in LexLuma",
+        "metaDescription": "Personalize the LexLuma interface further by choosing from different color schemes and accent colors.",
+        "keywords": ["color scheme", "accent color", "UI colors", "personalize colors", "brand colors"]
+      },
+      {
+        "title": "Interface Density Options",
+        "slug": "interface-density-options",
+        "metaTitle": "Choose Comfortable, Compact, or Cozy Layout in LexLuma",
+        "metaDescription": "Control how much information is displayed on screen by selecting between Comfortable, Compact, and Cozy interface density modes.",
+        "keywords": ["interface density", "compact mode", "cozy mode", "comfortable mode", "layout spacing"]
+      },
+      {
+        "title": "Notification Settings",
+        "slug": "notification-settings",
+        "metaTitle": "Configure LexLuma Notifications & Alerts",
+        "metaDescription": "Manage how and when you receive notifications from LexLuma, including in-app alerts and email notifications.",
+        "keywords": ["notifications", "alerts", "notification settings", "manage alerts", "push notifications"]
+      },
+      {
+        "title": "Chat Notification Preferences",
+        "slug": "chat-notification-preferences",
+        "metaTitle": "Set Up Notifications for Chats & AI Responses",
+        "metaDescription": "Configure notifications for when long-running AI tasks are complete or when you receive shared chats from colleagues.",
+        "keywords": ["chat notifications", "AI response alerts", "task completion", "browser notifications"]
+      },
+      {
+        "title": "Email Notification Settings",
+        "slug": "email-notification-settings",
+        "metaTitle": "Manage LexLuma Email Notifications & Digest Frequency",
+        "metaDescription": "Control the frequency of email digests and promotional emails you receive from LexLuma to avoid inbox clutter.",
+        "keywords": ["email notifications", "email digest", "promotional emails", "unsubscribe", "email frequency"]
+      },
+      {
+        "title": "Update and Alert Preferences",
+        "slug": "update-and-alert-preferences",
+        "metaTitle": "Set Preferences for Feature Updates & Security Alerts",
+        "metaDescription": "Choose how you want to be notified about new features, important security updates, and maintenance schedules for LexLuma.",
+        "keywords": ["update alerts", "feature updates", "security alerts", "maintenance notifications", "product news"]
+      },
+      {
+        "title": "API Keys Management",
+        "slug": "api-keys-management",
+        "metaTitle": "Manage API Keys for LexLuma Integrations",
+        "metaDescription": "Learn how to view, create, and manage API keys for integrating LexLuma with other legal software and custom workflows.",
+        "keywords": ["API keys", "API management", "integrations", "generate API key", "key rotation"]
+      },
+      {
+        "title": "Web Search API Configuration",
+        "slug": "web-search-api-configuration",
+        "metaTitle": "Configure Web Search API Settings in LexLuma",
+        "metaDescription": "If using a custom search API, learn how to configure the endpoint and credentials for the web search feature in LexLuma.",
+        "keywords": ["web search API", "search configuration", "Bing API", "custom search", "API endpoint"]
+      },
+      {
+        "title": "Other Service Integrations",
+        "slug": "other-service-integrations",
+        "metaTitle": "Set Up Integrations with Other Legal Services",
+        "metaDescription": "Explore and configure integrations between LexLuma and other legal tech services you use, such as document management systems.",
+        "keywords": ["integrations", "service integrations", "third-party apps", "connect services", "legal tech stack"]
+      },
+      {
+        "title": "Key Security Best Practices",
+        "slug": "key-security-best-practices",
+        "metaTitle": "API Key Security: Best Practices for LexLuma",
+        "metaDescription": "Protect your data and account by following these essential security best practices for managing and using API keys in LexLuma.",
+        "keywords": ["API security", "key security", "best practices", "secure keys", "data protection"]
+      }
+    ]
+  },
+  {
+    "title": "Quick Reference",
+    "slug": "quick-reference",
+    "metaTitle": "LexLuma Quick Reference: Shortcuts, Icons & Troubleshooting",
+    "metaDescription": "Your go-to guide for LexLuma keyboard shortcuts, status icon meanings, and solutions to common issues. Boost your productivity.",
+    "keywords": ["keyboard shortcuts", "troubleshooting", "status icons", "error messages", "quick reference", "FAQ"],
+    "og": {
+      "title": "LexLuma Quick Reference: Shortcuts, Icons & Troubleshooting",
+      "description": "Your go-to guide for LexLuma keyboard shortcuts, status icon meanings, and solutions to common issues. Boost your productivity.",
+      "type": "article"
+    },
+    "twitter": {
+      "card": "summary",
+      "title": "LexLuma Quick Reference: Shortcuts, Icons & Troubleshooting",
+      "description": "Your go-to guide for LexLuma keyboard shortcuts, status icon meanings, and solutions to common issues. Boost your productivity."
+    },
+    "jsonLd": {
+      "@type": "CollectionPage",
+      "name": "LexLuma Quick Reference Guide",
+      "description": "A quick reference for keyboard shortcuts, icon meanings, and troubleshooting common issues in LexLuma."
+    },
+    "pages": [
+      {
+        "title": "Keyboard Shortcuts Guide",
+        "slug": "keyboard-shortcuts-guide",
+        "metaTitle": "LexLuma Keyboard Shortcuts Cheat Sheet",
+        "metaDescription": "A complete list of keyboard shortcuts to navigate and use LexLuma faster, without touching your mouse.",
+        "keywords": ["keyboard shortcuts", "hotkeys", "cheat sheet", "productivity", "quick keys"]
+      },
+      {
+        "title": "Navigation Shortcuts",
+        "slug": "navigation-shortcuts",
+        "metaTitle": "Keyboard Shortcuts for Navigating LexLuma",
+        "metaDescription": "Learn the keyboard shortcuts for quickly moving between chats, workspaces, and settings in LexLuma.",
+        "keywords": ["navigation shortcuts", "switch chats", "open settings", "go to search", "quick nav"]
+      },
+      {
+        "title": "Chat Management Shortcuts",
+        "slug": "chat-management-shortcuts",
+        "metaTitle": "Shortcuts for Managing Chats in LexLuma",
+        "metaDescription": "Use keyboard shortcuts to quickly create new chats, rename them, pin them, or delete them in LexLuma.",
+        "keywords": ["chat shortcuts", "new chat", "rename chat", "pin chat", "delete chat"]
+      },
+      {
+        "title": "Text Editing Shortcuts",
+        "slug": "text-editing-shortcuts",
+        "metaTitle": "Text Formatting & Editing Shortcuts in LexLuma Input",
+        "metaDescription": "Speed up your prompt writing with text editing and formatting shortcuts available in the LexLuma message input box.",
+        "keywords": ["text shortcuts", "editing", "formatting", "select all", "copy paste"]
+      },
+      {
+        "title": "Status Indicators Reference",
+        "slug": "status-indicators-reference",
+        "metaTitle": "LexLuma Status Icons & Indicators: A Complete Guide",
+        "metaDescription": "Understand what all the status icons and indicators in LexLuma mean, from connection status to upload progress.",
+        "keywords": ["status indicators", "status icons", "what does this icon mean", "connection status", "progress bar"]
+      },
+      {
+        "title": "Connection Status Indicators",
+        "slug": "connection-status-indicators",
+        "metaTitle": "LexLuma Connection Status: Online, Offline, Error",
+        "metaDescription": "Learn how to interpret the connection status indicator and what to do if you see an offline or error state.",
+        "keywords": ["connection status", "online", "offline", "error", "connection problem"]
+      },
+      {
+        "title": "Model Status Indicators",
+        "slug": "model-status-indicators",
+        "metaTitle": "AI Model Status & Availability Indicators in LexLuma",
+        "metaDescription": "See if a model is available, busy, or experiencing issues at a glance with the model status indicators in LexLuma.",
+        "keywords": ["model status", "AI available", "model busy", "downtime", "status indicator"]
+      },
+      {
+        "title": "Upload and Progress Indicators",
+        "slug": "upload-and-progress-indicators",
+        "metaTitle": "File Upload & AI Processing Progress Indicators",
+        "metaDescription": "Understand the different progress indicators for file uploads and AI response generation in LexLuma.",
+        "keywords": ["upload progress", "progress bar", "processing", "AI thinking", "loading indicator"]
+      },
+      {
+        "title": "Common Icons Guide",
+        "slug": "common-icons-guide",
+        "metaTitle": "LexLuma Icon Dictionary: What Each Icon Means",
+        "metaDescription": "A visual guide to the most common icons used throughout the LexLuma interface, with explanations of their functions.",
+        "keywords": ["icons guide", "icon dictionary", "what is this icon", "toolbar icons", "button icons"]
+      },
+      {
+        "title": "Toolbar Icons Reference",
+        "slug": "toolbar-icons-reference",
+        "metaTitle": "LexLuma Main Toolbar Icons & Their Functions",
+        "metaDescription": "A reference for all the icons found in the main toolbar of LexLuma, explaining what each one does when clicked.",
+        "keywords": ["toolbar icons", "main toolbar", "top bar icons", "menu icons", "action bar"]
+      },
+      {
+        "title": "Message Action Icons",
+        "slug": "message-action-icons",
+        "metaTitle": "Copy, Regenerate, Edit: Message Action Icons Guide",
+        "metaDescription": "Learn what the small icons on each AI response and your messages do, such as copy, regenerate, edit, and more.",
+        "keywords": ["message actions", "copy icon", "regenerate icon", "edit icon", "message menu"]
+      },
+      {
+        "title": "Status and Notification Icons",
+        "slug": "status-and-notification-icons",
+        "metaTitle": "Notification Bell & System Status Icons in LexLuma",
+        "metaDescription": "Understand the icons in the status bar, including the notification bell, user menu, and system alerts.",
+        "keywords": ["notification icons", "bell icon", "alert icon", "system status", "user menu"]
+      },
+      {
+        "title": "Troubleshooting Common Issues",
+        "slug": "troubleshooting-common-issues",
+        "metaTitle": "Fix Common LexLuma Problems & Errors",
+        "metaDescription": "Step-by-step solutions for the most common issues users face in LexLuma, from login problems to feature errors.",
+        "keywords": ["troubleshooting", "common issues", "error fixes", "problem solving", "help desk"]
+      },
+      {
+        "title": "Connection Problems",
+        "slug": "connection-problems",
+        "metaTitle": "How to Fix LexLuma Connection & Login Issues",
+        "metaDescription": "Can't connect or log in? Follow this guide to diagnose and resolve common network and authentication problems.",
+        "keywords": ["connection problems", "login issues", "can't connect", "network error", "authentication failed"]
+      },
+      {
+        "title": "File Upload Issues",
+        "slug": "file-upload-issues",
+        "metaTitle": "Troubleshoot File Upload Failures in LexLuma",
+        "metaDescription": "Learn what to do when a file fails to upload, is rejected, or isn't processed correctly by LexLuma's AI.",
+        "keywords": ["file upload issues", "upload failed", "file rejected", "processing error", "unsupported file"]
+      },
+      {
+        "title": "Performance Optimization",
+        "slug": "performance-optimization",
+        "metaTitle": "Speed Up a Slow LexLuma Interface | Performance Tips",
+        "metaDescription": "Is LexLuma running slowly? Use these tips to improve performance, from browser cache clearing to model selection.",
+        "keywords": ["performance", "slow loading", "speed up", "optimization", "browser cache"]
+      },
+      {
+        "title": "Feature-Specific Troubleshooting",
+        "slug": "feature-specific-troubleshooting",
+        "metaTitle": "Troubleshoot Specific LexLuma Features Like Web Search & Voice",
+        "metaDescription": "Find solutions for issues with specific features like web search not returning results, voice input not working, or RAG failing.",
+        "keywords": ["feature troubleshooting", "web search not working", "voice input broken", "RAG issues", "model errors"]
+      }
+    ]
+  },
+  {
+    "title": "LEGAL AI BEST PRACTICES",
+    "slug": "legal-ai-best-practices",
+    "metaTitle": "Legal AI Best Practices: Ethical, Effective & Compliant Use",
+    "metaDescription": "A comprehensive guide to using AI ethically and effectively in your legal practice. Ensure confidentiality, verify outputs, and maintain compliance.",
+    "keywords": ["legal AI ethics", "confidentiality", "AI compliance", "verify AI outputs", "risk management", "ethical AI", "legal best practices"],
+    "og": {
+      "title": "Legal AI Best Practices: Ethical, Effective & Compliant Use",
+      "description": "A comprehensive guide to using AI ethically and effectively in your legal practice. Ensure confidentiality, verify outputs, and maintain compliance.",
+      "type": "article"
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Legal AI Best Practices: Ethical, Effective & Compliant Use",
+      "description": "A comprehensive guide to using AI ethically and effectively in your legal practice. Ensure confidentiality, verify outputs, and maintain compliance."
+    },
+    "jsonLd": {
+      "@type": "CollectionPage",
+      "name": "Legal AI Best Practices and Ethical Guidelines",
+      "description": "Essential guidelines for the responsible and effective use of AI in the legal profession, covering ethics, compliance, and risk management."
+    },
+    "pages": [
+      {
+        "title": "Confidentiality Considerations",
+        "slug": "confidentiality-considerations",
+        "metaTitle": "Maintaining Client Confidentiality with LexLuma AI",
+        "metaDescription": "Critical guidelines for protecting client confidentiality and sensitive case information when using LexLuma and other AI tools.",
+        "keywords": ["confidentiality", "client data", "sensitive information", "data privacy", "ethical walls", "information barrier"]
+      },
+      {
+        "title": "Ethical Use of AI in Law",
+        "slug": "ethical-use-of-ai-in-law",
+        "metaTitle": "ABA Rules & Ethical Guidelines for AI in Legal Practice",
+        "metaDescription": "Understand how ABA Model Rules of Professional Conduct apply to the use of AI tools like LexLuma in your legal practice.",
+        "keywords": ["ethical AI", "ABA rules", "professional conduct", "competence", "diligence", "supervision"]
+      },
+      {
+        "title": "Verifying AI Outputs",
+        "slug": "verifying-ai-outputs",
+        "metaTitle": "How to Verify & Validate LexLuma AI Outputs for Accuracy",
+        "metaDescription": "A lawyer's duty of supervision requires verifying AI-generated content. Learn strategies to check LexLuma's work for accuracy and reliability.",
+        "keywords": ["verify AI", "validate outputs", "fact-checking", "accuracy", "hallucinations", "legal research verification"]
+      },
+      {
+        "title": "Documenting AI Usage",
+        "slug": "documenting-ai-usage",
+        "metaTitle": "Best Practices for Documenting AI Use in Legal Matters",
+        "metaDescription": "Why and how to document your use of AI tools like LexLuma in case files, for billing, and for potential malpractice defense.",
+        "keywords": ["documenting AI", "usage log", "case file notes", "billing AI time", "malpractice defense", "audit trail"]
+      },
+      {
+        "title": "Compliance with Legal Standards",
+        "slug": "compliance-with-legal-standards",
+        "metaTitle": "Ensuring AI Compliance with Legal Industry Standards",
+        "metaDescription": "Navigate the complex landscape of legal industry standards, data protection laws, and regulations when implementing AI in your practice.",
+        "keywords": ["compliance", "legal standards", "data protection", "GDPR", "HIPAA", "regulations", "industry compliance"]
+      },
+      {
+        "title": "Risk Management Strategies",
+        "slug": "risk-management-strategies",
+        "metaTitle": "Risk Management for AI Integration in Law Firms",
+        "metaDescription": "Proactive strategies to identify, assess, and mitigate the risks associated with using AI tools like LexLuma in a legal context.",
+        "keywords": ["risk management", "mitigation strategies", "liability", "malpractice risk", "insurance", "due diligence"]
+      },
+      {
+        "title": "Client Communication Best Practices",
+        "slug": "client-communication-best-practices",
+        "metaTitle": "How to Discuss AI Use with Clients | LexLuma Guide",
+        "metaDescription": "Guidance on when and how to inform clients about your use of AI tools, obtaining consent, and setting appropriate expectations.",
+        "keywords": ["client communication", "informed consent", "managing expectations", "transparency", "fee disclosure", "engagement letters"]
+      },
+      {
+        "title": "Continuing Legal Education on AI",
+        "slug": "continuing-legal-education-on-ai",
+        "metaTitle": "CLE Resources for AI in Law & Legal Technology",
+        "metaDescription": "Stay ahead of the curve. A curated list of resources for continuing legal education on AI, machine learning, and legal tech.",
+        "keywords": ["CLE", "continuing legal education", "AI training", "legal tech education", "professional development", "lawyer training"]
+      },
+      {
+        "title": "Integrating AI into Legal Workflows",
+        "slug": "integrating-ai-into-legal-workflows",
+        "metaTitle": "Strategies for Integrating LexLuma into Legal Workflows",
+        "metaDescription": "Practical steps for seamlessly integrating LexLuma AI into your existing legal workflows for research, drafting, and case analysis.",
+        "keywords": ["workflow integration", "legal workflows", "process improvement", "efficiency", "automation", "legal operations"]
+      },
+      {
+        "title": "Future Trends in Legal AI",
+        "slug": "future-trends-in-legal-ai",
+        "metaTitle": "Future Trends & Developments in Legal AI Technology",
+        "metaDescription": "Explore the emerging trends and future developments in legal AI that may impact the practice of law in the coming years.",
+        "keywords": ["future trends", "legal tech future", "AI developments", "emerging technology", "predictions", "legal innovation"]
+      },
+      {
+        "title": "Resources for Legal Professionals",
+        "slug": "resources-for-legal-professionals",
+        "metaTitle": "Curated Resources for Lawyers on AI & Technology",
+        "metaDescription": "A collection of essential resources, including books, articles, organizations, and thought leaders in the legal AI space.",
+        "keywords": ["resources", "legal professionals", "books on AI", "articles", "organizations", "thought leaders"]
+      },
+      {
+        "title": "Responsible Use of AI in Legal Research",
+        "slug": "responsible-use-of-ai-in-legal-research",
+        "metaTitle": "Responsible AI Use for Legal Research & Case Law Analysis",
+        "metaDescription": "Best practices for using LexLuma responsibly in legal research, including cross-referencing sources and understanding limitations.",
+        "keywords": ["legal research", "case law", "responsible use", "cross-referencing", "source validation", "research limitations"]
+      },
+      {
+        "title": "Avoiding Common Pitfalls in Legal AI ",
+        "slug": "avoiding-common-pitfalls-in-legal-ai-use",
+        "metaTitle": "10 Common Pitfalls When Using AI in Law & How to Avoid Them",
+        "metaDescription": "Learn from the mistakes of others. A guide to the most common pitfalls lawyers face with AI and how to steer clear of them.",
+        "keywords": ["common pitfalls", "mistakes to avoid", "AI errors", "over-reliance", "bias", "pitfall prevention"]
+      },
+      {
+        "title": "Balancing AI Assistance with Human Judgment",
+        "slug": "balancing-ai-assistance-with-human-judgment",
+        "metaTitle": "Striking the Right Balance: AI Tools vs. Human Judgment",
+        "metaDescription": "The role of the lawyer is more important than ever. Learn how to balance the efficiency of AI with irreplaceable human legal judgment.",
+        "keywords": ["human judgment", "AI assistance", "balance", "lawyer discretion", "final authority", "critical thinking"]
+      },
+      {
+        "title": "Training and Onboarding for Legal AI",
+        "slug": "training-and-onboarding-for-legal-ai-tools",
+        "metaTitle": "Effective Training & Onboarding for LexLuma in Law Firms",
+        "metaDescription": "Develop a successful training and onboarding program to ensure your firm adopts LexLuma safely, effectively, and consistently.",
+        "keywords": ["training", "onboarding", "law firm training", "adoption", "change management", "staff education"]
+      },
+      {
+        "title": "Measuring the Impact of AI on Legal Practice",
+        "slug": "measuring-the-impact-of-ai-on-legal-practice",
+        "metaTitle": "How to Measure ROI & Impact of AI Tools in Your Law Firm",
+        "metaDescription": "Identify key metrics and methods for measuring the return on investment and overall impact of integrating AI into your legal practice.",
+        "keywords": ["measuring impact", "ROI", "key metrics", "efficiency gains", "cost savings", "client satisfaction"]
+      },
+      {
+        "title": "Customizing AI Tools for Specific Legal Needs",
+        "slug": "customizing-ai-tools-for-specific-legal-needs",
+        "metaTitle": "Customizing LexLuma for Your Specific Legal Practice Area",
+        "metaDescription": "Go beyond generic use. Learn how to customize LexLuma's prompts and workflows for specific practice areas like litigation, corporate law, or IP.",
+        "keywords": ["customizing AI", "practice area", "litigation", "corporate law", "IP law", "family law", "specialization"]
+      },
+      {
+        "title": "Building Client Trust When Using AI",
+        "slug": "building-client-trust-when-using-ai",
+        "metaTitle": "Building & Maintaining Client Trust in an AI-Driven Practice",
+        "metaDescription": "In an era of AI, client trust is paramount. Learn how to communicate your use of technology in a way that builds confidence and trust.",
+        "keywords": ["client trust", "building trust", "transparency", "reassurance", "value proposition", "competitive advantage"]
+      },
+      {
+        "title": "AI and Legal Research Efficiency",
+        "slug": "ai-and-legal-research-efficiency",
+        "metaTitle": "Maximizing Legal Research Efficiency with LexLuma AI",
+        "metaDescription": "Dramatically reduce legal research time while maintaining quality. Techniques for using LexLuma to research cases, statutes, and regulations faster.",
+        "keywords": ["research efficiency", "faster research", "case law research", "statutory research", "time savings", "productivity"]
+      },
+      {
+        "title": "Maintaining Data Integrity with AI Tools",
+        "slug": "maintaining-data-integrity-with-ai-tools",
+        "metaTitle": "Ensuring Data Integrity & Preservation with AI Tools",
+        "metaDescription": "Best practices for ensuring the integrity, authenticity, and preservation of legal data when processed and analyzed by AI systems.",
+        "keywords": ["data integrity", "data preservation", "chain of custody", "authenticity", "metadata", "legal hold"]
+      },
+      {
+        "title": "AI in Contract Review and Analysis",
+        "slug": "ai-in-contract-review-and-analysis",
+        "metaTitle": "Best Practices for AI-Powered Contract Review & Analysis",
+        "metaDescription": "Leverage LexLuma for contract review. Learn how to identify key clauses, assess risks, and ensure consistency across document sets.",
+        "keywords": ["contract review", "contract analysis", "clause identification", "risk assessment", "due diligence", "M&A"]
+      },
+      {
+        "title": "Legal Precedent and AI Recommendations",
+        "slug": "legal-precedent-and-ai-recommendations",
+        "metaTitle": "Evaluating AI-Generated Legal Precedent & Case Recommendations",
+        "metaDescription": "How to critically assess the relevance, authority, and applicability of case law and legal precedents suggested by LexLuma AI.",
+        "keywords": ["legal precedent", "case recommendations", "case evaluation", "relevance", "authority", "shepardizing"]
+      },
+      {
+        "title": "AI-Assisted Legal Writing Best Practices",
+        "slug": "ai-assisted-legal-writing-best-practices",
+        "metaTitle": "AI-Assisted Legal Writing: Drafting Briefs, Memos & Letters",
+        "metaDescription": "Enhance your legal writing without sacrificing your voice. Best practices for using LexLuma to draft, edit, and polish legal documents.",
+        "keywords": ["legal writing", "drafting", "briefs", "memos", "demand letters", "editing", "polishing"]
+      },
+      {
+        "title": "Ensuring Compliance with Data Protection Laws",
+        "slug": "ensuring-compliance-with-data-protection-laws",
+        "metaTitle": "GDPR, CCPA & Data Protection Compliance for Legal AI",
+        "metaDescription": "A detailed guide to ensuring your use of LexLuma complies with major data protection regulations like GDPR, CCPA, and others.",
+        "keywords": ["data protection", "GDPR", "CCPA", "compliance", "data processing", "data subject rights"]
+      },
+      {
+        "title": "AI and Intellectual Property Considerations",
+        "slug": "ai-and-intellectual-property-considerations",
+        "metaTitle": "IP Law & AI: Ownership, Copyright, and Patent Considerations",
+        "metaDescription": "Navigate the complex intellectual property issues surrounding AI, including ownership of AI-generated work and patentability of AI-assisted inventions.",
+        "keywords": ["intellectual property", "copyright", "patent", "ownership", "AI-generated work", "invention"]
+      },
+      {
+        "title": "Best Practices for Document Chat",
+        "slug": "best-practices-for-document-chat-rag",
+        "metaTitle": "Best Practices for Document Chat & RAG in Legal Contexts",
+        "metaDescription": "Maximize the value of LexLuma's Document Chat. Learn how to prepare documents, ask effective questions, and interpret results for legal work.",
+        "keywords": ["document chat best practices", "RAG best practices", "preparing documents", "effective questions", "legal document analysis"]
+      },
+      {
+        "title": "Optimizing Voice Features for Legal Use",
+        "slug": "optimizing-voice-features-for-legal-use",
+        "metaTitle": "Optimizing LexLuma Voice Features for Dictation & Review",
+        "metaDescription": "Practical tips for using voice input and output in a legal setting, from dictating notes to proofreading drafts via text-to-speech.",
+        "keywords": ["voice features optimization", "legal dictation", "proofreading", "hands-free research", "accessibility"]
+      },
+      {
+        "title": "Ethical Considerations for Legal AI Use",
+        "slug": "ethical-considerations-for-legal-ai-use",
+        "metaTitle": "Core Ethical Considerations for Using AI in a Law Practice",
+        "metaDescription": "A deep dive into the core ethical considerations, including bias, fairness, access to justice, and the lawyer's evolving role.",
+        "keywords": ["ethical considerations", "AI bias", "fairness", "access to justice", "accountability", "transparency"]
+      },
+      {
+        "title": "Leveraging Prompt Presets for Legal Tasks",
+        "slug": "leveraging-prompt-presets-for-legal-tasks",
+        "metaTitle": "Creating & Using Prompt Presets for Common Legal Tasks",
+        "metaDescription": "Save time and ensure consistency by creating and using prompt presets for repetitive legal tasks like deposition prep or discovery review.",
+        "keywords": ["prompt presets", "legal task templates", "deposition prep", "discovery review", "contract clause library"]
+      },
+      {
+        "title": "Utilizing Vision and Image Analysis in Legal Contexts",
+        "slug": "utilizing-vision-and-image-analysis-in-legal-contexts",
+        "metaTitle": "Using AI Vision Analysis for Evidence, Charts & Documents",
+        "metaDescription": "Apply LexLuma's vision capabilities to analyze visual evidence, interpret charts from financial documents, and extract text from scanned images.",
+        "keywords": ["vision analysis", "image analysis", "visual evidence", "chart interpretation", "OCR", "document scanning"]
+      },
+      {
+        "title": "Maximizing Personal Settings for Productivity",
+        "slug": "maximizing-personal-settings-for-productivity",
+        "metaTitle": "Configure LexLuma Settings for Maximum Lawyer Productivity",
+        "metaDescription": "Tailor LexLuma's personal settings to create a streamlined, efficient workspace that matches your specific legal workflow and preferences.",
+        "keywords": ["personal settings", "productivity", "workspace optimization", "efficiency", "custom workflow"]
+      },
+      {
+        "title": "Quick Reference for Legal AI Features",
+        "slug": "quick-reference-for-legal-ai-features",
+        "metaTitle": "Quick Reference: LexLuma Features for Legal Professionals",
+        "metaDescription": "A handy, at-a-glance reference sheet linking key LexLuma features to common legal tasks and workflows.",
+        "keywords": ["quick reference", "legal features", "task-to-feature guide", "cheat sheet", "legal workflow map"]
+      },
+      {
+        "title": "Maintaining Accuracy in AI Legal Research",
+        "slug": "maintaining-accuracy-in-ai-legal-research",
+        "metaTitle": "Ensuring Accuracy & Reliability in AI-Powered Legal Research",
+        "metaDescription": "A focused guide on the specific techniques and checks required to maintain the high accuracy standards demanded in legal research when using AI.",
+        "keywords": ["accuracy", "reliability", "legal research", "fact-checking", "source verification", "citation checking"]
+      }
+    ]
+  }
+]

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { json } from '@sveltejs/kit';
 	import DOMPurify from 'dompurify';
 	import { marked } from 'marked';
 
@@ -12,19 +11,15 @@
 	import { getBackendConfig } from '$lib/apis';
 	import { ldapUserSignIn, getSessionUser, userSignIn, userSignUp } from '$lib/apis/auths';
 
-	import {WEBUI_BASE_URL } from '$lib/constants';
-	import { WEBUI_NAME, config, user, socket } from '$lib/stores';
+	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
+	import { WEBUI_NAME, config, user, socket, pageContents } from '$lib/stores';
 	import SEOHead from '$lib/components/seo/SEOHead.svelte';
-	// import ArrowRightCircle from '$lib/components/icons/ArrowRightCircle.svelte';
 	import { generateInitialsImage, canvasPixelTest } from '$lib/utils';
 
 	import Spinner from '$lib/components/common/Spinner.svelte';
 	import LandingComponent from '$lib/components/common/LandingComponent.svelte';
-	// import OnBoarding from '$lib/components/OnBoarding.svelte';
 	import SensitiveInput from '$lib/components/common/SensitiveInput.svelte';
-	// import { redirect } from '@sveltejs/kit';
-	// import { getPages } from '$lib/apis/page_contents';
-
+  	import { getPages } from '$lib/apis/page_contents';
 
 	import Marquee from '$lib/components/common/Marquee.svelte';
 	// import SlideShow from '$lib/common/SlideShow.svelte';
@@ -33,7 +28,7 @@
 
 	let loaded = false;
 	let isVisible = false;
-	let mode = $config?.features.enable_ldap ? 'ldap' : 'signin';
+	let mode = $config?.features?.enable_ldap ? 'ldap' : 'signin';
 
 	let form:any = null;
 
@@ -41,8 +36,10 @@
 	let email = '';
 	let password = '';
 	let confirmPassword = '';
-
+	let pages:any = [];
 	let ldapUsername = '';
+
+
 
 	const setSessionUser = async (sessionUser:any, redirectPath: string | null = null) => {
 		if (sessionUser) {
@@ -116,7 +113,7 @@
 
 	const oauthCallbackHandler = async () => {
 		// Get the value of the 'token' cookie
-		function getCookie(name) {
+		function getCookie(name:any) {
 			const match = document.cookie.match(
 				new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)')
 			);
@@ -187,6 +184,7 @@
 
 		loaded = true;
 		setLogoImage();
+		// await getAllPages();
 
 		if (($config?.features.auth_trusted_header ?? false) || $config?.features.auth === false) {
 			await signInHandler();
@@ -205,7 +203,6 @@
   title="Unlock mysteries with AI Legal Research Assistant - {$i18n.t('Lex Luma AI')}"
   description="Our AI legal assistant is a specialized LLM designed to transform legal work. It enables conversational legal research on case law and legislation, provides direct Q&A, and acts as a drafting assistant. Streamline compliance with automated checklists and centralize your firm's expertise in a powerful knowledge base. It’s the all-in-one intelligent platform for modern legal professionals."
   keywords="AI Legal Research, Legal Research Platform, AI-Powered Legal Tools, Legislation Navigation, Legal Research Features, Legal AI, AI legal research, case law Q&A, legislation navigator, legal drafting assistant, AI compliance, legal knowledge base, generative AI for law, legal LLM, lawyer software, contract drafting AI, regulatory compliance tool"
-
   image="/static/static/apple-touch-icon.png"
   noindex={false}
   structuredData={{
@@ -278,9 +275,10 @@
 
 								<div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
 								
-									<a href="/auth" class="group relative bg-white text-indigo-600 px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
-										<span class="relative z-10">Get Started Free</span>
-										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
+									<a href="/help" class="group relative bg-white text-indigo-600 px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
+										Learn More 
+										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+
 									</a>
 									<!-- <a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform">
 										Learn More
@@ -293,9 +291,10 @@
 											getStartedHandler();
 										}}
 									>
-										Learn More 
-										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+									<span class="relative z-10">Get Started Free</span>
+										<div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
 
+									
 									</button>
 								</div>
 
@@ -770,7 +769,6 @@
 		overflow-x: hidden;
 		max-width: 100vw;
 	}
-
 
 	#auth-page * {
 		max-width: 100%;

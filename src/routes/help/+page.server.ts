@@ -1,37 +1,33 @@
 // Server-side dummy data (SSR). Replace with DB/API later.
-import type { PageServerLoad } from './$types';
+// src/routes/+page.ts
+import { error } from '@sveltejs/kit';
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url'; // if needed in ESM
+import { marked } from 'marked';
 
-const dummyVideos = Array.from({ length: 14 }).map((_, i) => {
-  const id = `vid-${i+1}`;
-  return {
-    id,
-    title: i === 0 ? "Getting Started — Product X" : `Feature Walkthrough #${i+1}`,
-    description: "Step-by-step tutorial with tips & examples.",
-    tags: (i % 3 === 0) ? ["getting-started","setup"] : (i % 3 === 1) ? ["advanced","workflow"] : ["admin","tips"],
-    source: i % 2 === 0 ? `/assets/videos/sample-${(i%3)+1}.mp4` : `https://www.youtube.com/embed/dQw4w9WgXcQ`,
-    type: i % 2 === 0 ? 'mp4' : 'youtube',
-    duration: `${5 + (i % 10)}:${(i * 7) % 60}`.padStart(4, '0'),
-    thumbnail: `/assets/thumbs/thumb-${(i%5)+1}.jpg`
-  };
-});
 
-const dummyManuals = Array.from({ length: 9 }).map((_, i) => {
-  const id = `man-${i+1}`;
-  return {
-    id,
-    title: i === 0 ? "Quick Start Guide" : `User Manual — Section ${i+1}`,
-    description: "Downloadable PDF with full instructions.",
-    tags: i % 2 ? ["getting-started"] : ["admin"],
-    file: `/assets/manuals/manual-${(i%3)+1}.pdf`,
-    size: `${(1 + (i % 4))}.2MB`,
-    preview: `/assets/manuals/preview-${(i%3)+1}.pdf`
-  };
-});
+export async function load({ fetch }) {
+  let content = '';
+  const res = await fetch('/content/json_content.json'); // served from static/
+    if (!res.ok) throw error(500, 'Could not load JSON');
+    const mydata = await res.json();
 
-export const load: PageServerLoad = async () => {
-  return {
-    videos: dummyVideos,
-    manuals: dummyManuals,
-    allTags: Array.from(new Set([...dummyVideos.flatMap(v=>v.tags), ...dummyManuals.flatMap(m=>m.tags)]))
-  };
-};
+      const contentDir = path.resolve('static/content'); // project-root relative
+      const filePath = path.join(contentDir, `index.md`);
+      // content=filePath
+  
+      try {
+        const md = await fs.readFile(filePath, 'utf-8');
+        const html = marked(md); // Convert MD → HTML
+  
+        // return { md };
+        content = html;
+      } catch (e) {
+        throw error(404, 'Page not found => '+e);
+      }
+  
+
+
+  return { mydata, content };
+}

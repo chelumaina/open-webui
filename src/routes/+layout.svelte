@@ -3,7 +3,7 @@
 	import { spring } from 'svelte/motion';
 	import PyodideWorker from '$lib/workers/pyodide.worker?worker';
 	import { Toaster, toast } from 'svelte-sonner';
-
+	import { getPages } from '$lib/apis/page_contents';
 	let loadingProgress = spring(0, {
 		stiffness: 0.05
 	});
@@ -27,7 +27,8 @@
 		isApp,
 		appInfo,
 		toolServers,
-		playingNotificationSound
+		playingNotificationSound,
+		pageContents
 	} from '$lib/stores';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -69,6 +70,7 @@
 	let showRefresh = false;
 
 	const BREAKPOINT = 768;
+	let pages=[];
 
 	const setupSocket = async (enableWebsocket) => {
 		const _socket = io(`${WEBUI_BASE_URL}` || undefined, {
@@ -267,6 +269,24 @@
 				);
 			}
 		}
+	};
+
+
+
+	const getAllPages = async () => {
+		const pageList = await getPages(localStorage.token).catch((error) => {
+			// toast.error(`${error}`);
+			return [];
+		});
+		// alert(pageList)	
+		pageContents.set(pageList || []);
+    
+		pageList.forEach((page) => {
+      pages[page.id] = page;
+    });
+
+    console.log('Pages fetched and stored:', pages);
+ 
 	};
 
 	const chatEventHandler = async (event, cb) => {
@@ -652,9 +672,9 @@
 						await goto(`/auth?redirect=${encodedUrl}`);
 					}
 				} else {
-
+					
 					const str = $page.url.pathname;
-					const keywords = ["/auth", "/activate", "/help", "/error"];
+					const keywords = ["/auth", "/activate", "/help", "/error", "/features"];
 
 					const contains = keywords.some(keyword => str.includes(keyword));
 
@@ -665,6 +685,10 @@
 					// Needed because we pass in tokens from OAuth logins via URL fragments
 					if ((!contains)) {
 						await goto(`/auth?redirect=${encodedUrl}`);
+					}
+					else {
+						// alert("No redirection. Current path: "+$page.url.pathname);
+						await getAllPages();
 					}
 				}
 			}

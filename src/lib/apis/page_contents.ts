@@ -75,3 +75,29 @@ export const getPages = async (token: string): Promise<PageResponse> => {
 	}
 	return res;
 };
+
+
+/**
+ * get Pages
+ */
+export const getPage = async (token: string, slug: string): Promise<PageResponse> => {
+	let error = null;
+	const res = await fetch(`${WEBUI_API_BASE_URL}/features/page/`+slug, {
+		method: 'GET',
+		headers: {
+			Accept: 'application/json',
+			authorization: `Bearer ${token}`
+		}
+	}).then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.catch((err) => {
+			error = err.detail;
+			return null;
+		});
+	if (error) {
+		throw error;
+	}
+	return res;
+};

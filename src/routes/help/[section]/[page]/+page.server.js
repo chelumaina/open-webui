@@ -1,66 +1,46 @@
+// Server-side dummy data (SSR). Replace with DB/API later.
+// src/routes/+page.ts
 import { error } from '@sveltejs/kit';
-
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url'; // if needed in ESM
 import { marked } from 'marked';
 
 
-export async function load({ params, url }) {
+export async function load({ params, url, fetch }) {
   try {
+
+  const res = await fetch('/content/json_content.json'); // served from static/
+    if (!res.ok) throw error(500, 'Could not load JSON');
+    const sections_data = await res.json();
     
+
+
     // // Import markdown content
-    let content=`/content/${params.page}.md`;
+    let content=`/content/${params.section}/${params.page}.md`;
      // sanitize params.page to avoid path traversal
     const name = params.page.replace(/[^a-zA-Z0-9-_]/g, '');
-    const contentDir = path.resolve('src/lib/content'); // project-root relative
-    const filePath = path.join(contentDir, `${name}.md`);
+      const contentDir = path.resolve('static/content'); // project-root relative
+    const filePath = path.join(contentDir, `${params.section}/${name}.md`);
+      // content=filePath
+  
+      try {
+        const md = await fs.readFile(filePath, 'utf-8');
+        const html = marked(md); // Convert MD → HTML
+  
+        // return { md };
+        content = html;
+      } catch (e) {
+        throw error(404, 'Page not found => '+e);
+      }
+  
 
-    try {
-      const md = await fs.readFile(filePath, 'utf-8');
-      const html = marked(md); // Convert MD → HTML
-
-      // return { md };
-      content = html;
-    } catch (e) {
-      throw error(404, 'Page not found');
-    }
-
-    
 
     // Define navigation structure
-    const sections = [
-      {
-        title: 'Getting Started',
-        slug: 'getting-started',
-        pages: [
-          { title: 'Introduction', slug: 'introduction' },
-          { title: 'Installation', slug: 'installation' },
-          { title: 'Quick Start', slug: 'quick-start' }
-        ]
-      },
-      {
-        title: 'Features',
-        slug: 'features',
-        pages: [
-          { title: 'Chat Interface', slug: 'chat-interface' },
-          { title: 'Model Management', slug: 'model-management' },
-          { title: 'Plugins', slug: 'plugins' }
-        ]
-      },
-      {
-        title: 'Advanced',
-        slug: 'advanced',
-        pages: [
-          { title: 'API Reference', slug: 'api-reference' },
-          { title: 'Deployment', slug: 'deployment' },
-          { title: 'Troubleshooting', slug: 'troubleshooting' }
-        ]
-      }
-    ];
+    const sections = sections_data
 
     // Find current page and calculate next/previous
-    let currentSection, currentPage, pageIndex, sectionIndex;
+    let currentSection=[], currentPage={ "title": "Introduction to LexLuma", "slug": "introduction-to-lexluma" }, pageIndex, sectionIndex;
     
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i];
@@ -79,7 +59,7 @@ export async function load({ params, url }) {
     }
 
     if (!currentPage) {
-      throw error(404, 'Page not found');
+      throw error(404, 'Page not found => '+currentPage);
     }
 
     // Calculate next and previous pages
@@ -89,39 +69,56 @@ export async function load({ params, url }) {
     if (pageIndex > 0) {
       prevPage = {
         title: currentSection.pages[pageIndex - 1].title,
-        url: `/docs/${params.section}/${currentSection.pages[pageIndex - 1].slug}`
+        url: `/help/${params.section}/${currentSection.pages[pageIndex - 1].slug}`
       };
     } else if (sectionIndex > 0) {
       const prevSection = sections[sectionIndex - 1];
       prevPage = {
         title: prevSection.pages[prevSection.pages.length - 1].title,
-        url: `/docs/${prevSection.slug}/${prevSection.pages[prevSection.pages.length - 1].slug}`
+        url: `/help/${prevSection.slug}/${prevSection.pages[prevSection.pages.length - 1].slug}`
       };
     }
 
     if (pageIndex < currentSection.pages.length - 1) {
       nextPage = {
         title: currentSection.pages[pageIndex + 1].title,
-        url: `/docs/${params.section}/${currentSection.pages[pageIndex + 1].slug}`
+        url: `/help/${params.section}/${currentSection.pages[pageIndex + 1].slug}`
       };
     } else if (sectionIndex < sections.length - 1) {
       const nextSection = sections[sectionIndex + 1];
       nextPage = {
         title: nextSection.pages[0].title,
-        url: `/docs/${nextSection.slug}/${nextSection.pages[0].slug}`
+        url: `/help/${nextSection.slug}/${nextSection.pages[0].slug}`
       };
     }
 
     return {
       content,
+      sections_data:sections,
       currentPage: {
         title: currentPage.title,
-        section: currentSection.title
+        section: currentSection.title,
+        slug: currentPage.slug
+      },
+      seo: {
+        metaTitle: currentPage.metaTitle || currentPage.title,
+        metaDescription: currentPage.metaDescription || '',
+        metaKeywords: currentPage.keywords || '',
+        metaStructure: {
+        "@context": "https://schema.org",
+        "@type": "Use-Gudelines",
+        "headline": `${currentPage.metaTitle} - Lex Luma AI`,
+        "description": `${currentPage.metaDescription}`,
+        "author": {
+          "@type": "Organization",
+          "name": "Lex Luma"
+        }
+      }
       },
       prevPage,
       nextPage
     };
   } catch (e) {
-    throw error(404, 'Page not found');
+    throw error(404, 'Page not found => '+e);
   }
 }

@@ -3,6 +3,23 @@
   
   let { sections, searchQuery, isMobileMenuOpen, closeMobileMenu } = $props();
   
+  // Track collapsed state for each section
+  let collapsedSections = $state({});
+  
+  // Initialize all sections as expanded
+  $effect(() => {
+    sections.forEach(section => {
+      if (collapsedSections[section.slug] === undefined) {
+        collapsedSections[section.slug] = false;
+      }
+    });
+  });
+  
+  // Toggle section collapse state
+  function toggleSection(slug) {
+    collapsedSections[slug] = !collapsedSections[slug];
+  }
+  
   // Use $derived for computed values at the top level
   const filteredSections = $derived(
     sections.map(section => ({
@@ -11,15 +28,18 @@
         page.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         section.title.toLowerCase().includes(searchQuery.toLowerCase())
       )
-    })).filter(section => section.pages.length > 0)
+    })).filter((section) => section.pages.length > 0)
   );
 
-  // Create a derived value for active path checking
+  
   const currentPath = $derived($page.url.pathname);
+
+
+
 </script>
 
 <!-- Desktop Sidebar -->
-<aside class="w-64 bg-slate-50 dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 fixed h-screen overflow-y-auto hidden lg:block">
+<aside class="w-85 bg-slate-50 dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 fixed h-screen overflow-y-auto hidden lg:block">
   <div class="p-6">
     <!-- Logo -->
     <div class="flex items-center space-x-3 mb-8">
@@ -44,25 +64,39 @@
       </div>
     </div>
     
+    
     <!-- Navigation -->
     <nav class="space-y-6">
       {#each filteredSections as section}
         <div>
-          <h3 class="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wide mb-3">
-            {section.title}
-          </h3>
-          <ul class="space-y-2">
-            {#each section.pages as page}
-              <li>
-                <a 
-                  href="/help/{section.slug}/{page.slug}" 
-                  class="block px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-colors duration-200 {(currentPath === `/help/${section.slug}/${page.slug}` ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400 border border-slate-200 dark:border-slate-600' : '')}"
-                >
-                  {page.title}
-                </a>
-              </li>
-            {/each}
-          </ul>
+          <button 
+            on:click={() => toggleSection(section.slug)}
+            class="w-full flex items-center justify-between text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wide mb-3 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+          >
+            <h3>{section.title}</h3>
+            <svg 
+              class="w-4 h-4 transition-transform duration-200 {collapsedSections[section.slug] ? '-rotate-90' : ''}" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {#if !collapsedSections[section.slug]}
+            <ul class="space-y-2">
+              {#each section.pages as page}
+                <li>
+                  <a 
+                    href="/help/{section.slug}/{page.slug}" 
+                    class="block px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-colors duration-200 {(currentPath === `/help/${section.slug}/${page.slug}` ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400 border border-slate-200 dark:border-slate-600' : '')}"
+                  >
+                    {page.title}
+                  </a>
+                </li>
+              {/each}
+            </ul>
+          {/if}
         </div>
       {/each}
     </nav>
@@ -109,22 +143,35 @@
         <nav class="space-y-6">
           {#each filteredSections as section}
             <div>
-              <h3 class="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wide mb-3">
-                {section.title}
-              </h3>
-              <ul class="space-y-2">
-                {#each section.pages as page}
-                  <li>
-                    <a 
-                      href="/help/{section.slug}/{page.slug}" 
-                      on:click={closeMobileMenu}
-                      class="block px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-colors duration-200 {(currentPath === `/help/${section.slug}/${page.slug}` ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400 border border-slate-200 dark:border-slate-600' : '')}"
-                    >
-                      {page.title}
-                    </a>
-                  </li>
-                {/each}
-              </ul>
+              <button 
+                on:click={() => toggleSection(section.slug)}
+                class="w-full flex items-center justify-between text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wide mb-3 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+              >
+                <h3>{section.title}</h3>
+                <svg 
+                  class="w-4 h-4 transition-transform duration-200 {collapsedSections[section.slug] ? '-rotate-90' : ''}" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {#if !collapsedSections[section.slug]}
+                <ul class="space-y-2">
+                  {#each section.pages as page}
+                    <li>
+                      <a 
+                        href="/help/{section.slug}/{page.slug}" 
+                        on:click={closeMobileMenu}
+                        class="block px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-colors duration-200 {(currentPath === `/help/${section.slug}/${page.slug}` ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400 border border-slate-200 dark:border-slate-600' : '')}"
+                      >
+                        {page.title}
+                      </a>
+                    </li>
+                  {/each}
+                </ul>
+              {/if}
             </div>
           {/each}
         </nav>
