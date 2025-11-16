@@ -1131,7 +1131,7 @@
 	
 	onMount(async () => {
 		isVisible = true;
-    await getAllPages();
+    // await getAllPages();
 	});
  
 </script>
