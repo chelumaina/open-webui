@@ -674,7 +674,7 @@
 				} else {
 					
 					const str = $page.url.pathname;
-					const keywords = ["/auth", "/activate", "/help", "/error", "/features", '/sitemap.xml', '/robots.txt'];
+					const keywords = ["/auth", "/activate", "/help", "/error", "/features", "/pricing", "/terms", "/privacy", "/sitemap.xml", "/robots.txt"];
 
 					const contains = keywords.some(keyword => str.includes(keyword));
 
