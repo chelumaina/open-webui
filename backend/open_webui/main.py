@@ -2216,14 +2216,24 @@ async def get_opensearch_xml():
     """
     return Response(content=xml_content, media_type="application/xml")
 
+@app.get("/robots.txt")
+async def get_robots_txt():
+    robots_content = rf"""
+    User-agent: *
+    Disallow: /api/
+    Disallow: /oauth/
+    Disallow: /admin/
+    Disallow: /static/
+    Disallow: /docs/
+    Sitemap: {app.state.config.WEBUI_URL}/sitemap.xml
+    """
+    return Response(content=robots_content, media_type="text/plain")
 
-@app.get("/sitemap.xml")
-async def get_opensearch_xml():
-    xml_content = rf"""
-    
-<?xml version="1.0" encoding="UTF-8"?>
+
+@app.get("/sitemaps.xml")
+async def get_sitemap_xml():
+    xml_content = rf"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
   <url>
     <loc>http://localhost:5173/</loc>
     <lastmod>2025-11-16</lastmod>
@@ -3083,7 +3093,10 @@ async def get_opensearch_xml():
     <priority>0.8</priority>
   </url>
 </urlset>
-    """
+"""
+    
+    
+    
     return Response(content=xml_content, media_type="application/xml")
 
 
