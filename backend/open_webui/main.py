@@ -2211,7 +2211,7 @@ async def get_opensearch_xml():
     <InputEncoding>UTF-8</InputEncoding>
     <Image width="16" height="16" type="image/x-icon">{app.state.config.WEBUI_URL}/static/favicon-dark.png</Image>
     <Url type="text/html" method="get" template="{app.state.config.WEBUI_URL}/?q={"{searchTerms}"}"/>
-    <moz:SearchForm>{app.state.config.WEBUI_URL}</moz:SearchForm>
+    <moz:SearchForm>{app.state.config.WEBUI_URL}/</moz:SearchForm>
     </OpenSearchDescription>
     """
     return Response(content=xml_content, media_type="application/xml")
@@ -2235,859 +2235,859 @@ async def get_sitemap_xml():
     xml_content = rf"""<?xml version="1.0" encoding="UTF-8"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
         <url>
-            <loc>{app.state.config.WEBUI_URL}</loc>
+            <loc>{app.state.config.WEBUI_URL}/</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>1</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}features/ai-conversational-legal-research</loc>
+            <loc>{app.state.config.WEBUI_URL}/features/ai-conversational-legal-research</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}features/legislation-gazette-navigator</loc>
+            <loc>{app.state.config.WEBUI_URL}/features/legislation-gazette-navigator</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.9</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}features/case-law-qa</loc>
+            <loc>{app.state.config.WEBUI_URL}/features/case-law-qa</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.7</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}features/drafting-assistant</loc>
+            <loc>{app.state.config.WEBUI_URL}/features/drafting-assistant</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.7</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}features/compliance-checklists</loc>
+            <loc>{app.state.config.WEBUI_URL}/features/compliance-checklists</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.7</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}features/knowledge-base-dms-integration</loc>
+            <loc>{app.state.config.WEBUI_URL}/features/knowledge-base-dms-integration</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.7</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/getting-started</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/getting-started</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.9</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/getting-started/introduction-to-lexluma</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/getting-started/introduction-to-lexluma</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/getting-started/first-login-account-creation</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/getting-started/first-login-account-creation</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/getting-started/basic-layout-overview</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/getting-started/basic-layout-overview</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/getting-started/your-first-chat</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/getting-started/your-first-chat</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/getting-started/quick-tour-of-interface</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/getting-started/quick-tour-of-interface</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/getting-started/basic-navigation</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/getting-started/basic-navigation</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/sidebar-navigation</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.9</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/sidebar-navigation/chats-section-overview</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/sidebar-navigation/starting-new-chats</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/sidebar-navigation/managing-chat-history</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/sidebar-navigation/searching-and-filtering-chats</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/sidebar-navigation/pinning-and-organizing-chats</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/sidebar-navigation/workspaces-overview</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/sidebar-navigation/creating-and-managing-workspaces</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/sidebar-navigation/models-quick-access-panel</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/sidebar-navigation/sidebar-customization</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/sidebar-navigation</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.9</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/main-chat-area-overview</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/sidebar-navigation/chats-section-overview</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/reading-conversations</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/sidebar-navigation/starting-new-chats</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/composing-messages</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/sidebar-navigation/managing-chat-history</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/text-formatting-and-multi-line-input</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/sidebar-navigation/searching-and-filtering-chats</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/attaching-files-to-chats</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/sidebar-navigation/pinning-and-organizing-chats</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/supported-file-types</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/sidebar-navigation/workspaces-overview</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/message-actions-menu</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/sidebar-navigation/creating-and-managing-workspaces</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/regenerating-responses</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/sidebar-navigation/models-quick-access-panel</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/editing-previous-messages</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/sidebar-navigation/sidebar-customization</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/copying-and-sharing-messages</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/chat-management-options</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/renaming-and-organizing-chats</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/exporting-conversations</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/chat-interface/clearing-conversation-history</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.9</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/model-selection-guide</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/main-chat-area-overview</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/understanding-different-model-types</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/reading-conversations</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/text-only-models</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/composing-messages</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/vision-and-multimodal-models</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/text-formatting-and-multi-line-input</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/specialized-models</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/attaching-files-to-chats</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/accessing-model-information</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/supported-file-types</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/switching-models-mid-conversation</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/message-actions-menu</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/model-parameters-and-settings</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/regenerating-responses</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/temperature-and-creativity-controls</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/editing-previous-messages</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/response-length-settings</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/copying-and-sharing-messages</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/context-window-management</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/chat-management-options</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/working-with-models/model-performance-optimization</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/renaming-and-organizing-chats</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.9</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/document-chat-rag-overview</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/exporting-conversations</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/uploading-and-managing-documents</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/chat-interface/clearing-conversation-history</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/chatting-with-pdf-files</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/working-with-text-documents</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/image-and-vision-file-support</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/web-search-integration</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/enabling-and-using-web-search</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/understanding-search-results</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/voice-features-overview</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/voice-input-speech-to-text</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/text-to-speech-output</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/voice-settings-and-preferences</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/prompt-presets-introduction</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/using-pre-made-prompts</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/creating-custom-prompt-presets</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/managing-your-prompt-library</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/vision-and-image-analysis</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/uploading-images-for-analysis</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/best-practices-for-image-prompts</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/advanced-features/multi-modal-conversations</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.9</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/profile-management-overview</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/model-selection-guide</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/updating-account-information</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/understanding-different-model-types</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/changing-display-name-and-avatar</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/text-only-models</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/security-and-password-management</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/vision-and-multimodal-models</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/appearance-customization</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/specialized-models</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/theme-selection</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/accessing-model-information</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/font-size-and-layout-adjustments</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/switching-models-mid-conversation</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/color-scheme-preferences</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/model-parameters-and-settings</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/interface-density-options</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/temperature-and-creativity-controls</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/notification-settings</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/response-length-settings</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/chat-notification-preferences</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/context-window-management</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/email-notification-settings</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/working-with-models/model-performance-optimization</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/update-and-alert-preferences</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/api-keys-management</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/web-search-api-configuration</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/other-service-integrations</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/personal-settings/key-security-best-practices</loc>
-            <lastmod>2025-11-16</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-        </url>
-        <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.9</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/keyboard-shortcuts-guide</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/document-chat-rag-overview</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/navigation-shortcuts</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/uploading-and-managing-documents</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/chat-management-shortcuts</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/chatting-with-pdf-files</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/text-editing-shortcuts</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/working-with-text-documents</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/status-indicators-reference</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/image-and-vision-file-support</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/connection-status-indicators</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/web-search-integration</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/model-status-indicators</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/enabling-and-using-web-search</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/upload-and-progress-indicators</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/understanding-search-results</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/common-icons-guide</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/voice-features-overview</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/toolbar-icons-reference</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/voice-input-speech-to-text</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/message-action-icons</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/text-to-speech-output</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/status-and-notification-icons</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/voice-settings-and-preferences</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/troubleshooting-common-issues</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/prompt-presets-introduction</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/connection-problems</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/using-pre-made-prompts</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/file-upload-issues</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/creating-custom-prompt-presets</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/performance-optimization</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/managing-your-prompt-library</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/quick-reference/feature-specific-troubleshooting</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/vision-and-image-analysis</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/uploading-images-for-analysis</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/best-practices-for-image-prompts</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/advanced-features/multi-modal-conversations</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.9</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/confidentiality-considerations</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/profile-management-overview</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/ethical-use-of-ai-in-law</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/updating-account-information</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/verifying-ai-outputs</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/changing-display-name-and-avatar</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/documenting-ai-usage</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/security-and-password-management</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/compliance-with-legal-standards</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/appearance-customization</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/risk-management-strategies</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/theme-selection</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/client-communication-best-practices</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/font-size-and-layout-adjustments</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/continuing-legal-education-on-ai</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/color-scheme-preferences</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/integrating-ai-into-legal-workflows</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/interface-density-options</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/future-trends-in-legal-ai</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/notification-settings</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/resources-for-legal-professionals</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/chat-notification-preferences</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/responsible-use-of-ai-in-legal-research</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/email-notification-settings</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/avoiding-common-pitfalls-in-legal-ai-use</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/update-and-alert-preferences</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/balancing-ai-assistance-with-human-judgment</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/api-keys-management</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/training-and-onboarding-for-legal-ai-tools</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/web-search-api-configuration</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/measuring-the-impact-of-ai-on-legal-practice</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/other-service-integrations</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/customizing-ai-tools-for-specific-legal-needs</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/personal-settings/key-security-best-practices</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/building-client-trust-when-using-ai</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.9</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/keyboard-shortcuts-guide</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/ai-and-legal-research-efficiency</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/navigation-shortcuts</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/maintaining-data-integrity-with-ai-tools</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/chat-management-shortcuts</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/ai-in-contract-review-and-analysis</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/text-editing-shortcuts</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/legal-precedent-and-ai-recommendations</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/status-indicators-reference</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/ai-assisted-legal-writing-best-practices</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/connection-status-indicators</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/ensuring-compliance-with-data-protection-laws</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/model-status-indicators</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/ai-and-intellectual-property-considerations</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/upload-and-progress-indicators</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/best-practices-for-document-chat-rag</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/common-icons-guide</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/optimizing-voice-features-for-legal-use</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/toolbar-icons-reference</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/ethical-considerations-for-legal-ai-use</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/message-action-icons</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/leveraging-prompt-presets-for-legal-tasks</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/status-and-notification-icons</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/utilizing-vision-and-image-analysis-in-legal-contexts</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/troubleshooting-common-issues</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/maximizing-personal-settings-for-productivity</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/connection-problems</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/quick-reference-for-legal-ai-features</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/file-upload-issues</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
         <url>
-            <loc>{app.state.config.WEBUI_URL}help/legal-ai-best-practices/maintaining-accuracy-in-ai-legal-research</loc>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/performance-optimization</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/quick-reference/feature-specific-troubleshooting</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.9</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/confidentiality-considerations</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/ethical-use-of-ai-in-law</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/verifying-ai-outputs</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/documenting-ai-usage</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/compliance-with-legal-standards</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/risk-management-strategies</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/client-communication-best-practices</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/continuing-legal-education-on-ai</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/integrating-ai-into-legal-workflows</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/future-trends-in-legal-ai</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/resources-for-legal-professionals</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/responsible-use-of-ai-in-legal-research</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/avoiding-common-pitfalls-in-legal-ai-use</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/balancing-ai-assistance-with-human-judgment</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/training-and-onboarding-for-legal-ai-tools</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/measuring-the-impact-of-ai-on-legal-practice</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/customizing-ai-tools-for-specific-legal-needs</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/building-client-trust-when-using-ai</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/ai-and-legal-research-efficiency</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/maintaining-data-integrity-with-ai-tools</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/ai-in-contract-review-and-analysis</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/legal-precedent-and-ai-recommendations</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/ai-assisted-legal-writing-best-practices</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/ensuring-compliance-with-data-protection-laws</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/ai-and-intellectual-property-considerations</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/best-practices-for-document-chat-rag</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/optimizing-voice-features-for-legal-use</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/ethical-considerations-for-legal-ai-use</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/leveraging-prompt-presets-for-legal-tasks</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/utilizing-vision-and-image-analysis-in-legal-contexts</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/maximizing-personal-settings-for-productivity</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/quick-reference-for-legal-ai-features</loc>
+            <lastmod>2025-11-16</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <url>
+            <loc>{app.state.config.WEBUI_URL}/help/legal-ai-best-practices/maintaining-accuracy-in-ai-legal-research</loc>
             <lastmod>2025-11-16</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
