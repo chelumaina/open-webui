@@ -35,7 +35,7 @@
 	import { updated } from '$app/state';
 
 	import i18n, { initI18n, getLanguages, changeLanguage } from '$lib/i18n';
-	import SEOHead from '$lib/components/seo/SEOHead.svelte';
+
 	import '../tailwind.css';
 	import '../app.css';
 	import 'tippy.js/dist/tippy.css';
@@ -51,11 +51,7 @@
 	import NotificationToast from '$lib/components/NotificationToast.svelte';
 	import AppSidebar from '$lib/components/app/AppSidebar.svelte';
 	import Spinner from '$lib/components/common/Spinner.svelte';
-	// let { data } = $props();
-  	// const { header_data } = data;
-	export let data;
-	// import {header_data} from data;
-	console.log(data.header_data)
+
 	// handle frontend updates (https://svelte.dev/docs/kit/configuration#version)
 	beforeNavigate(({ willUnload, to }) => {
 		if (updated.current && !willUnload && to?.url) {
@@ -729,23 +725,6 @@
 	});
 </script>
 
-<SEOHead
-  title="Unlock mysteries with AI Legal Research Assistant - {$i18n.t('Lex Luma AI')}"
-  description="Our AI legal assistant is a specialized LLM designed to transform legal work. It enables conversational legal research on case law and legislation, provides direct Q&A, and acts as a drafting assistant. Streamline compliance with automated checklists and centralize your firm's expertise in a powerful knowledge base. It’s the all-in-one intelligent platform for modern legal professionals."
-  keywords="AI Legal Research, Legal Research Platform, AI-Powered Legal Tools, Legislation Navigation, Legal Research Features, Legal AI, AI legal research, case law Q&A, legislation navigator, legal drafting assistant, AI compliance, legal knowledge base, generative AI for law, legal LLM, lawyer software, contract drafting AI, regulatory compliance tool"
-  image="/static/static/apple-touch-icon.png"
-  noindex={false}
-  structuredData={{
-    "@context": "https://schema.org",
-    "@type": "Page",
-    "headline": "Unlock mysteries with AI Legal Research AssistantAI-powered instant Chat with Gazette Notices, Laws/Legislations & Court. Empower your legal research and decision-making with our AI-driven chat platform. An AI legal research copilot that understands your jurisdiction",
-    "description": "Our AI legal assistant is a specialized LLM designed to transform legal work. It enables conversational legal research on case law and legislation, provides direct Q&A, and acts as a drafting assistant. Streamline compliance with automated checklists and centralize your firm's expertise in a powerful knowledge base. It’s the all-in-one intelligent platform for modern legal professionals.",
-    "author": {
-      "@type": "Organization",
-      "name": "Lex Luma"
-    }
-  }}
-/>
 <svelte:head>
 	<title>{$WEBUI_NAME}</title>
 	<link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_URL}/static/favicon-dark.png" />
@@ -759,9 +738,6 @@
 		href="/opensearch.xml"
 		crossorigin="use-credentials"
 	/>
-	<!-- <title>{data.header_data.title}</title> -->
-  	<!-- <meta name="description" content={data.header_data.description} /> -->
-
 </svelte:head>
 
 {#if showRefresh}
@@ -822,9 +798,9 @@
 				<a href="/about" class="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
 					About
 				</a>
-				<!-- <a href="/contact" class="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+				<a href="/contact" class="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
 					Contact
-				</a> -->
+				</a>
 			</nav>
 			<div class="text-center text-xs text-gray-600 dark:text-gray-400">
 				<p>&copy; 2025 Lex Luma AI. All rights reserved.</p>

@@ -16,9 +16,9 @@ export const ssr = false;
 export const trailingSlash = 'ignore';
 
 export async function load() {
-  let header_data= {
-    title: "Home Page",
-    description: "Best page description here"
-  };
-  return {header_data}
+  // let header_data= {
+  //   title: "Home Page",
+  //   description: "Best page description here"
+  // };
+  // return {header_data}
 }
