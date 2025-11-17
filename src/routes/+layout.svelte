@@ -789,7 +789,7 @@
 				<a href="/auth" class="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
 					Sign In
 				</a>
-				<a href="/privacy" class="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+				<!-- <a href="/privacy" class="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
 					Privacy Policy
 				</a>
 				<a href="/terms" class="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
@@ -800,7 +800,7 @@
 				</a>
 				<a href="/contact" class="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
 					Contact
-				</a>
+				</a> -->
 			</nav>
 			<div class="text-center text-xs text-gray-600 dark:text-gray-400">
 				<p>&copy; 2025 Lex Luma AI. All rights reserved.</p>
