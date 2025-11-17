@@ -7,7 +7,7 @@ export const prerender = true;
 // you have to set ssr to false.
 // This is not the case (so set as true or comment the line)
 // Documentation: https://kit.svelte.dev/docs/page-options#ssr
-export const ssr = false;
+export const ssr = true;
 
 // How to manage the trailing slashes in the URLs
 // the URL for about page will be /about with 'ignore' (default)
@@ -18,7 +18,12 @@ export const trailingSlash = 'ignore';
 export async function load() {
   let header_data= {
     title: "Home Page",
-    description: "Best page description here"
+    description: "Best page description here",
+    siteDescription: 'Default description for pages that don’t set one'
   };
-  return {header_data}
+  return header_data;
+  // return {
+  //   siteTitle: 'My Site',
+  //   siteDescription: 'Default description for pages that don’t set one'
+  // };
 }

@@ -4,6 +4,8 @@
   import { Header, Sidebar, HomeContent } from '$lib/components/index.js';
   let { data } = $props();
 
+  // let data = []
+  // alert(JSON.stringify(data));
   
   const { mydata, content } = data;
   // let { data } = $props();

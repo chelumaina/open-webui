@@ -8,8 +8,10 @@ import { marked } from 'marked';
 
 
 export async function load({ fetch }) {
-  let content = '';
+  let content = ''; 
+  
   const res = await fetch('/content/json_content.json'); // served from static/
+    // content=res;
     if (!res.ok) throw error(500, 'Could not load JSON');
     const mydata = await res.json();
 
@@ -26,8 +28,5 @@ export async function load({ fetch }) {
       } catch (e) {
         throw error(404, 'Page not found => '+e);
       }
-  
-
-
   return { mydata, content };
 }

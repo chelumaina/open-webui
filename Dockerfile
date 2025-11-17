@@ -39,6 +39,8 @@ RUN npm ci --force
 
 COPY . .
 ENV APP_BUILD_HASH=${BUILD_HASH}
+
+
 # RUN npm run build
 
 ######## WebUI backend ########
@@ -126,6 +128,10 @@ RUN apt-get update && \
 
 # install python dependencies
 COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
+
+RUN pip3 install --no-cache-dir uvicorn==0.22.0 uv
+RUN pip install -r requirements.txt --no-cache-dir && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install --no-cache-dir uv && \
     if [ "$USE_CUDA" = "true" ]; then \

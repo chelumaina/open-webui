@@ -1174,7 +1174,7 @@
                
                   {#each $pageContents as page  }
                   <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:scale-105 transform">
-                      {@html page.svg_icon}
+                      {@html page?.svg_icon}
                       <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white"><a class="btn btn-link" href="/features/{page.slug}">{@html page.title}</a></h3>
                       <p class="text-gray-600 dark:text-gray-400 leading-relaxed">{@html page.summary}
                       
