@@ -759,8 +759,8 @@
 		href="/opensearch.xml"
 		crossorigin="use-credentials"
 	/>
-	<title>{data.header_data.title}</title>
-  	<meta name="description" content={data.header_data.description} />
+	<!-- <title>{data.header_data.title}</title> -->
+  	<!-- <meta name="description" content={data.header_data.description} /> -->
 
 </svelte:head>
 

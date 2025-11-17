@@ -18,9 +18,10 @@ export const trailingSlash = 'ignore';
 export async function load() {
   let header_data= {
     title: "Home Page",
+    siteTitle: 'My Site',
+    siteDescription: 'Default description for pages that don’t set one',
     description: "Best page description here",
-    siteDescription: 'Default description for pages that don’t set one'
-  };
+    };
   return header_data;
   // return {
   //   siteTitle: 'My Site',
