@@ -3,8 +3,24 @@
 	import TestimonialsCarousel, { type Testimonial } from "$lib/components/common/TestimonialsCarousel.svelte";
 	// import HowItWorksFlow, { type HowItWorksSection } from "$lib/components/common/HowItWorksFlow.svelte";
 	import HowItWorks from "$lib/components/common/HowItWorksFlow.svelte";
-  
+  import { getPages } from '$lib/apis/page_contents';
+
   import { pageContents } from '$lib/stores';
+  let pages=[];
+  const getAllPages = async () => {
+		const pageList = await getPages(localStorage.token).catch((error) => {
+			// toast.error(`${error}`);
+			return [];
+		});
+		// alert(pageList)	
+		pageContents.set(pageList || []);
+    
+		pageList.forEach((page) => {
+      pages[page.id] = page;
+    });    
+    console.log('Pages fetched and stored:', pages);
+ 
+	};
 
  
 
@@ -1131,7 +1147,7 @@
 	
 	onMount(async () => {
 		isVisible = true;
-    // await getAllPages();
+    await getAllPages();
 	});
  
 </script>
@@ -1155,8 +1171,7 @@
 			</div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              
-                
+               
                   {#each $pageContents as page  }
                   <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:scale-105 transform">
                       {@html page.svg_icon}
