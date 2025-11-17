@@ -17,7 +17,7 @@
   <meta name="keywords" content={keywords} />
   
   {#if noindex}
-    <meta name="robots" content="noindex, nofollow" />
+    <!-- <meta name="robots" content="noindex, nofollow" /> -->
   {/if}
   
   <!-- Open Graph -->
