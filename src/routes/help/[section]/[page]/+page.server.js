@@ -11,9 +11,13 @@ import { WEBUI_BASE_URL } from '$lib/constants';
 export async function load({ params, url, fetch }) {
   try {
 
-  const res = await fetch('/content/json_content.json'); // served from static/
+    const res = await fetch(`${WEBUI_BASE_URL}/user_guide`); // served from static/
     if (!res.ok) throw error(500, 'Could not load JSON');
     const sections_data = await res.json();
+
+  // const res = await fetch('/content/json_content.json'); // served from static/
+  //   if (!res.ok) throw error(500, 'Could not load JSON');
+  //   const sections_data = await res.json();
 
     const resp = await fetch(`/content/${params.section}/${params.page}.md`);
     const content = await resp.text();
