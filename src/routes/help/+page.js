@@ -29,27 +29,15 @@ import {WEBUI_BASE_URL } from '$lib/constants';
 
 
 export async function load({ fetch }) {
-  let content = '';
+  // let content = '';
   let mydata={}
   const res = await fetch(`${WEBUI_BASE_URL}/user_guide/`); // served from static/
-    // if (!res.ok) throw error(500, 'Could not load JSON');
-    mydata = await res.json();
+  // if (!res.ok) throw error(500, 'Could not load JSON');
+  mydata = await res.json();
 
-      const contentDir = path.resolve('static/content'); // project-root relative
-      const filePath = path.join(contentDir, `index.md`);
-      // content=filePath
-  
-      try {
-        const md = await fs.readFile(filePath, 'utf-8');
-        const html = marked(md); // Convert MD → HTML
-  
-        // return { md };
-        content = html;
-      } catch (e) {
-        throw error(404, 'Page not found => '+e);
-      }
-  
+  const resp = await fetch('/content/index.md');
+  const content = await resp.text();
+  const html = marked(content); 
 
-
-  return { mydata, content };
+  return { mydata, content: html };
 }

@@ -11,34 +11,38 @@ import { WEBUI_BASE_URL } from '$lib/constants';
 export async function load({ params, url, fetch }) {
   try {
 
-  // const res = await fetch('/content/json_content.json'); // served from static/
-  //   if (!res.ok) throw error(500, 'Could not load JSON');
-  //   const sections_data = await res.json();
-  
-    const res = await fetch(`${WEBUI_BASE_URL}/user_guide/`); // served from static/
-      // if (!res.ok) throw error(500, 'Could not load JSON');
-    const sections_data  = await res.json();
+  const res = await fetch('/content/json_content.json'); // served from static/
+    if (!res.ok) throw error(500, 'Could not load JSON');
+    const sections_data = await res.json();
+
+    const resp = await fetch(`/content/${params.section}/${params.page}.md`);
+    const content = await resp.text();
+    const html = marked(content); 
+
+    // // const res = await fetch(`${WEBUI_BASE_URL}/user_guide/`); // served from static/
+    // //   // if (!res.ok) throw error(500, 'Could not load JSON');
+    // // const sections_data  = await res.json();
   
   
 
 
-    // // Import markdown content
-    let content=`/content/${params.section}/${params.page}.md`;
-     // sanitize params.page to avoid path traversal
-    const name = params.page.replace(/[^a-zA-Z0-9-_]/g, '');
-      const contentDir = path.resolve('static/content'); // project-root relative
-    const filePath = path.join(contentDir, `${params.section}/${name}.md`);
-      // content=filePath
+    // // // Import markdown content
+    // let content=`/content/${params.section}/${params.page}.md`;
+    //  // sanitize params.page to avoid path traversal
+    // const name = params.page.replace(/[^a-zA-Z0-9-_]/g, '');
+    //   const contentDir = path.resolve('static/content'); // project-root relative
+    // const filePath = path.join(contentDir, `${params.section}/${name}.md`);
+    //   // content=filePath
   
-      try {
-        const md = await fs.readFile(filePath, 'utf-8');
-        const html = marked(md); // Convert MD → HTML
+    //   try {
+    //     const md = await fs.readFile(filePath, 'utf-8');
+    //     const html = marked(md); // Convert MD → HTML
   
-        // return { md };
-        content = html;
-      } catch (e) {
-        throw error(404, 'Page not found => '+e);
-      }
+    //     // return { md };
+    //     content = html;
+    //   } catch (e) {
+    //     throw error(404, 'Page not found => '+e);
+    //   }
   
 
 
@@ -99,7 +103,7 @@ export async function load({ params, url, fetch }) {
     }
 
     return {
-      content,
+      content:html,
       sections_data:sections,
       currentPage: {
         title: currentPage.title,
