@@ -1,4 +1,4 @@
-export const prerender = true; // built at build time
+export const prerender = false; // built at build time
 export const ssr = false;
 export async function load({ params }) {
   // normally only visible to logged-in authors
