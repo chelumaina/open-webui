@@ -2,16 +2,17 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { Header, Sidebar, HomeContent } from '$lib/components/index.js';
-  let { data } = $props();
+  // let { data } = $props();
 
-  console.log('Help Page data:', data);
+  console.log('Help Page data:');
 
-  
-  const { mydata, content } = data;
+  let content="Test content";
+  // const mydata = [];
+  // const { mydata } = data;
   // let { data } = $props();
 
   
-  let sections =  mydata || [];
+  let sections =  [];
   
   let isDark = $state(false);
   let isMobileMenuOpen = $state(false);
@@ -48,12 +49,12 @@
     <!-- {data.sections} -->
     <!-- Sidebar -->
 
-    <Sidebar 
+    <!-- <Sidebar 
       sections={sections} 
       {searchQuery} 
       {isMobileMenuOpen}
       {closeMobileMenu}
-    />
+    /> -->
     
     <!-- Main Content Area -->
     <div class="flex-1 flex flex-col min-w-0">
@@ -66,7 +67,7 @@
       />
       
       <!-- Home Content -->
-      <HomeContent content={content} />
+      <!-- <HomeContent content={content} /> -->
     </div>
   </div>
 </div>
