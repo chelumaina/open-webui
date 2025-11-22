@@ -42,14 +42,14 @@
   }
 </script>
 
-<SEOHead
+<!-- <SEOHead
   title="{data.seo.metaTitle} - {$i18n.t('Lex Luma AI')}"
   description={data.seo.metaDescription}
   keywords={data.seo.metaKeywords}
   image="/static/static/apple-touch-icon.png"
   noindex={false}
   structuredData={data.seo.metaStructure}
-/>
+/> -->
 
 <div class="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-200">
   <div class="flex min-h-screen">
