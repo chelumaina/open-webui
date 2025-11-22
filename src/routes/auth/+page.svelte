@@ -278,7 +278,6 @@
 									<a href="/help" class="group relative bg-white text-indigo-600 px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-xl hover:scale-105 transform">
 										Learn More 
 										<span class="inline-block ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
-
 									</a>
 									<!-- <a href="#features" class="group bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-10 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 transform">
 										Learn More

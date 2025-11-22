@@ -4,6 +4,8 @@
   import { Header, Sidebar, HomeContent } from '$lib/components/index.js';
   let { data } = $props();
 
+  console.log('Help Page data:', data);
+
   
   const { mydata, content } = data;
   // let { data } = $props();
