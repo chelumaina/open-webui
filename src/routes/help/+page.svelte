@@ -2,21 +2,25 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { Header, Sidebar, HomeContent } from '$lib/components/index.js';
-  // let { data } = $props();
+  let { data } = $props();
 
-  console.log('Help Page data:');
+  console.log('Help Page data:', data);
 
-  let content="Test content";
+  // let content="Test content";
   // const mydata = [];
-  // const { mydata } = data;
+  const { mydata, content } = data;
   // let { data } = $props();
 
   
-  let sections =  [];
+  let sections =  mydata || [];
   
   let isDark = $state(false);
   let isMobileMenuOpen = $state(false);
   let searchQuery = $state('');
+
+
+
+
   
   onMount(() => {
     const saved = localStorage.getItem('theme');
