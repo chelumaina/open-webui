@@ -3101,8 +3101,8 @@ async def get_sitemap_xml():
 async def healthcheck():
     return {"status": True}
 
-@app.get("/help")
-async def help():
+@app.get("/user_guide")
+async def user_guide():
     json_data="""[
   {
     "title": "Getting Started",
