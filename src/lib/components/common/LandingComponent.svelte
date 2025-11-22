@@ -5,6 +5,29 @@
 	import HowItWorks from "$lib/components/common/HowItWorksFlow.svelte";
   
   import { pageContents } from '$lib/stores';
+  import { getPages } from '$lib/apis/page_contents';
+
+	let pages:any=[];
+  // let data=$props();
+  // console.log('LandingComponent data:', data);
+
+
+
+  const getAllPages = async () => {
+      const pageList:any = await getPages(localStorage.token).catch((error) => {
+        // toast.error(`${error}`);
+        return [];
+      });
+      // alert(pageList)	
+      pageContents.set(pageList || []);
+      
+      pageList.forEach((page:any) => {
+        pages[page.id] = page;
+      });
+
+      console.log('Pages fetched and stored:', pages);
+  
+    };
 
  
 
@@ -1131,7 +1154,7 @@
 	
 	onMount(async () => {
 		isVisible = true;
-    // await getAllPages();
+    await getAllPages();
 	});
  
 </script>
