@@ -9,23 +9,24 @@ import { marked } from 'marked';
 
 export async function load({ fetch }) {
   let content = '';
-  const res = await fetch('/content/json_content.json'); // served from static/
-    if (!res.ok) throw error(500, 'Could not load JSON');
-    const mydata = await res.json();
+  let mydata={}
+  // const res = await fetch('/content/json_content.json'); // served from static/
+    // if (!res.ok) throw error(500, 'Could not load JSON');
+    // mydata = await res.json();
 
-      const contentDir = path.resolve('static/content'); // project-root relative
-      const filePath = path.join(contentDir, `index.md`);
-      // content=filePath
+    //   const contentDir = path.resolve('static/content'); // project-root relative
+    //   const filePath = path.join(contentDir, `index.md`);
+    //   // content=filePath
   
-      try {
-        const md = await fs.readFile(filePath, 'utf-8');
-        const html = marked(md); // Convert MD → HTML
+    //   try {
+    //     const md = await fs.readFile(filePath, 'utf-8');
+    //     const html = marked(md); // Convert MD → HTML
   
-        // return { md };
-        content = html;
-      } catch (e) {
-        throw error(404, 'Page not found => '+e);
-      }
+    //     // return { md };
+    //     content = html;
+    //   } catch (e) {
+    //     throw error(404, 'Page not found => '+e);
+    //   }
   
 
 
