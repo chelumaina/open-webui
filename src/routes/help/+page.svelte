@@ -67,7 +67,7 @@
       />
       
       <!-- Home Content -->
-      <!-- <HomeContent content={content} /> -->
+      <HomeContent content={content} />
     </div>
   </div>
 </div>

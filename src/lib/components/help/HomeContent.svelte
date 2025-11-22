@@ -2,7 +2,7 @@
   export let content = '';
   export let prevPage = null;
   export let nextPage = null;
-  export let currentPage = { title: '', section: '' };
+  export let currentPage= { title: '', section: '' };
 </script>
 
 <main class="flex-1 ml-0 lg:ml-64">
