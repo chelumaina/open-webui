@@ -1,9 +1,6 @@
 // Server-side dummy data (SSR). Replace with DB/API later.
 // src/routes/+page.ts
 import { error } from '@sveltejs/kit';
-import fs from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url'; // if needed in ESM
 import { marked } from 'marked';
 import { WEBUI_BASE_URL } from '$lib/constants';
 
@@ -54,7 +51,7 @@ export async function load({ params, url, fetch }) {
     const sections = sections_data
 
     // Find current page and calculate next/previous
-    let currentSection=[], currentPage={ "title": "Introduction to LexLuma", "slug": "introduction-to-lexluma" }, pageIndex, sectionIndex;
+    let currentSection=[], currentPage={ "title": "Introduction to LexLuma", "slug": "introduction-to-lexluma" }, pageIndex=0, sectionIndex=0;
     
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i];
@@ -115,14 +112,14 @@ export async function load({ params, url, fetch }) {
         slug: currentPage.slug
       },
       seo: {
-        metaTitle: currentPage.metaTitle || currentPage.title,
-        metaDescription: currentPage.metaDescription || '',
-        metaKeywords: currentPage.keywords || '',
+        metaTitle: currentPage.title || currentPage.title,
+        // metaDescription: currentPage.metaDescription || '',
+        // metaKeywords: currentPage.keywords || '',
         metaStructure: {
         "@context": "https://schema.org",
         "@type": "Use-Gudelines",
-        "headline": `${currentPage.metaTitle} - Lex Luma AI`,
-        "description": `${currentPage.metaDescription}`,
+        "headline": `${currentPage.title||""} - Lex Luma AI`,
+        // "description": `${currentPage.metaDescription}`,
         "author": {
           "@type": "Organization",
           "name": "Lex Luma"
