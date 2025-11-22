@@ -49,12 +49,12 @@
     <!-- {data.sections} -->
     <!-- Sidebar -->
 
-    <!-- <Sidebar 
+    <Sidebar 
       sections={sections} 
       {searchQuery} 
       {isMobileMenuOpen}
       {closeMobileMenu}
-    /> -->
+    />
     
     <!-- Main Content Area -->
     <div class="flex-1 flex flex-col min-w-0">
