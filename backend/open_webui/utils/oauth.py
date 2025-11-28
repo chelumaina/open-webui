@@ -1272,19 +1272,22 @@ class OAuthManager:
         error_message = None
         try:
             client = self.get_client(provider)
+            print(f"{client=}")
 
             auth_params = {}
 
             if client:
+                print(f"{OAUTH_ACCESS_TOKEN_REQUEST_INCLUDE_CLIENT_ID=}")
                 if (
                     hasattr(client, "client_id")
                     and OAUTH_ACCESS_TOKEN_REQUEST_INCLUDE_CLIENT_ID
                 ):
                     auth_params["client_id"] = client.client_id
-
+            print(f"{auth_params=}")
             try:
                 token = await client.authorize_access_token(request, **auth_params)
             except Exception as e:
+                print(f"Exception {e=}")
                 detailed_error = _build_oauth_callback_error_message(e)
                 log.warning(
                     "OAuth callback error during authorize_access_token for provider %s: %s",
