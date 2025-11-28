@@ -404,7 +404,7 @@ class UsersTable:
 
     def get_num_users_active_today(self) -> Optional[int]:
         with get_db() as db:
-            current_timestamp = int(datetime.now().timestamp())
+            current_timestamp = int(datetime.datetime.now().timestamp())
             today_midnight_timestamp = current_timestamp - (current_timestamp % 86400)
             query = db.query(User).filter(
                 User.last_active_at > today_midnight_timestamp
@@ -636,7 +636,7 @@ class UsersTable:
 
 
     def _now_utc(self) -> datetime:
-        return datetime.now(UTC)
+        return datetime.datetime.now(UTC)
     
     def check_valid_monthly(self, user_id: str, grace_days: int = 0) -> tuple[bool, Optional[datetime.datetime], Optional[str]]:
         """
