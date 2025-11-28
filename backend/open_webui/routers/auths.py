@@ -1,3 +1,4 @@
+import os
 import re
 import uuid
 import time
@@ -425,6 +426,10 @@ async def ldap_auth(request: Request, response: Response, form_data: LdapForm):
                         name=cn,
                         role=role,
                     )
+                    if user:   
+                        DAILY_METERED_USAGE_GROUP_ID=os.getenv("DAILY_METERED_USAGE_GROUP_ID")
+                        Groups.add_users_to_group(DAILY_METERED_USAGE_GROUP_ID, {user.id})
+
 
                     if not user:
                         raise HTTPException(
@@ -863,6 +868,10 @@ async def add_user(form_data: AddUserForm, user=Depends(get_admin_user)):
             form_data.profile_image_url,
             form_data.role,
         )
+        if user:   
+            DAILY_METERED_USAGE_GROUP_ID=os.getenv("DAILY_METERED_USAGE_GROUP_ID")
+            Groups.add_users_to_group(DAILY_METERED_USAGE_GROUP_ID, {user.id})
+
 
         if user:
             token = create_token(data={"id": user.id})

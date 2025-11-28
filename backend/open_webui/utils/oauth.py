@@ -3,6 +3,7 @@ import copy
 import hashlib
 import logging
 import mimetypes
+import os
 import sys
 import urllib
 import uuid
@@ -1453,9 +1454,14 @@ class OAuthManager:
                         ),  # Random password, not used
                         name=name,
                         profile_image_url=picture_url,
-                        role=self.get_user_role(None, user_data),
+                        role='user',#self.get_user_role(None, user_data),
                         oauth_sub=provider_sub,
                     )
+                    if user:   
+                        DAILY_METERED_USAGE_GROUP_ID=os.getenv("DAILY_METERED_USAGE_GROUP_ID")
+                        Groups.add_users_to_group(DAILY_METERED_USAGE_GROUP_ID, {user.id})
+
+                    
 
                     if auth_manager_config.WEBHOOK_URL:
                         await post_webhook(
