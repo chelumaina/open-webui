@@ -1,19 +1,47 @@
 import logging
-import uuid
+import uuid, os
 from typing import Optional
 
 from open_webui.internal.db import Base, get_db
-from open_webui.models.users import UserModel, Users
+from open_webui.models.users import User, UserModel, Users
 from open_webui.env import SRC_LOG_LEVELS
 from pydantic import BaseModel
 from sqlalchemy import Boolean, Column, String, Text
+from jose import jwt, JWTError
+
+
+from datetime import datetime, timedelta
+from fastapi import HTTPException, status, BackgroundTasks
+from open_webui.utils.enhanced_email import send_email_smtp
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
 
+# ---------------------------
+# SETTINGS (change for prod)
+# ---------------------------
+SECRET_KEY = os.getenv("SECRET_KEY", "change_this_secret_in_prod")
+ALGORITHM = "HS256"
+ACTIVATION_EXP_HOURS = 24  # token expiry
+SMTP_HOST = os.getenv("SMTP_HOST", "smtp.example.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
+SMTP_USER = os.getenv("SMTP_USER", "smtp_user")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "smtp_password")
+FROM_EMAIL = os.getenv("FROM_EMAIL", "noreply@example.com")
+FRONTEND_ACTIVATE_URL = os.getenv("FRONTEND_ACTIVATE_URL", "https://0.0.0.0/activate")  # e.g. where user clicks
+
+BRAND_NAME = os.getenv("BRAND_NAME", "YourApp")
+SUPPORT_EMAIL = os.getenv("SUPPORT_EMAIL", "support@your-app.com")
+TRACKING_PIXEL_URL = os.getenv("TRACKING_PIXEL_URL", "")  # optional
+UTM_SOURCE = os.getenv("UTM_SOURCE", "email")
+UTM_MEDIUM = os.getenv("UTM_MEDIUM", "activation")
+# If you use a transactional provider that expects headers/tags, add here.
+
+
 ####################
 # DB MODEL
 ####################
+
 
 
 class Auth(Base):
@@ -89,6 +117,61 @@ class AddUserForm(SignupForm):
 
 
 class AuthsTable:
+    
+    
+    # ---------------------------
+    # Utils: token generation & validation
+    # ---------------------------
+    async def create_activation_token(self, user_id: int, expires_delta: Optional[timedelta] = None) -> str:
+        expire = datetime.utcnow() + (expires_delta or timedelta(hours=ACTIVATION_EXP_HOURS))
+        payload = {"sub": str(user_id), "exp": int(expire.timestamp())}
+        token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+        return token
+    
+    
+    async def verify_activation_token(token: str) -> int:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            user_id = int(payload.get("sub"))
+            return user_id
+        except JWTError:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid or expired activation token")
+
+
+
+    # ---------------------------
+    # Utils: send email (async)
+    # ---------------------------
+    async def send_email(self, subject: str, recipient: str, html_body: str):
+        msg = EmailMessage()
+        msg["From"] = FROM_EMAIL
+        msg["To"] = recipient
+        msg["Subject"] = subject
+        msg.set_content("Please use an HTML-capable client to view this message.")
+        msg.add_alternative(html_body, subtype="html")
+
+        await aiosmtplib.send(
+            msg,
+            hostname=SMTP_HOST,
+            port=SMTP_PORT,
+            username=SMTP_USER,
+            password=SMTP_PASSWORD,
+            start_tls=True,
+        )
+
+    async def build_activation_email_html(self, email: str, token: str) -> str:
+        link = f"{FRONTEND_ACTIVATE_URL}/{token}"
+        return f"""
+        <html>
+        <body>
+            <p>Hello,</p>
+            <p>Click the link below to activate your account:</p>
+            <p><a href="{link}">Activate account</a></p>
+            <p>If you did not create an account, ignore this email.</p>
+        </body>
+        </html>
+        """
+        
     def insert_new_auth(
         self,
         email: str,
@@ -201,6 +284,23 @@ class AuthsTable:
                     return False
         except Exception:
             return False
+
+
+    async def send_activation_link(self, user_id: str) -> None:
+        log.info(f"send_activation_link to {user_id}")
+        # 3. create activation token
+        token = await self.create_activation_token(user_id)
+        with get_db() as db:
+            
+            user_obj = db.get(User, user_id)
+            user_obj.email_verification_token = token
+             
+            db.commit()
+            db.refresh(user_obj) 
+        email_response=await send_email_smtp(user_obj.email, "Activate your account", user_obj.email_verification_token, True)
+        
+        return None
+ 
 
 
 Auths = AuthsTable()

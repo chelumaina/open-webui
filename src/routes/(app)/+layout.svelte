@@ -38,7 +38,8 @@
 		temporaryChatEnabled,
 		toolServers,
 		showSearch,
-		showSidebar
+		showSidebar,
+		token_cost
 	} from '$lib/stores';
 
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
@@ -103,6 +104,10 @@
 
 		if (userSettings?.ui) {
 			settings.set(userSettings.ui);
+		}
+
+		if (userSettings?.tokens) {
+			token_cost.set(userSettings.tokens);
 		}
 
 		if (cb) {

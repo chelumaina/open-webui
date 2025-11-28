@@ -98,7 +98,26 @@ export const currentChatPage = writable(1);
 export const isLastActiveTab = writable(true);
 export const playingNotificationSound = writable(false);
 
+export const token_cost: Writable<TokenCost> = writable({});
+export const total_usage: Writable<TotalUsage> = writable({});
+
+export type TotalUsage = {
+	total_prompt_tokens?: number;
+	total_response_tokens?: number;
+	total_cost?: number;
+};
 export type Model = OpenAIModel | OllamaModel;
+
+
+type TokenCost = {
+	prompt_token?: number;
+	response_token?: number;
+	today_balance_response_token?: Number,
+	today_balance_prompt_tokenn?: Number, 
+	cost?: number;
+	is_user_subscription_valid?: boolean;
+};
+
 
 type BaseModel = {
 	id: string;

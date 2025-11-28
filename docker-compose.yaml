@@ -1,32 +1,215 @@
+networks:
+  app-network:
+    driver: bridge
+    external: true
+
 services:
   ollama:
     volumes:
-      - ollama:/root/.ollama
+      - ./data/ollama:/root/.ollama
     container_name: ollama
     pull_policy: always
     tty: true
     restart: unless-stopped
     image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
+    ports:
+      - ${OLLAMA_PORT-11434}:11434
+    environment:
+      - 'OLLAMA_API_KEY=${OLLAMA_API_KEY}'
+    extra_hosts:
+      - "google.com:8.8.8.8"
+      - "host.docker.internal:host-gateway" 
+    networks:
+      - app-network
+
+  # open-webui:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
+  #   container_name: open-webui
+  #   volumes:
+  #     - ./data/open-webui:/app/backend/data
+  #   depends_on:
+  #     - ollama
+  #   ports:
+  #     - ${OPEN_WEBUI_PORT-3000}:8080
+  #   environment:
+  #     - 'OLLAMA_BASE_URL=http://ollama:11434'
+  #     - 'WEBUI_SECRET_KEY='
+  #   extra_hosts:
+  #     - host.docker.internal:host-gateway
+  #   restart: unless-stopped
+
 
   open-webui:
     build:
       context: .
+      args:
+        OLLAMA_BASE_URL: '/ollama'
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui
+    env_file:
+      - .env
     volumes:
-      - open-webui:/app/backend/data
-    depends_on:
+      - .:/app # <— edit locally, container runs your code
+      # - ./webui-data:/app/backend/data      # persistent app data (users, settings, etc.)
+      - ./data//webui-cache:/root/.cache §         # optional cache (models, etc.)
+      - ./data/open-webui:/app/backend/data
+      - ./static/static:/app/build/static
+
+    links:
+      - pg_db_ai
+      - redis_ai
       - ollama
+      # - otel_collector_ai
+    depends_on:
+      - pg_db_ai
+      - redis_ai
+      - ollama
+      # - otel_collector_ai
     ports:
-      - ${OPEN_WEBUI_PORT-3000}:8080
+      # - ${OPEN_WEBUI_PORT-3000}:8080
+      - "${WEBUI_PORT:-8080}:8080"
     environment:
-      - 'OLLAMA_BASE_URL=http://ollama:11434'
-      - 'WEBUI_SECRET_KEY='
+      - 'ENV=${ENV:-prod}'
+      - 'WEBUI_NAME=${WEBUI_NAME:-AI Legal Assistant}'
+      - 'WEBUI_PORT=${WEBUI_PORT}'
+      - 'BASE_URL=${WEBUI_URL:-https://lexluma.com}'
+      - 'CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}'
+      - 'WEBUI_URL=${WEBUI_URL:-https://lexluma.com}'
+      - 'ENABLE_OAUTH_PERSISTENT_CONFIG=false'     # so env changes apply during testing
+      - 'OLLAMA_BASE_URL=${OLLAMA_BASE_URL}'  #
+      - 'OLLAMA_API_KEY=${OLLAMA_API_KEY}'  #
+      - 'WEBUI_SECRET_KEY=${SECRET_KEY}'  # set in .env file
+      # - 'ENABLE_OTEL_METRICS=false'
+      # - 'OTEL_EXPORTER_OTLP_INSECURE=true' # Use insecure connection for OTLP, remove in production
+      # - 'OTEL_EXPORTER_OTLP_ENDPOINT=http://grafana:4317'
+      # - 'OTEL_SERVICE_NAME=open-webui'
+      - 'DATABASE_URL=${DATABASE_URL:-postgresql://transcription:fK7-SEqRwMsSREpAHBnU@pg_db_ai/webui}'
+      # - 'VECTOR_DB=pgvector'
+
+      - USER_AGENT=${USER_AGENT:-Open WebUI (https://openwebui.ai)}
+      - ENABLE_WEBSOCKET_SUPPORT="true"
+      - WEBSOCKET_MANAGER="redis"
+      - WEBSOCKET_REDIS_URL="redis://redis_ai:6379/1"
+      - REDIS_KEY_PREFIX="open-webui"
+      - ENABLE_OAUTH_SIGNUP=${ENABLE_OAUTH_SIGNUP:-True}
+      - ENABLE_SIGNUP_PASSWORD_CONFIRMATION=${ENABLE_SIGNUP_PASSWORD_CONFIRMATION:-True}
+      - ENABLE_SIGNUP=True
+      - ENABLE_CHANNELS=${ENABLE_CHANNELS:-True}
+      - ENABLE_AUDIT_LOGGING=${ENABLE_AUDIT_LOGGING:-True}
+      - DEFAULT_PROMPT_SUGGESTIONS=${DEFAULT_PROMPT_SUGGESTIONS:-[]}
+      - WEBUI_BANNERS=${WEBUI_BANNERS:-[]}
+      - ENABLE_VERSION_UPDATE_CHECK=${ENABLE_VERSION_UPDATE_CHECK:-True} 
+      - ENABLE_COMMUNITY_SHARING=${ENABLE_COMMUNITY_SHARING:-True}
+      - GLOBAL_LOG_LEVEL=${GLOBAL_LOG_LEVEL:-ERROR}
+
+    
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
     extra_hosts:
-      - host.docker.internal:host-gateway
+      - "google.com:8.8.8.8"
+      - "host.docker.internal:host-gateway" 
+    restart: unless-stopped
+    networks:
+      - app-network
+
+
+  pg_db_ai:
+    image: postgres:latest
+    container_name: pg_db_ai
+    hostname: pg_db_ai
+    environment:
+      - POSTGRES_USER=transcription
+      - POSTGRES_PASSWORD=fK7-SEqRwMsSREpAHBnU
+      - POSTGRES_DB=openwebui 
+    volumes:
+      # - ./data/pgdata/:/var/lib/postgresql/
+      - ./data/pgdata-latest:/var/lib/postgresql/18/docker
+    ports:
+      - "5433:5432"
+    networks:
+      - app-network
+
+    extra_hosts:
+      - "google.com:8.8.8.8"
+      - "host.docker.internal:host-gateway" 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U transcription -d openwebui"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: unless-stopped
 
-volumes:
-  ollama: {}
-  open-webui: {}
+  # otel_collector_ai:
+  #   container_name: otel_collector_ai
+  #   hostname: otel_collector_ai
+  #   image: otel/opentelemetry-collector:0.60.0
+  #   command: ["--config=/etc/otel-collector-config.yaml"]
+  #   # user: root # required for reading docker container logs
+  #   volumes:
+  #     - ./configs/otel-collector-config-app.yaml:/etc/otel-collector-config.yaml
+  #   environment:
+  #     - OTEL_RESOURCE_ATTRIBUTES=host.name=otel-host,os.type=linux
+  #   ports:
+  #     # - "1777:1777"     # pprof extension
+  #     - "4317:4317"     # OTLP gRPC receiver
+  #     - "4318:4318"     # OTLP HTTP receiver
+  #     - "8888:8888"     # OtelCollector internal metrics
+  #     - "8889:8889"     # signoz spanmetrics exposed by the agent
+  #     # - "9411:9411"     # Zipkin port
+  #     - "13133:13133"   # health check extension
+  #     - "14250:14250"   # Jaeger gRPC
+  #     - "14268:14268"   # Jaeger thrift HTTP
+  #     # - "55678:55678"   # OpenCensus receiver
+  #     # - "55679:55679"   # zPages extension
+  #   restart: unless-stopped
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway" 
+  #   networks:
+  #     - app-network
+
+
+  redis_ai:
+    image: redis:alpine
+    container_name: redis_ai
+    hostname: redis_ai
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "6378:6379"
+    expose:
+      - "6379"
+    command: [
+      "redis-server",
+      "--requirepass", "${REDIS_PASSWORD:-}", 
+      "--masteruser", "${REDIS_USER:-}", 
+      "--masterauth", "${REDIS_PASSWORD:-}" 
+    ]
+    environment:
+      - REDIS_USER=${REDIS_USER:-}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    volumes:
+      - ./data/redis/data:/data
+      - ./data/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - app-network
+    extra_hosts:
+      - "google.com:8.8.8.8"
+      - "host.docker.internal:host-gateway" 

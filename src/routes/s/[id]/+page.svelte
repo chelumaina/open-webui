@@ -5,7 +5,7 @@
 
 	import dayjs from 'dayjs';
 
-	import { settings, chatId, WEBUI_NAME, models, config } from '$lib/stores';
+	import { settings, chatId, WEBUI_NAME, models, config, token_cost } from '$lib/stores';
 	import { convertMessagesToHistory, createMessagesList } from '$lib/utils';
 
 	import { getChatByShareId, cloneSharedChatById } from '$lib/apis/chats';
@@ -66,7 +66,9 @@
 		});
 
 		if (userSettings) {
-			settings.set(userSettings.ui);
+			settings.set(userSettings.ui);i
+			token_cost.set(userSettings.tokens);
+		
 		} else {
 			let localStorageSettings = {} as Parameters<(typeof settings)['set']>[0];
 

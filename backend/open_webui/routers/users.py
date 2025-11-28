@@ -1,7 +1,7 @@
 import logging
 from typing import Optional
 import base64
-import io
+import io, os
 
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
@@ -268,7 +268,41 @@ async def update_default_user_permissions(
 async def get_user_settings_by_session_user(user=Depends(get_verified_user)):
     user = Users.get_user_by_id(user.id)
     if user:
-        return user.settings
+        is_user_subscription_valid= Users.is_valid_monthly_subscription(user.id, 10, user) 
+        prompt_token, response_token= Users.total_tokens_from_chat(user.id) 
+        
+        subscription={}
+        
+        FREE_PROMPT_TOKENS = os.getenv("FREE_PROMPT_TOKENS", 10000)
+        FREE_RESPONSE_TOKENS = os.getenv("FREE_RESPONSE_TOKENS", 10000)
+        today_balance_prompt_tokenn=int(FREE_PROMPT_TOKENS)-round(prompt_token, 2)
+        today_balance_response_token=int(FREE_RESPONSE_TOKENS)-round(response_token, 2)
+        valid= is_user_subscription_valid or ((today_balance_prompt_tokenn>0) and (today_balance_response_token>0))
+        
+        if not valid and not user.role =='admin':
+            Users.move_to_default_group(user.id)
+        elif user.role=='admin':
+            valid=True
+        else:
+            DAILY_METERED_USAGE_GROUP_ID=os.getenv("DAILY_METERED_USAGE_GROUP_ID", "27e58e04-3f69-47bb-8dea-6cf3e3476cc1")
+            Users.move_to_default_group(user.id) 
+            Groups.add_users_to_group(DAILY_METERED_USAGE_GROUP_ID, {user.id})
+
+        # return user.settings
+
+        return {
+            "settings": user.settings,
+            "tokens": {
+                "today_balance_response_token": today_balance_response_token,
+                "today_balance_prompt_tokenn": today_balance_prompt_tokenn,
+                "prompt_token": round(prompt_token, 2),
+                "response_token": round(response_token, 2),
+                "cost": round(response_token + prompt_token, 2),
+                "is_user_subscription_valid": valid ,
+                "subscription": subscription,
+            },
+        }
+        # return user.settings
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

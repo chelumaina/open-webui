@@ -28,7 +28,8 @@
 		isApp,
 		appInfo,
 		toolServers,
-		playingNotificationSound
+		playingNotificationSound,
+		token_cost
 	} from '$lib/stores';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -631,6 +632,7 @@
 				const userSettings = await getUserSettings(localStorage.token);
 				if (userSettings) {
 					settings.set(userSettings.ui);
+					token_cost.set(userSettings.tokens);	
 				} else {
 					settings.set(JSON.parse(localStorage.getItem('settings') ?? '{}'));
 				}

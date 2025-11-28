@@ -82,6 +82,10 @@ class SessionUserResponse(Token, UserResponse):
     expires_at: Optional[int] = None
     permissions: Optional[dict] = None
 
+class EmailVerifyResponse(BaseModel):
+    success: bool
+    message: Optional[str] = None
+    data: Optional[dict] = {}
 
 class SessionUserInfoResponse(SessionUserResponse):
     bio: Optional[str] = None
@@ -89,6 +93,32 @@ class SessionUserInfoResponse(SessionUserResponse):
     date_of_birth: Optional[datetime.date] = None
 
 
+@router.get("/verify-email/{token}", response_model=Optional[EmailVerifyResponse])
+async def verify_email(token: str):
+    """Verify a payment with Paystack"""
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Invalid Token. You must provide a valid token to verify email address"
+        )
+    
+    try:
+        # return verify_user_email(db, token)
+        user=Users.verify_user_email(token)
+        return EmailVerifyResponse(
+            success=True,
+            message="Email verification successful",
+            data={"user_id": user.id, 'status': 'success'}
+        ) 
+    except HTTPException:
+        raise
+    except Exception as e:
+        log.error(f"Invalid verification error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while verifying email"
+        )
+ 
 @router.get("/", response_model=SessionUserInfoResponse)
 async def get_session_user(
     request: Request, response: Response, user=Depends(get_current_user)
@@ -704,6 +734,9 @@ async def signup(request: Request, response: Response, form_data: SignupForm):
             if default_group_id and default_group_id:
                 Groups.add_users_to_group(default_group_id, [user.id])
 
+            # await Auths.send_activation_link(user, background_tasks)
+            await Auths.send_activation_link(user.id)
+            
             return {
                 "token": token,
                 "token_type": "Bearer",

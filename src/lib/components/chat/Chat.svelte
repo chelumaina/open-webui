@@ -42,7 +42,8 @@
 		functions,
 		selectedFolder,
 		pinnedChats,
-		showEmbeds
+		showEmbeds,
+		token_cost
 	} from '$lib/stores';
 
 	import {
