@@ -11,10 +11,21 @@ from open_webui.utils.misc import throttle
 
 
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Column, String, Text, Date, exists, select
-from sqlalchemy import or_, case
+from sqlalchemy import or_, case, UUID, BigInteger, Column, String, Text, Date, select, func
 
 import datetime
+from fastapi import  HTTPException, status
+
+# import datetime
+from datetime import timedelta, timezone
+from zoneinfo import ZoneInfo
+
+from open_webui.models.payments import PaymentTransaction, UserSubscription
+
+from uuid import UUID 
+TZ_LOCAL = ZoneInfo("Africa/Nairobi")
+
+UTC = timezone.utc
 
 ####################
 # User DB Schema
@@ -393,7 +404,7 @@ class UsersTable:
 
     def get_num_users_active_today(self) -> Optional[int]:
         with get_db() as db:
-            current_timestamp = int(datetime.datetime.now().timestamp())
+            current_timestamp = int(datetime.now().timestamp())
             today_midnight_timestamp = current_timestamp - (current_timestamp % 86400)
             query = db.query(User).filter(
                 User.last_active_at > today_midnight_timestamp
@@ -531,6 +542,175 @@ class UsersTable:
                 return UserModel.model_validate(user)
             else:
                 return None
+            
+            
+
+    def is_valid_monthly_subscription(
+        self,
+        user_id: UUID,
+        grace_days: int = 0,
+        user: User = None
+    ):
+        if user is not None and user.role == "admin":
+            return True
+        if grace_days < 0 or grace_days > 14:
+            raise HTTPException(400, detail="grace_days must be between 0 and 14")
+
+        valid, valid_until_utc, source = self.check_valid_monthly(user_id, grace_days=grace_days)
+        return valid
+  
+    def total_tokens_from_chat(self, user_id: str) -> Tuple[int, int]:
+        """
+        Calculate total prompt and completion tokens from a chat JSON payload.
+
+        Rules:
+        - Count ONLY assistant messages.
+        - Read token counts from message["usage"].
+        - Prefer "prompt_tokens" and "completion_tokens".
+        Fallbacks: "prompt_eval_count" and "eval_count".
+        - Deduplicate by message "id" (since messages may appear under both
+        history.messages and the top-level messages list).
+
+        Returns:
+            (total_prompt_tokens, total_completion_tokens)
+        """
+
+        def _iter_all_messages(chat_obj: Dict[str, Any]) -> Iterable[Dict[str, Any]]:
+            # history.messages can be a dict keyed by id
+            hist = chat_obj.get("history", {}).get("messages")
+            if isinstance(hist, dict):
+                yield from hist.values()
+            elif isinstance(hist, list):
+                yield from hist
+
+            # top-level messages can be a list or dict
+            top = chat_obj.get("messages")
+            if isinstance(top, list):
+                yield from top
+            elif isinstance(top, dict):
+                yield from top.values()
+
+        seen_ids = set()
+        total_prompt = 0
+        total_completion = 0
+        chats= Chats.get_chat_list_by_user_id_today(user_id)
+        if chats is None:
+            return total_prompt, total_completion
+        
+        for chat in chats:
+            # print("msg:", chat.chat)
+            for msg in _iter_all_messages(chat.chat):
+                # print("msg:", msg)
+                # usage: Dict[str, Union[int, Dict[str, Any]]] = msg.get("usage", {}) or {}
+                # prompt_tokens = usage.get("prompt_tokens")
+                # Deduplicate by message id
+                msg_id = msg.get("id")
+                if msg_id is None or msg_id in seen_ids:
+                    continue
+                seen_ids.add(msg_id)
+
+                if msg.get("role") != "assistant":
+                    continue
+
+                usage: Dict[str, Union[int, Dict[str, Any]]] = msg.get("usage", {}) or {}
+                prompt_tokens = usage.get("prompt_tokens", 0)
+                completion_tokens = usage.get("completion_tokens", 0)
+
+                # Fallbacks if primary keys are missing
+                if prompt_tokens == 0:
+                    prompt_tokens = usage.get("prompt_eval_count", 0)
+                if completion_tokens is None:
+                    completion_tokens = usage.get("eval_count", 0)
+                    
+                # Ensure ints
+                try:
+                    total_prompt += int(prompt_tokens or 0)
+                except (TypeError, ValueError):
+                    pass
+                try:
+                    total_completion += int(completion_tokens or 0)
+                except (TypeError, ValueError):
+                    pass
+
+        return total_prompt, total_completion
+
+
+    def _now_utc(self) -> datetime:
+        return datetime.now(UTC)
+    
+    def check_valid_monthly(self, user_id: str, grace_days: int = 0) -> tuple[bool, Optional[datetime.datetime], Optional[str]]:
+        """
+        Returns: (is_valid, valid_until_utc, source)
+        source = 'subscription' | 'payment' | None
+        """
+        with get_db() as db:
+            VALID_STATUSES = ["active", "trialing"]
+            now = self._now_utc()
+
+            # 1) Try user_subscriptions (trial_end or current_period_end)
+            valid_until_expr = func.coalesce(UserSubscription.trial_end, UserSubscription.current_period_end).label("valid_until")
+            row = db.execute(
+                select(valid_until_expr)
+                .where(
+                    UserSubscription.user_id == user_id,
+                    UserSubscription.billing_cycle == "monthly",
+                    UserSubscription.status.in_(VALID_STATUSES),
+                    valid_until_expr.is_not(None),
+                )
+                .order_by(valid_until_expr.desc())
+                .limit(1)
+            ).first()
+
+            if row and row[0]:
+                # Ensure timezone consistency for comparison
+                db_datetime = row[0]
+                if db_datetime.tzinfo is None:
+                    # If database datetime is naive, assume it's UTC
+                    db_datetime = db_datetime.replace(tzinfo=UTC)
+                valid_until = db_datetime + timedelta(days=grace_days)
+                return (now <= valid_until, db_datetime, "subscription")
+
+            # 2) Fallback to latest successful monthly payment -> paid_at + 1 month (Python-side calculation)
+            row2 = db.execute(
+                select(PaymentTransaction.paid_at)
+                .where(
+                    PaymentTransaction.user_id == user_id,
+                    PaymentTransaction.status == "success",
+                    PaymentTransaction.billing_cycle == "monthly",
+                    PaymentTransaction.paid_at.is_not(None),
+                )
+                .order_by(PaymentTransaction.paid_at.desc())
+                .limit(1)
+            ).first()
+
+            if row2 and row2[0]:
+                # Add 1 month to the payment date using Python datetime arithmetic
+                paid_at = row2[0]
+                # Ensure timezone consistency for paid_at
+                if paid_at.tzinfo is None:
+                    # If database datetime is naive, assume it's UTC
+                    paid_at = paid_at.replace(tzinfo=UTC)
+                
+                if paid_at.month == 12:
+                    valid_until_base = paid_at.replace(year=paid_at.year + 1, month=1)
+                else:
+                    valid_until_base = paid_at.replace(month=paid_at.month + 1)
+                
+                valid_until = valid_until_base + timedelta(days=grace_days)
+                return (now <= valid_until, valid_until_base, "payment")
+
+        return (False, None, None)
+
+    def move_to_default_group(self, user_id: str) -> Optional[str]:
+        try:
+            default_group_id = os.getenv("DEFAULT_MODEL_GROUP_ID", "4f0c087e-52f9-47a7-95eb-68d4f03b557f")
+            Groups.remove_user_from_all_groups(user_id)
+            Groups.add_users_to_group(default_group_id, {user_id})
+            return default_group_id
+        except Exception as e:
+            return None
+    
+
 
 
 Users = UsersTable()
