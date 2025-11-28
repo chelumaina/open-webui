@@ -230,7 +230,7 @@
 										id="logo"
 										crossorigin="anonymous"
 										src="{WEBUI_BASE_URL}/static/favicon.png"
-										class="size-24 rounded-full"
+										class="size-48 rounded-full"
 										alt=""
 									/>
 								</div>
