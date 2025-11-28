@@ -11,7 +11,7 @@ from open_webui.utils.misc import throttle
 
 
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import or_, case, UUID, BigInteger, Column, String, Text, Date, select, func
+from sqlalchemy import or_, case, UUID, BigInteger, Column, String, Text, Date, select, func, exists
 
 import datetime
 from fastapi import  HTTPException, status
