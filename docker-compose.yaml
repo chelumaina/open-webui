@@ -50,6 +50,7 @@ services:
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui
+    hostname: open-webui 
     env_file:
       - .env
     volumes:
