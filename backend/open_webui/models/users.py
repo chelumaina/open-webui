@@ -703,7 +703,7 @@ class UsersTable:
 
     def move_to_default_group(self, user_id: str) -> Optional[str]:
         try:
-            default_group_id = os.getenv("DEFAULT_MODEL_GROUP_ID", "4f0c087e-52f9-47a7-95eb-68d4f03b557f")
+            default_group_id = os.getenv("BASIC_MODEL_GROUP_ID", "d5a8957e-09e9-4cc1-88cb-41775d199c03")
             Groups.remove_user_from_all_groups(user_id)
             Groups.add_users_to_group(default_group_id, {user_id})
             return default_group_id
