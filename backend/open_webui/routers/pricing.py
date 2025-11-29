@@ -2,7 +2,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from functools import lru_cache
-from open_webui.data.plans import PLANS
+from backend.open_webui.storage.plans import PLANS
 from open_webui.models.pricing import PricingPlan
 
 # router = APIRouter(prefix="/pricing", tags=["pricing"])
