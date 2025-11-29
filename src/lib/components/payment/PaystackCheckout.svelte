@@ -13,7 +13,7 @@
 	const dispatch = createEventDispatcher();
 	const i18n = getContext('i18n');
 
-	export let planId: 'basic' | 'enterprise' | 'enterprise_plus';
+	export let planId: string;
 	export let paystackPublicKey: string = 'pk_test_your_public_key_here'; // Replace with your actual public key
 	export let disabled: boolean = false;
 
@@ -205,9 +205,9 @@
 			></path>
 		</svg>
 		{#if disabled}
-			{$i18n.t('Already Subscribed to')}
+			{$i18n.t('Already Subscribed to ')}  {plan.name}
 		{:else}
-			{$i18n.t('Subscribe to')} {plan.name}
+			{$i18n.t('Subscribe to ')} {plan.name}
 		{/if}
 	{/if}
 </button>
