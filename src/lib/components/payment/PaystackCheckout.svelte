@@ -103,13 +103,13 @@
 				amount: plan.amount,
 				email: userEmail,
 				currency: plan.currency,
-				plan: plan.plan_code,
+				plan: plan.name,
 				group_id: plan.group_id,
 				metadata: {
 					plan_id: planId,
 					plan_name: plan.name,
 					user_id: $user?.id,
-					interval: plan.interval
+					period: plan.period
 				},
 				channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer']
 			};
