@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import PaystackCheckout from '$lib/components/payment/PaystackCheckout.svelte';
-	import {config, user } from '$lib/stores';
+	import {config, user, subscription_plans } from '$lib/stores';
 	import { onMount, getContext } from 'svelte';
 	import { toast } from 'svelte-sonner';
     import Impression from '$lib/components/Impression.svelte';
-
+	import {getSubscriptionPlans} from '$lib/apis/payments';
 	const i18n = getContext('i18n');
 
 	let loaded = false;
@@ -13,9 +13,24 @@
 	
 	// Paystack configuration - Replace with your actual public key
 	const PAYSTACK_PUBLIC_KEY = 'pk_test_your_paystack_public_key_here';
+	const getPlans= async ()=>{
+		try {
+			const plans= await getSubscriptionPlans(localStorage.token)
+			 
+			subscription_plans.set(plans); // Assuming the API returns an array of plans
+			// Set the plans to a local variable if needed
+			// plans = data.plans; // Assuming the API returns an array of plans
+		} catch (error) {
+			subscription_plans.set([]);
+			console.error('Error fetching plans:', error);
+			toast.error($i18n.t('Failed to load subscription plans.'));
+		}
+	}
 
 	onMount(async () => {
 		loaded = true;
+		await getPlans()
+		console.log('Subscription plans loaded:', $subscription_plans);
 	});
 
 	/**
@@ -33,102 +48,14 @@
 	 */
 	function handlePaymentCancel(event: any) {
 		const { plan } = event.detail;
-		console.log('Payment cancelled for plan:', plan);
+		// console.log('Payment cancelled for plan:', plan);
 		toast.info($i18n.t('Payment was cancelled. You can try again anytime.'));
 	}
-// "7601634e-5d97-4d2f-81dc-4ff609df3530"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Basic Plan"
-// "eebfa470-8f68-4030-b0ad-f0b345e5f06a"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Enterprise Plan"
-// "e6a862c6-a6f7-41a1-9614-62a41623f9d8"	"4844b2fe-1df4-4f91-a9cf-83b851b8ca06"	"Enterprise Pro"
-let plans = [
-  {
-    id: 'basic',
-    name: 'Basic',
-    tagline: 'Perfect for getting started',
-    price: '$5',
-    period: 'month',
-    amount: 5,
-    currency: 'USD',
-    group_id: '7601634e-5d97-4d2f-81dc-4ff609df3530',
-    highlighted: false,
-    badge: null,
-    features: [
-      'Coverage: Basic statutes + case law',
-      'Jurisdiction-ready citations',
-      'Expanded messaging and uploads',
-      'Longer memory and context',
-      'Limited deep research',
-      // '10K API Calls / month',
-      'Up to 8K context tokens / request',
-      'Access to custom prompts',
-      // '20 requests / minute rate limit',
-      // 'Up to 2GB knowledge index storage',
-      // 'Upload: 10MB per file, 2GB total',
-      // 'Q&A with inline citations',
-      // 'Basic semantic search',
-      // 'PDF/Word ingestion',
-    ]
-  },
-  {
-    id: 'enterprise',
-    name: 'Enterprise',
-    tagline: 'Advanced features for professionals',
-    price: '$10',
-    period: 'month',
-    amount: 10,
-    currency: 'USD',
-    group_id: 'eebfa470-8f68-4030-b0ad-f0b345e5f06a',
-    highlighted: true,
-    badge: 'Most Popular',
-    features: [
-      'Everything in Basic',
-      'Comprehensive legal coverage',
-      'Includes legal sources and gazettes issues',
-      'Enhanced research capabilities',
-      'Daily content updates',
-      'Citations with deep links',
-      // 'Unlimited API Calls',
-      // 'Up to 200K context tokens',
-      // 'Custom rate limits',
-      // 'Scalable knowledge index (100GB+)',
-      // 'Expanded messaging and uploads',
-      // 'Expanded and faster image creation',
-      'Expanded memory and context',
-    ]
-  },
-  {
-    id: 'enterprise_plus',
-    name: 'Enterprise Plus',
-    tagline: 'Premium solution for teams',
-    price: '$20',
-    period: 'month',
-    amount: 20,
-    currency: 'USD',
-    group_id: 'e6a862c6-a6f7-41a1-9614-62a41623f9d8',
-    highlighted: false,
-    badge: 'Best Value',
-    features: [
-      'Everything in Enterprise Plan',
-      'Enhanced Models trained with Legal datasets',
-      'Models trained with court decisions',
-      'Priority support 24/7',
-      'includes Gazette issues, legal sources and Court Decisions',
-      
-      // 'Dedicated account manager',
-      // 'Custom integrations',
-      // 'Advanced analytics',
-      // 'Team collaboration tools',
-      // 'SSO & SAML support',
-      // '99.9% uptime SLA',
-      // 'Custom deployment options',
-      // 'Quarterly business reviews',
-    ]
-  }
-];
 
 </script>
 
 <!-- Modern Pricing Page -->
-<div class="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-950 dark:to-purple-950">
+<div class="min-h-screen max-h-screen overflow-y-auto bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-950 dark:to-purple-950">
 	<!-- Decorative background elements -->
 	<div class="absolute inset-0 overflow-hidden pointer-events-none">
 		<div class="absolute top-0 right-0 w-96 h-96 bg-purple-300 dark:bg-purple-600 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob"></div>
@@ -156,10 +83,10 @@ let plans = [
 		</div>
 		
 
-		<!-- Pricing Cards -->
-		<Impression sectionId="subscription-section">
+		<!-- Pricing Cards --> 
 			<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-				{#each plans as plan, index}
+				{#each $subscription_plans as plan, index}
+				<Impression sectionId="pricing-{plan.name}">
 					<div 
 						class="relative group"
 						role="article"
@@ -263,7 +190,7 @@ let plans = [
 													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
 												</svg>
 												<span class="text-sm text-gray-700 dark:text-gray-300">
-													{feature}
+													{feature?.text}
 												</span>
 											</li>
 										{/each}
@@ -280,9 +207,9 @@ let plans = [
 							</div>
 						</div>
 					</div>
+				</Impression>
 				{/each}
-			</div>
-		</Impression>
+			</div> 
 
 		<!-- FAQ or Additional Info Section -->
 		<div class="mt-20 text-center">

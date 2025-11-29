@@ -100,6 +100,21 @@ export const playingNotificationSound = writable(false);
 
 export const token_cost: Writable<TokenCost> = writable({});
 export const total_usage: Writable<TotalUsage> = writable({});
+export const subscription_plans: Writable<SubscriptionPlan[]> = writable([]);
+
+export type SubscriptionPlan = {
+	id:	string ,
+    name: string,
+    tagline: string,
+    price: string,
+    period: string,
+    amount: number,
+    currency: string,
+    group_id: string,
+    highlighted: boolean,
+    badge: null,
+    features: string[]
+};
 
 export type TotalUsage = {
 	total_prompt_tokens?: number;
@@ -277,6 +292,7 @@ type Config = {
 	default_prompt_suggestions: PromptSuggestion[];
 	features: {
 		auth: boolean;
+		enable_ldap: false
 		auth_trusted_header: boolean;
 		enable_api_keys: boolean;
 		enable_signup: boolean;
@@ -300,6 +316,11 @@ type Config = {
 	ui?: {
 		pending_user_overlay_title?: string;
 		pending_user_overlay_description?: string;
+	};
+	metadata: {
+		auth_logo_position: string; 
+		login_footer: string;
+
 	};
 };
 

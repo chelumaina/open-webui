@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { WEBUI_BASE_URL } from '$lib/constants';
+	import { WEBUI_BASE_URL, WEBUI_BASE_FRONTEND_URL } from '$lib/constants';
 
 	export let className = 'size-8';
-	export let src = `${WEBUI_BASE_URL}/static/favicon.png`;
+	export let src = `${WEBUI_BASE_FRONTEND_URL}/static/favicon.png`;
 </script>
 
 <img
 	aria-hidden="true"
 	src={src === ''
-		? `${WEBUI_BASE_URL}/static/favicon.png`
-		: src.startsWith(WEBUI_BASE_URL) ||
+		? `${WEBUI_BASE_FRONTEND_URL}/static/favicon.png`
+		: src.startsWith(WEBUI_BASE_FRONTEND_URL) ||
 			  src.startsWith('https://www.gravatar.com/avatar/') ||
 			  src.startsWith('data:') ||
 			  src.startsWith('/')

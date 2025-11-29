@@ -72,7 +72,7 @@ HTML_TEMPLATE = """
 
         {% if tracking_pixel %}
         <!-- tracking pixel (optional) -->
-        <img src="{{ tracking_pixel }}" alt="" width="1" height="1" style="display:block; margin-top:8px;">
+        <img src="{{ tracking_pixel }}" width="1" height="1" style="display:block; margin-top:8px;">
         {% endif %}
       </div>
 

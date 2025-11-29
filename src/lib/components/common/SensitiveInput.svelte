@@ -6,10 +6,11 @@
 	export let value: string = '';
 	export let placeholder = '';
 	export let type = 'text';
+	// export let class ='w-full px-4 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all';
 	export let required = true;
 	export let readOnly = false;
 	export let outerClassName = 'flex flex-1 bg-transparent';
-	export let inputClassName = 'w-full text-sm py-0.5 bg-transparent';
+	export let inputClassName = 'w-full px-4 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all';
 	export let showButtonClassName = 'pl-1.5  transition bg-transparent';
 
 	let show = false;

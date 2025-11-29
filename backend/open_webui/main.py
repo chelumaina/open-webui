@@ -94,6 +94,8 @@ from open_webui.routers import (
     utils,
     scim,
     payments, 
+    pricing,
+    track_impression,
 )
 
 from open_webui.routers.retrieval import (
@@ -1396,7 +1398,8 @@ app.include_router(files.router, prefix="/api/v1/files", tags=["files"])
 app.include_router(functions.router, prefix="/api/v1/functions", tags=["functions"])
 
 app.include_router(payments.router, prefix="/api/v1/payments", tags=["payments"])
-
+app.include_router(pricing.router, prefix="/api/v1/pricing", tags=["pricing"])
+app.include_router(track_impression.router, prefix="/api/v1/impression", tags=["impression"])
 
 app.include_router(
     evaluations.router, prefix="/api/v1/evaluations", tags=["evaluations"]
@@ -2278,7 +2281,6 @@ async def healthcheck_with_db():
 
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
-
 
 @app.get("/cache/{path:path}")
 async def serve_cache_file(

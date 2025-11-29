@@ -47,7 +47,7 @@
 	import { getAllTags, getChatList } from '$lib/apis/chats';
 	import { chatCompletion } from '$lib/apis/openai';
 
-	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL, WEBUI_HOSTNAME } from '$lib/constants';
+	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL, WEBUI_HOSTNAME, WEBUI_BASE_FRONTEND_URL } from '$lib/constants';
 	import { bestMatchingLanguage } from '$lib/utils';
 	import { setTextScale } from '$lib/utils/text-scale';
 
@@ -340,7 +340,7 @@
 						if ($settings?.notificationEnabled ?? false) {
 							new Notification(`${title} • Open WebUI`, {
 								body: content,
-								icon: `${WEBUI_BASE_URL}/static/favicon.png`
+								icon: `${WEBUI_BASE_FRONTEND_URL}/static/favicon.png`
 							});
 						}
 					}
@@ -751,7 +751,7 @@
 
 <svelte:head>
 	<title>{$WEBUI_NAME}</title>
-	<link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_URL}/static/favicon.png" />
+	<link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_FRONTEND_URL}/static/favicon.png" />
 
 	<meta name="apple-mobile-web-app-title" content={$WEBUI_NAME} />
 	<meta name="description" content={$WEBUI_NAME} />

@@ -1,6 +1,6 @@
 // Paystack integration utilities
 import { get } from 'svelte/store';
-import { user } from '$lib/stores';
+import { user, subscription_plans } from '$lib/stores';
 
 export interface PaystackConfig {
 	publicKey: string;
@@ -205,98 +205,6 @@ export function createPaystackPayment(publicKey: string, options?: Partial<Payst
 	});
 }
 
-/**
- * Plan configurations for subscription plans
- */
-export const SUBSCRIPTION_PLANS = {
-	basic: {
-		name: 'Basic Plan',
-		amount: 5, // $10
-		currency: 'USD',
-		plan_code: 'basic_plan',
-		group_id: '7601634e-5d97-4d2f-81dc-4ff609df3530',
-		interval: 'monthly',
-		features: [
-			'Coverage: Basic statutes + case law',
-			'Jurisdiction-ready citations with paragraph anchors',
-			'Expanded messaging and uploads',
-			'Expanded and faster image creation',
-			'Longer memory and context',
-			'Limited deep research',
-			'10K API Calls / month',
-			'Up to 8K context tokens / request',
-			'20 requests / minute rate limit',
-			'Up to 2GB knowledge index (RAG) storage',
-			'Upload: 10MB per file, 2GB total',
-			'Q&A with inline citations',
-			'Basic semantic search over laws & cases',
-			'PDF/Word ingestion (OCR optional)',
-		]
-	},
-	enterprise: {
-		name: 'Enterprise Plan',
-		amount: 10, // $20
-		currency: 'USD',
-		plan_code: 'enterprise_plan',
-		interval: 'monthly',
-		group_id: 'eebfa470-8f68-4030-b0ad-f0b345e5f06a',
-		features: [
-			"Everything in Basic",
-			'Coverage: Comprehensive acts, laws, court decisions, gazette notices, and cases',
-			'Daily content updates & versioned knowledge base',
-			'Citations with source-location deep links',
-			'Unlimited API Calls (fair use; custom SLAs)',
-			'Up to 200K context tokens / request (long-context endpoints)',
-			'Custom per-minute/second rate limits',
-			'Scalable knowledge index (100GB+; dedicated vector store)',
-			'Expanded messaging and uploads',
-			'Expanded and faster image creation',
-			'Expanded memory and context',
-		]
-	},
-	enterprise_plus: {
-		name: 'Enterprise Plus Plan',
-		amount: 20, // $20
-		currency: 'USD',
-		plan_code: 'enterprise_plus_plan',
-		interval: 'monthly',
-		group_id: 'e6a862c6-a6f7-41a1-9614-62a41623f9d8',
-		features: [
-			"Everything in Basic",
-			'Coverage: Comprehensive acts, laws, court decisions, gazette notices, and cases',
-			'Daily content updates & versioned knowledge base',
-			'Citations with source-location deep links',
-			'Unlimited API Calls (fair use; custom SLAs)',
-			'Up to 200K context tokens / request (long-context endpoints)',
-			'Custom per-minute/second rate limits',
-			'Scalable knowledge index (100GB+; dedicated vector store)',
-			'Expanded messaging and uploads',
-			'Expanded and faster image creation',
-			'Expanded memory and context',
-		]
-	},
-	enterprise3: {
-		name: 'Enterprise Plan',
-		amount: 20, // $20
-		currency: 'USD',
-		plan_code: 'enterprise_plan',
-		interval: 'monthly',
-		group_id: 'eebfa470-8f68-4030-b0ad-f0b345e5f06a',
-		features: [
-			"Everything in Basic",
-			'Coverage: Comprehensive acts, laws, court decisions, gazette notices, and cases',
-			'Daily content updates & versioned knowledge base',
-			'Citations with source-location deep links',
-			'Unlimited API Calls (fair use; custom SLAs)',
-			'Up to 200K context tokens / request (long-context endpoints)',
-			'Custom per-minute/second rate limits',
-			'Scalable knowledge index (100GB+; dedicated vector store)',
-			'Expanded messaging and uploads',
-			'Expanded and faster image creation',
-			'Expanded memory and context',
-		]
-	}
-};
 
 /**
  * Get user email from store or fallback

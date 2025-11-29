@@ -812,7 +812,7 @@
 												<div class="relative">
 													<Image
 														src={file.url}
-														alt=""
+														alt="logo"
 														imageClassName=" size-10 rounded-xl object-cover"
 													/>
 												</div>
@@ -820,6 +820,7 @@
 													<button
 														class=" bg-white text-black border border-white rounded-full group-hover:visible invisible transition"
 														type="button"
+														title="Remove"
 														on:click={() => {
 															files.splice(fileIdx, 1);
 															files = files;

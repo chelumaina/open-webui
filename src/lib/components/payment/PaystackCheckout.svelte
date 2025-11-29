@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { toast } from 'svelte-sonner';
-	import { user } from '$lib/stores';
+	import { user, subscription_plans } from '$lib/stores';
 	import {
 		createPaystackPayment,
-		SUBSCRIPTION_PLANS,
 		getUserEmail,
 		formatPrice,
 		type PaymentData
@@ -14,14 +13,18 @@
 	const dispatch = createEventDispatcher();
 	const i18n = getContext('i18n');
 
-	export let planId: 'basic' | 'enterprise';
+	export let planId: 'basic' | 'enterprise' | 'enterprise_plus';
 	export let paystackPublicKey: string = 'pk_test_your_public_key_here'; // Replace with your actual public key
 	export let disabled: boolean = false;
 
 	let loading = false;
 	let paymentInProgress = false;
 
-	$: plan = SUBSCRIPTION_PLANS[planId];
+	// const subscription_plan = $subscription_plans.filter(plan => plan.id === planId);
+	const subscription_plan = $subscription_plans.find(plan => plan.id === planId);
+	console.log('Selected subscription plan:', subscription_plan);
+
+	$: plan = subscription_plan;
 	$: userEmail = getUserEmail();
 
 	/**
@@ -49,9 +52,9 @@
 		try {
 			// Initialize payment with backend
 			const paymentData = {
-				amount: plan.amount,
-				currency: plan.currency,
-				group_id: plan.group_id,
+				amount: plan?.amount,
+				currency: plan?.currency,
+				group_id: plan?.group_id,
 				plan_id: planId,
 				plan_name: plan.name,
 				callback_url: `${window.location.origin}/subscription/verify`

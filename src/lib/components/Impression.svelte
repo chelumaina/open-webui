@@ -1,7 +1,9 @@
 <script lang="ts">
-import { WEBUI_BASE_URL } from '$lib/constants';
+import { WEBUI_BASE_URL, WEBUI_API_BASE_URL } from '$lib/constants';
   import { onMount, onDestroy } from 'svelte';
-
+	import { toast } from 'svelte-sonner';
+  import { getContext } from 'svelte';
+  const i18n = getContext('i18n');
   export let sectionId;
   let sectionEl: HTMLElement;
   let observer: IntersectionObserver | null;
@@ -54,9 +56,17 @@ import { WEBUI_BASE_URL } from '$lib/constants';
 
 
   const sendImpression = (sectionId: string) => {
-    fetch(`${WEBUI_BASE_URL}/api/track-impression`, {
+    // if (!localStorage.token) {
+		// 	toast.error($i18n.t('Authentication required'));
+		// 	return;
+		// }
+    fetch(`${WEBUI_API_BASE_URL}/impression/track`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${localStorage.token}`
+      },
       body: JSON.stringify(buildImpressionPayload(`${sectionId}-section`))
 
     });

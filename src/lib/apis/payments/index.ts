@@ -117,6 +117,37 @@ export const verifyPayment = async (
 	return res;
 };
 
+
+
+/**
+ * Get user's current subscription
+ */
+export const getSubscriptionPlans = async (token: string): Promise<{ plans: any[] | null }> => {
+	let error = null;
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/pricing/plans`, {
+		method: 'GET',
+		headers: {
+			Accept: 'application/json',
+			authorization: `Bearer ${token}`
+		}
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.catch((err) => {
+			error = err.detail;
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
 /**
  * Get user's current subscription
  */

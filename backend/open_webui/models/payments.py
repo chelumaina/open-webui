@@ -7,7 +7,7 @@ from open_webui.internal.db import Base, get_db
 
 
 from pydantic import BaseModel, Field
-from sqlalchemy import Column, DateTime, Integer, String, Float, Text
+from sqlalchemy import UUID, Column, DateTime, Integer, String, Float, Text
 from sqlalchemy.orm import  Mapped, mapped_column
 from sqlalchemy import or_
 
@@ -21,7 +21,7 @@ from sqlalchemy import or_
 class PaymentTransaction(Base):
     __tablename__ = "payment_transactions"
 
-    id = Column(Integer, default=uuid.uuid4(), primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), default=uuid.uuid4, primary_key=True, index=True)
     user_id = Column(String, index=True, nullable=False)
     reference = Column(String, unique=True, index=True, nullable=False)
     amount = Column(Float, nullable=False)  # Amount in original currency

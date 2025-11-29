@@ -45,9 +45,7 @@
 
 			if (verification.success && verification.data?.status === 'success') {
 				verificationStatus = 'success';
-				transactionData = verification.data;
-				
-				await handleSuccessfulPayment(verification.data);
+				transactionData = verification.data; 
 				
 				toast.success($i18n.t('Payment verified successfully!'));
 			} else {
@@ -65,55 +63,6 @@
 		}
 	}
 
-	async function handleSuccessfulPayment(data: any) {
-		// Extract plan information from metadata
-		const planId = data.metadata?.plan_id;
-		const planName = data.metadata?.plan_name;
-		
-		console.log('Successful payment data:', {
-			reference: data.reference,
-			amount: data.amount / 100, // Convert from kobo
-			currency: data.currency,
-			plan: planId,
-			customer: data.customer
-		});
-
-		// Here you would call your backend API to:
-		// 1. Activate the user's subscription
-		// 2. Store transaction record
-		// 3. Update user permissions
-		
-		// Example API call:
-		/*
-		try {
-			const response = await fetch('/api/subscriptions/activate', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${$user?.token}`
-				},
-				body: JSON.stringify({
-					transaction_reference: data.reference,
-					plan_id: planId,
-					amount: data.amount,
-					currency: data.currency,
-					paystack_data: data
-				})
-			});
-
-			if (!response.ok) {
-				throw new Error('Failed to activate subscription');
-			}
-
-			const result = await response.json();
-			console.log('Subscription activated:', result);
-		} catch (error) {
-			console.error('Failed to activate subscription:', error);
-			toast.error($i18n.t('Payment successful but failed to activate subscription. Please contact support.'));
-		}
-		*/
-	}
-
 	function goToDashboard() {
 		goto('/');
 	}
@@ -127,9 +76,9 @@
 	<title>Payment Verification - {$i18n.t('Lex Luma AI')}</title>
 </svelte:head>
 
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-	<div class="sm:mx-auto sm:w-full sm:max-w-md">
-		<div class="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+<div class="min-h-screen max-h-screen overflow-y-auto bg-gray-50 dark:bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+	<div class="sm:mx-auto sm:w-full sm:max-w-md flex-shrink-0">
+		<div class="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10 max-h-[calc(100vh-6rem)] overflow-y-auto">
 			{#if loading}
 				<!-- Loading State -->
 				<div class="text-center">
@@ -184,7 +133,7 @@
 						on:click={goToDashboard}
 						class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
 					>
-						{$i18n.t('Go to Dashboard')}
+						{$i18n.t('Go to Chats')}
 					</button>
 				</div>
 			{:else if verificationStatus === 'failed'}
@@ -220,7 +169,7 @@
 							on:click={goToDashboard}
 							class="w-full flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
 						>
-							{$i18n.t('Go Back')}
+							{$i18n.t('Go to the Chat')}
 						</button>
 					</div>
 				</div>

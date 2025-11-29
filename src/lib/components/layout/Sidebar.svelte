@@ -41,7 +41,7 @@
 		importChats
 	} from '$lib/apis/chats';
 	import { createNewFolder, getFolders, updateFolderParentIdById } from '$lib/apis/folders';
-	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
+	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL, WEBUI_BASE_FRONTEND_URL } from '$lib/constants';
 
 	import ArchivedChatsModal from './ArchivedChatsModal.svelte';
 	import UserMenu from './Sidebar/UserMenu.svelte';
@@ -55,6 +55,9 @@
 	import ChannelModal from './Sidebar/ChannelModal.svelte';
 	import ChannelItem from './Sidebar/ChannelItem.svelte';
 	import PencilSquare from '../icons/PencilSquare.svelte';
+	import Info from '../icons/Info.svelte';
+
+	
 	import Search from '../icons/Search.svelte';
 	import SearchModal from './SearchModal.svelte';
 	import FolderModal from './Sidebar/Folders/FolderModal.svelte';
@@ -519,7 +522,7 @@
 		on:mousedown={() => {
 			showSidebar.set(!$showSidebar);
 		}}
-	/>
+	></div>
 {/if}
 
 <SearchModal
@@ -533,12 +536,13 @@
 
 <button
 	id="sidebar-new-chat-button"
+	title="Sidebar"
 	class="hidden"
 	on:click={() => {
 		goto('/');
 		newChatHandler();
 	}}
-/>
+></button>
 
 {#if !$mobile && !$showSidebar}
 	<div
@@ -564,9 +568,9 @@
 					>
 						<div class=" self-center flex items-center justify-center size-9">
 							<img
-								src="{WEBUI_BASE_URL}/static/favicon.png"
+								src="{WEBUI_BASE_FRONTEND_URL}/static/favicon.png"
 								class="sidebar-new-chat-icon size-6 rounded-full group-hover:hidden"
-								alt=""
+								alt="logo"
 							/>
 
 							<Sidebar className="size-5 hidden group-hover:flex" />
@@ -615,6 +619,26 @@
 								<Search className="size-4.5" />
 							</div>
 						</button>
+					</Tooltip>
+				</div>
+				<div class="">
+					<Tooltip content={$i18n.t('Subscription')} placement="right">
+						<a
+							class=" cursor-pointer flex rounded-xl hover:bg-gray-100 dark:hover:bg-gray-850 transition group"
+							href="/subscription"
+							draggable="false"
+							on:click={async (e) => {
+								e.stopImmediatePropagation();
+								e.preventDefault();
+
+								goto('/subscription'); 
+							}}
+							aria-label={$i18n.t('Subscription')}
+						>
+							<div class=" self-center flex items-center justify-center size-9">
+								<Info className="size-4.5" />
+							</div>
+						</a>
 					</Tooltip>
 				</div>
 
@@ -742,9 +766,9 @@
 				>
 					<img
 						crossorigin="anonymous"
-						src="{WEBUI_BASE_URL}/static/favicon.png"
+						src="{WEBUI_BASE_FRONTEND_URL}/static/favicon.png"
 						class="sidebar-new-chat-icon size-6 rounded-full"
-						alt=""
+						alt="logo"
 					/>
 				</a>
 
@@ -833,6 +857,31 @@
 							</div>
 							<HotkeyHint name="search" className=" group-hover:visible invisible" />
 						</button>
+					</div>
+
+					<div class="px-1.5 flex justify-center text-gray-800 dark:text-gray-200">
+						<a
+							id="sidebar-new-chat-button"
+							class="group grow flex items-center space-x-3 rounded-2xl px-2.5 py-2 hover:bg-gray-100 dark:hover:bg-gray-900 transition outline-none"
+							href="/subscription"
+							draggable="false"
+							on:click={async (e) => {
+								e.stopImmediatePropagation();
+								e.preventDefault(); 
+								goto('/subscription'); 
+							}}
+							aria-label={$i18n.t('Subscription')}
+						>
+							<div class="self-center">
+								<Info className=" size-4.5" strokeWidth="2" />
+							</div>
+
+							<div class="flex flex-1 self-center translate-y-[0.5px]">
+								<div class=" self-center text-sm font-primary">{$i18n.t('Subscription')}</div>
+							</div>
+
+							<HotkeyHint name="subscription" className=" group-hover:visible invisible" />
+						</a>
 					</div>
 
 					{#if ($config?.features?.enable_notes ?? false) && ($user?.role === 'admin' || ($user?.permissions?.features?.notes ?? true))}

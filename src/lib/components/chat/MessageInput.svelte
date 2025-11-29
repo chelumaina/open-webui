@@ -1099,7 +1099,7 @@
 												<div class="relative flex items-center">
 													<Image
 														src={file.url}
-														alt=""
+														alt="logo"
 														imageClassName=" size-10 rounded-xl object-cover"
 													/>
 													{#if atSelectedModel ? visionCapableModels.length === 0 : selectedModels.length !== visionCapableModels.length}
