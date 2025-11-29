@@ -12,8 +12,8 @@ services:
     tty: true
     restart: unless-stopped
     image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
-    ports:
-      - ${OLLAMA_PORT-11434}:11434
+    # ports:
+    #   - ${OLLAMA_PORT-11434}:11434
     environment:
       - 'OLLAMA_API_KEY=${OLLAMA_API_KEY}'
     extra_hosts:
@@ -70,9 +70,9 @@ services:
       - redis_ai
       - ollama
       # - otel_collector_ai
-    ports:
-      # - ${OPEN_WEBUI_PORT-3000}:8080
-      - "${WEBUI_PORT:-8080}:8080"
+    # ports:
+    #   # - ${OPEN_WEBUI_PORT-3000}:8080
+    #   - "${WEBUI_PORT:-8080}:8080"
     environment:
       - 'ENV=${ENV:-prod}'
       - 'WEBUI_NAME=${WEBUI_NAME:-AI Legal Assistant}'
@@ -142,8 +142,8 @@ services:
     volumes:
       # - ./data/pgdata/:/var/lib/postgresql/
       - ./data/pgdata-latest:/var/lib/postgresql/18/docker
-    ports:
-      - "5433:5432"
+    # ports:
+    #   - "5433:5432"
     networks:
       - app-network
 
@@ -194,8 +194,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    ports:
-      - "6378:6379"
+    # ports:
+    #   - "6378:6379"
     expose:
       - "6379"
     command: [
