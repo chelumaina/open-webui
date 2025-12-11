@@ -83,17 +83,30 @@
 						<Marquee
 							duration={5000}
 							words={[
-								$i18n.t('Explore the cosmos'),
-								$i18n.t('Unlock mysteries'),
-								$i18n.t('Chart new frontiers'),
-								$i18n.t('Dive into knowledge'),
-								$i18n.t('Discover wonders'),
-								$i18n.t('Ignite curiosity'),
-								$i18n.t('Forge new paths'),
-								$i18n.t('Unravel secrets'),
-								$i18n.t('Pioneer insights'),
-								$i18n.t('Embark on adventures')
+								// $i18n.t('Explore the cosmos'),
+								// $i18n.t('Unlock mysteries'),
+								// $i18n.t('Chart new frontiers'),
+								// $i18n.t('Dive into knowledge'),
+								// $i18n.t('Discover wonders'),
+								// $i18n.t('Ignite curiosity'),
+								// $i18n.t('Forge new paths'),
+								// $i18n.t('Unravel secrets'),
+								// $i18n.t('Pioneer insights'),
+								// $i18n.t('Embark on adventures')
+
+								$i18n.t('Decipher Precedent'),
+								$i18n.t('Forge Your Argument'),
+								$i18n.t('Uncover Binding Authority'),
+								$i18n.t('Analyze Authority'),
+								$i18n.t('Map Legal Strategy'),
+								$i18n.t('Research the Law'),
+								$i18n.t('Distill the Doctrine'),
+								$i18n.t('Construct the Case'),
+								$i18n.t('Scrutinize the Statute'),
+								$i18n.t('Navigate the Jurisprudence')
+
 							]}
+ 
 						/>
 
 						<div class="mt-0.5">{$i18n.t(`wherever you are`)}</div>

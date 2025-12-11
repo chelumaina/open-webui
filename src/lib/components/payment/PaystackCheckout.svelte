@@ -22,7 +22,6 @@
 
 	// const subscription_plan = $subscription_plans.filter(plan => plan.id === planId);
 	const subscription_plan = $subscription_plans.find(plan => plan.id === planId);
-	console.log('Selected subscription plan:', subscription_plan);
 
 	$: plan = subscription_plan;
 	$: userEmail = getUserEmail();
@@ -207,7 +206,7 @@
 		{#if disabled}
 			{$i18n.t('Already Subscribed to ')}
 		{:else}
-			{$i18n.t('Subscribe to ')} {plan.name}
+			{$i18n.t('Subscribe to ')} {plan?.name}
 		{/if}
 	{/if}
 </button>
