@@ -34,7 +34,7 @@ BASE_DIR = BACKEND_DIR.parent
 try:
     from dotenv import find_dotenv, load_dotenv
 
-    load_dotenv(find_dotenv(str(BASE_DIR / ".env")))
+    load_dotenv(find_dotenv(str(BASE_DIR / ".env")), override=True)
 except ImportError:
     print("dotenv not installed, skipping...")
 
@@ -281,7 +281,7 @@ else:
     pass
 
 DATABASE_URL = os.environ.get("DATABASE_URL", f"sqlite:///{DATA_DIR}/webui.db")
-
+# print(f"DATABASE_URL: {DATABASE_URL}")
 DATABASE_TYPE = os.environ.get("DATABASE_TYPE")
 DATABASE_USER = os.environ.get("DATABASE_USER")
 DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")
@@ -309,6 +309,8 @@ elif DATABASE_TYPE == "sqlite+sqlcipher" and not os.environ.get("DATABASE_URL"):
 # Replace the postgres:// with postgresql://
 if "postgres://" in DATABASE_URL:
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://")
+
+# print(f"DATABASE_URL: {DATABASE_URL}")
 
 DATABASE_SCHEMA = os.environ.get("DATABASE_SCHEMA", None)
 
@@ -437,10 +439,13 @@ ENABLE_PASSWORD_VALIDATION = (
 )
 PASSWORD_VALIDATION_REGEX_PATTERN = os.environ.get(
     "PASSWORD_VALIDATION_REGEX_PATTERN",
-    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$",
+    r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$",
 )
 
+print(f"ENABLE_PASSWORD_VALIDATION: {ENABLE_PASSWORD_VALIDATION}")
+
 PASSWORD_VALIDATION_REGEX_PATTERN = re.compile(PASSWORD_VALIDATION_REGEX_PATTERN)
+# print(f"PASSWORD_VALIDATION_REGEX_PATTERN: {PASSWORD_VALIDATION_REGEX_PATTERN}")
 
 
 BYPASS_MODEL_ACCESS_CONTROL = (

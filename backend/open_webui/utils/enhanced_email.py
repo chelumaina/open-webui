@@ -99,6 +99,73 @@ Thanks,
 The {{ brand_name }} Team
 """
 
+# Password Reset HTML Template
+PASSWORD_RESET_HTML_TEMPLATE = """
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Reset your {{ brand_name }} password</title>
+    <style>
+      body { margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color:#f6f9fc; }
+      .email-wrap { width:100%; max-width:680px; margin:0 auto; padding:24px; }
+      .card { background:#ffffff; border-radius:12px; padding:32px; box-shadow:0 2px 4px rgba(16,24,40,0.05); }
+      h1 { margin:0 0 8px 0; font-size:20px; color:#0f172a; }
+      p { color:#475569; margin:8px 0 16px 0; line-height:1.4; font-size:15px; }
+      .btn { display:inline-block; text-decoration:none; padding:12px 20px; border-radius:10px; font-weight:600; background:linear-gradient(90deg,#4f46e5,#06b6d4); color:white!important; }
+      .muted { color:#94a3b8; font-size:13px; margin-top:16px; }
+      .footer { text-align:center; color:#94a3b8; font-size:12px; margin-top:20px; }
+      @media (max-width:420px) {
+        .card { padding:20px; border-radius:8px; }
+        .btn { width:100%; text-align:center; display:block; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-wrap" role="article" aria-roledescription="email">
+      <div class="card">
+        <img src="{{ logo_url }}" alt="{{ brand_name }} logo" width="48" style="display:block; margin-bottom:18px;">
+        <h1>Reset your {{ brand_name }} password</h1>
+        <p>Hi{{ " " + name if name else "" }},</p>
+        <p>We received a request to reset your password. Click the button below to reset it.</p>
+
+        <p style="text-align:center;">
+          <a class="btn" href="{{ reset_link }}" target="_blank" rel="noopener noreferrer">Reset password</a>
+        </p>
+
+        <p class="muted">This link will expire in 1 hour.</p>
+        <p class="muted">If the button doesn't work, copy and paste this link into your browser:</p>
+        <p class="muted"><a href="{{ reset_link }}" target="_blank" rel="noopener noreferrer">{{ reset_link }}</a></p>
+
+        <p style="margin-top:18px;">If you didn't request a password reset, you can safely ignore this email. Your password will not be changed.</p>
+      </div>
+
+      <div class="footer">
+        <p>&copy; {{ year }} {{ brand_name }}. All rights reserved.</p>
+        <p><a href="{{ privacy_url }}">Privacy Policy</a></p>
+      </div>
+    </div>
+  </body>
+</html>
+"""
+
+# Password Reset Plain Text Template
+PASSWORD_RESET_TEXT_TEMPLATE = """Hi{{ " " + name if name else "" }},
+
+We received a request to reset your password at {{ brand_name }}.
+
+Reset your password by visiting the link below:
+{{ reset_link }}
+
+This link will expire in 1 hour.
+
+If you did not request a password reset, you can safely ignore this email. Your password will not be changed.
+
+Thanks,
+The {{ brand_name }} Team
+"""
+
 # Helper to build activation URL safely
 def build_activation_url(token: str) -> str:
     # quote_plus is used to safely encode token for URL param
@@ -268,3 +335,107 @@ async def send_activation_email_bg(recipient: str, token: str, name: Optional[st
 #         return user_id
 #     except JWTError:
 #         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid or expired activation token")
+
+
+# Helper to build password reset URL
+def build_reset_password_url(token: str) -> str:
+    """Build the password reset URL with token"""
+    token_quoted = quote_plus(token)
+    reset_url = os.getenv("FRONTEND_RESET_PASSWORD_URL", f"{WEBUI_URL}/auth/reset-password")
+    return f"{reset_url}?token={token_quoted}"
+
+
+# Send password reset email
+async def send_password_reset_email(
+    recipient: str,
+    token: str,
+    name: Optional[str] = None,
+    *,
+    logo_url: str = f"{WEBUI_URL}/logo.png",
+    privacy_url: str = f"{WEBUI_URL}/privacy",
+    subject: str = None,
+):
+    """
+    Sends an HTML password reset email with a plain-text fallback.
+    """
+    if not SMTP_HOST or not SMTP_USER or not SMTP_PASSWORD:
+        raise RuntimeError("SMTP configuration not set")
+
+    reset_link = build_reset_password_url(token)
+    subject = subject or f"Reset your {BRAND_NAME} password"
+    
+    # Render templates
+    ctx = {
+        "brand_name": BRAND_NAME,
+        "name": name,
+        "reset_link": reset_link,
+        "logo_url": logo_url,
+        "support_email": SUPPORT_EMAIL,
+        "year": datetime.utcnow().year,
+        "privacy_url": privacy_url,
+    }
+    
+    html_content = Template(PASSWORD_RESET_HTML_TEMPLATE).render(**ctx)
+    text_content = Template(PASSWORD_RESET_TEXT_TEMPLATE).render(**ctx)
+    
+    # Build email message
+    msg = EmailMessage()
+    msg["From"] = FROM_EMAIL
+    msg["To"] = recipient
+    msg["Subject"] = subject
+    msg.set_content(text_content)
+    msg.add_alternative(html_content, subtype="html")
+    msg["X-Entity-Ref-ID"] = "password-reset-email"
+
+    # send via aiosmtplib
+    await aiosmtplib.send(
+        msg,
+        hostname=SMTP_HOST,
+        port=SMTP_PORT,
+        username=SMTP_USER,
+        password=SMTP_PASSWORD,
+        start_tls=True,
+        timeout=30,
+    )
+    return None
+
+
+# Sync version using smtplib for password reset
+def send_password_reset_email_sync(to: str, token: str, name: Optional[str] = None):
+    """Send password reset email synchronously"""
+    try:
+        reset_link = build_reset_password_url(token)
+        subject = f"Reset your {BRAND_NAME} password"
+        
+        logo_url = f"{WEBUI_URL}/logo.png"
+        privacy_url = f"{WEBUI_URL}/privacy"
+        
+        ctx = {
+            "brand_name": BRAND_NAME,
+            "name": name,
+            "reset_link": reset_link,
+            "logo_url": logo_url,
+            "support_email": SUPPORT_EMAIL,
+            "year": datetime.utcnow().year,
+            "privacy_url": privacy_url,
+        }
+        
+        html_content = Template(PASSWORD_RESET_HTML_TEMPLATE).render(**ctx)
+        text_content = Template(PASSWORD_RESET_TEXT_TEMPLATE).render(**ctx)
+        
+        msg = EmailMessage()
+        msg["From"] = FROM_EMAIL
+        msg["To"] = to
+        msg["Subject"] = subject
+        msg.set_content(text_content)
+        msg.add_alternative(html_content, subtype="html")
+        msg["X-Entity-Ref-ID"] = "password-reset-email"
+        
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=30) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASSWORD)
+            server.sendmail(FROM_EMAIL, [to], msg.as_string())
+            print(f"Password reset email sent to {to} via SMTP.")
+    except Exception as e:
+        print(f"Error sending password reset email to {to} via SMTP: {e}")
+        raise e
