@@ -73,8 +73,7 @@ import { WEBUI_BASE_URL, WEBUI_API_BASE_URL } from '$lib/constants';
   };
 
   onMount(() => {
-    console.log("onMount "+sectionId)
-    observer = new IntersectionObserver(([entry]) => {
+     observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         // sendImpression();
         // if (!localStorage.getItem(`seen-${sectionId}`)) {
@@ -90,8 +89,7 @@ import { WEBUI_BASE_URL, WEBUI_API_BASE_URL } from '$lib/constants';
   });
 
   onDestroy(() => {
-    console.log("onDestroy "+sectionId)
-    observer?.disconnect();
+     observer?.disconnect();
   });
 </script>
 

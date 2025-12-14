@@ -30,16 +30,14 @@
 	onMount(async () => {
 		loaded = true;
 		await getPlans()
-		console.log('Subscription plans loaded:', $subscription_plans);
-	});
+ 	});
 
 	/**
 	 * Handle successful payment
 	 */
 	function handlePaymentSuccess(event: any) {
 		const { transaction, plan, planData } = event.detail;
-		console.log('Payment successful:', { transaction, plan, planData });
-		
+ 		
 		toast.success($i18n.t('Subscription activated successfully!'));
 	}
 

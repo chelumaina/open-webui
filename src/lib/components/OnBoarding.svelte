@@ -113,22 +113,22 @@
 					</div>
 				</Impression>
 				<Impression sectionId="auth-onboarding-start-button"> 
-				<div class="flex justify-center mt-8">
-					<div class="flex flex-col justify-center items-center">
-						<button
-							aria-labelledby="get-started"
-							class="relative z-20 flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 backdrop-blur-sm transition-all duration-200 font-medium text-base shadow-lg hover:shadow-xl hover:scale-105"
-							on:click={() => {
-								getStartedHandler();
-							}}
-						>
-							<span id="get-started" class="font-primary font-semibold">
-								{$i18n.t(`Get started`)}
-							</span>
-							<ArrowRightCircle className="size-5" />
-						</button>
+					<div class="flex justify-center mt-8">
+						<div class="flex flex-col justify-center items-center">
+							<button
+								aria-labelledby="get-started"
+								class="relative z-20 flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 backdrop-blur-sm transition-all duration-200 font-medium text-base shadow-lg hover:shadow-xl hover:scale-105"
+								on:click={() => {
+									getStartedHandler();
+								}}
+							>
+								<span id="get-started" class="font-primary font-semibold">
+									{$i18n.t(`Get started`)}
+								</span>
+								<ArrowRightCircle className="size-5" />
+							</button>
+						</div>
 					</div>
-				</div>
 				</Impression>
 			</div>
 		</div>

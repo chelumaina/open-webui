@@ -52,13 +52,10 @@ export const uploadFile = async (token: string, file: File, metadata?: object | 
 
 					for (const line of lines) {
 						if (line !== '') {
-							console.log(line);
-							if (line === 'data: [DONE]') {
-								console.log(line);
-							} else {
+ 							if (line === 'data: [DONE]') {
+ 							} else {
 								let data = JSON.parse(line.replace(/^data: /, ''));
-								console.log(data);
-
+ 
 								if (data?.error) {
 									console.error(data.error);
 									res.error = data.error;
