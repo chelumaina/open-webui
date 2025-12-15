@@ -16,8 +16,10 @@ from open_webui.models.auths import (
     LdapForm,
     SigninForm,
     SigninResponse,
-    SignupForm,
+    SignupForm, 
     UpdatePasswordForm,
+    ForgotPasswordForm,
+    ResetPasswordForm,
 )
 from open_webui.models.users import (
     UserProfileImageResponse,
@@ -27,6 +29,7 @@ from open_webui.models.users import (
 )
 from open_webui.models.groups import Groups
 from open_webui.models.oauth_sessions import OAuthSessions
+from open_webui.utils.enhanced_email import send_password_reset_email_sync
 
 from open_webui.constants import ERROR_MESSAGES, WEBHOOK_MESSAGES
 from open_webui.env import (
@@ -40,7 +43,8 @@ from open_webui.env import (
     ENABLE_INITIAL_ADMIN_SIGNUP,
     SRC_LOG_LEVELS,
 )
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status, BackgroundTasks
+
 from fastapi.responses import RedirectResponse, Response, JSONResponse
 from open_webui.config import (
     OPENID_PROVIDER_URL,
@@ -106,6 +110,131 @@ class SessionUserInfoResponse(SessionUserResponse, UserStatus):
     bio: Optional[str] = None
     gender: Optional[str] = None
     date_of_birth: Optional[datetime.date] = None
+
+############################
+# Forgot Password
+############################
+
+
+@router.post("/forgot-password")
+async def forgot_password(
+    request: Request, 
+    background_tasks: BackgroundTasks,
+    form_data: ForgotPasswordForm
+):
+    """
+    Request a password reset link. 
+    Sends an email with a reset token if the email exists.
+    """
+    if not ENABLE_PASSWORD_AUTH:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+        )
+
+    # Rate limiting
+    if signin_rate_limiter.is_limited(form_data.email.lower()):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=ERROR_MESSAGES.RATE_LIMIT_EXCEEDED,
+        )
+    
+    # Validate email format
+    if not validate_email_format(form_data.email):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid email format",
+        )
+    # print(f"Processing forgot password for email: {form_data}")
+    
+    # Check if user exists
+    user = Users.get_user_by_email(form_data.email.lower())
+    # print(f"User found for forgot password: {user}")
+    
+    # Always return success to prevent email enumeration
+    # but only send email if user exists
+    print(f"User found for forgot password: {user}")
+    if user:
+        try:
+            # Create password reset token
+            token = Auths.create_password_reset_token(user.id)
+            
+            
+            # Send password reset email in background
+            background_tasks.add_task(
+                send_password_reset_email_sync,
+                user.email,
+                token,
+                user.name
+            )
+            
+            log.info(f"Password reset email sent to {user.email}")
+        except Exception as e:
+            log.error(f"Error sending password reset email: {e}")
+            # Still return success to prevent enumeration
+
+    return {
+        "success": True,
+        "message": "If an account exists with that email, a password reset link has been sent."
+    }
+
+
+############################
+# Reset Password
+############################
+
+
+@router.post("/reset-password")
+async def reset_password(form_data: ResetPasswordForm):
+    """
+    Reset password using a valid reset token.
+    """
+    if not ENABLE_PASSWORD_AUTH:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+        )
+    
+    # Verify the reset token
+    user_id = Auths.verify_password_reset_token(form_data.token)
+    
+    if not user_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired reset token",
+        )
+    
+    # Validate new password
+    try:
+        validate_password(form_data.new_password)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    
+    # Hash the new password
+    hashed_password = get_password_hash(form_data.new_password)
+    
+    # Update the password
+    success = Auths.update_user_password_by_id(user_id, hashed_password)
+    
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update password",
+        )
+    
+    # Mark the token as used
+    Auths.mark_password_reset_token_used(form_data.token)
+    
+    log.info(f"Password reset successful for user {user_id}")
+    
+    return {
+        "success": True,
+        "message": "Password has been reset successfully. You can now sign in with your new password."
+    }
+
 
 
 @router.get("/verify-email/{token}", response_model=Optional[EmailVerifyResponse])

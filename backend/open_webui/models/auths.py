@@ -1,13 +1,13 @@
 import logging
 import uuid, os
 from typing import Optional
-
+import time
 from open_webui.internal.db import Base, get_db
 from open_webui.models.users import User
 from open_webui.models.users import UserModel, UserProfileImageResponse, Users
 from open_webui.env import SRC_LOG_LEVELS
 from pydantic import BaseModel
-from sqlalchemy import Boolean, Column, String, Text
+from sqlalchemy import Boolean, Column, String, Text, BigInteger
 from jose import jwt, JWTError
 
 
@@ -43,8 +43,6 @@ UTM_MEDIUM = os.getenv("UTM_MEDIUM", "activation")
 # DB MODEL
 ####################
 
-
-
 class Auth(Base):
     __tablename__ = "auth"
 
@@ -59,6 +57,33 @@ class AuthModel(BaseModel):
     email: str
     password: str
     active: bool = True
+
+
+
+
+####################
+# Password Reset Token Model
+####################
+
+class PasswordResetToken(Base):
+    __tablename__ = "password_reset_token"
+
+    id = Column(String, primary_key=True, unique=True)
+    user_id = Column(String)
+    token = Column(String, unique=True)
+    expires_at = Column(BigInteger)
+    used = Column(Boolean, default=False)
+    created_at = Column(BigInteger)
+
+
+class PasswordResetTokenModel(BaseModel):
+    id: str
+    user_id: str
+    token: str
+    expires_at: int
+    used: bool = False
+    created_at: int
+
 
 
 ####################
@@ -92,11 +117,18 @@ class LdapForm(BaseModel):
 class ProfileImageUrlForm(BaseModel):
     profile_image_url: str
 
-
 class UpdatePasswordForm(BaseModel):
     password: str
     new_password: str
 
+
+class ResetPasswordForm(BaseModel):
+    token: str
+    new_password: str
+
+
+class ForgotPasswordForm(BaseModel):
+    email: str
 
 class SignupForm(BaseModel):
     name: str
@@ -293,6 +325,83 @@ class AuthsTable:
         email_response=await send_email_smtp(user_obj.email, "Activate your account", user_obj.email_verification_token, True)
         
         return None
+    
+    
+
+    # ---------------------------
+    # Password Reset Methods
+    # ---------------------------
+    def create_password_reset_token(self, user_id: str) -> str:
+        """Create a password reset token for a user"""
+        with get_db() as db:
+            # Generate a unique token
+            token = str(uuid.uuid4())
+            token_id = str(uuid.uuid4())
+            
+            # Token expires in 1 hour
+            expires_at = int(time.time()) + (60 * 60)
+            created_at = int(time.time())
+            
+            # Save token to database
+            reset_token = PasswordResetToken(
+                id=token_id,
+                user_id=user_id,
+                token=token,
+                expires_at=expires_at,
+                used=False,
+                created_at=created_at
+            )
+            
+            db.add(reset_token)
+            db.commit()
+            
+            return token
+
+    def verify_password_reset_token(self, token: str) -> Optional[str]:
+        """Verify a password reset token and return user_id if valid"""
+        try:
+            with get_db() as db:
+                reset_token = db.query(PasswordResetToken).filter_by(
+                    token=token, used=False
+                ).first()
+                
+                if not reset_token:
+                    return None
+                
+                # Check if token has expired
+                if int(time.time()) > reset_token.expires_at:
+                    return None
+                
+                return reset_token.user_id
+        except Exception as e:
+            log.error(f"Error verifying password reset token: {e}")
+            return None
+
+    def mark_password_reset_token_used(self, token: str) -> bool:
+        """Mark a password reset token as used"""
+        try:
+            with get_db() as db:
+                result = db.query(PasswordResetToken).filter_by(token=token).update(
+                    {"used": True}
+                )
+                db.commit()
+                return result > 0
+        except Exception as e:
+            log.error(f"Error marking token as used: {e}")
+            return False
+
+    def delete_expired_reset_tokens(self) -> None:
+        """Clean up expired password reset tokens"""
+        try:
+            with get_db() as db:
+                current_time = int(time.time())
+                db.query(PasswordResetToken).filter(
+                    PasswordResetToken.expires_at < current_time
+                ).delete()
+                db.commit()
+        except Exception as e:
+            log.error(f"Error deleting expired tokens: {e}")
+
  
 
 
